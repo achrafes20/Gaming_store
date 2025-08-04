@@ -1,0 +1,75 @@
+composer require laravel ui
+
+composer require laravel/ui
+// Generate basic scaffolding...
+php artisan ui bootstrap
+php artisan ui vue
+php artisan ui react
+
+// Generate login / registration scaffolding...
+php artisan ui bootstrap --auth
+php artisan ui vue --auth
+php artisan ui react --auth
+--------------------------------
+npm install
+npm run dev
+--------------------------------
+php artisan make:model Cart -m
+php artisan make:controller CartController
+------------------------------------------
+pour pagination:
+ <div style="text-align:center; margin:0px auto;"> ca est pour pagination
+                    {{ $products->links() }}
+                </div>
+<style>
+        svg {
+            height: 50px !important;
+        }
+    </style>
+------------------------------------------------
+code pour cart en utilisant methode POST:
+
+ <a href="cart.html" class="cart-btn"
+                                onclick="event.preventDefault();
+                                                     document.getElementById('add-product-to-cart').submit();"><!-- on a l apris de logout de master  quan tu clique au bouton il va appeler la forme-->
+
+
+<a href="cart.html" class="cart-btn" onclick="event.preventDefault();
+                                                     document.getElementById('add-product-to-cart').submit();"><!-- on a l apris de logout de master  quan tu clique au bouton il va appeler la forme-->
+<i class="fas fa-shopping-cart"></i> Add to Cart</a>
+<form id="add-product-to-cart" action="" method="POST" class="d-none">
+<input type="hidden" value="{{$item->id}}" name="id" id="id">
+ @csrf
+</form>
+------------------------------------------------
+pour product avec clique
+<div class="product-image">
+                                <a href="{{ route('prods', ['catid' => $item->id]) }}"><!-- ou tu peux faire  <a href="/product/{{ $item->id }}"> -->
+                                    <img src="{{ url($item->imagepath) }}" alt=""
+                                        style="max-height: 250px !important ; max-width: 250px !important;"></a>
+                            </div>
+-----------------------------------------------------
+Vs Code commands
+ctrl+d selectionner occurences
+ctrl+shift+l tous occurences
+shift +alt+cursor pour preciser le selectionnement
+--------------------------------------------------------
+Sessions:
+
+Session::put('date','18-08-2004');//pour ajouter dans la page ou tu veux la charger quand tu entre
+session()->forget('date');//pour supprimer
+{{ Session('date') }}//pour utiliser dans n importe quelle page
+------------------------------------------------------
+Pour creer un midlewar
+php artisan make:middleware Customauth
+et modifier bootstrap /app.php
+   ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->alias([
+            'customauth' => \App\Http\Middleware\Customauth::class,
+        ]);
+    })
+------------------------------------------------------------------------
+
+php artisan lang:publish //pour ajouter le dossier lang automatique
+----------------------------------------------------------------------------
+php artisan make:migration add_nameAR_to_products //pour ajouter une colonne a un table existant dans DB
