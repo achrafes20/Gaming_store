@@ -23,7 +23,7 @@
                                     <img src="{{ asset($item->imagepath) }}" alt=""
                                         style="max-height: 250px !important ; max-width: 250px !important;"></a>
                             </div>
-                            <h3>{{ session('locale') == 'en' ?  $item->name  :  $item->nameAr  }}</h3>
+                            <h3>{{ $item->name }}</h3>
                             <p> {{ $item->description }}</p>
                             <a href="/addproducttocart/{{ $item->id }}" class="cart-btn">
                                 <i class="fas fa-shopping-cart"></i> Add to Cart</a>

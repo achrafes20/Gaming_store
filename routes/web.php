@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\FirstController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
@@ -46,10 +47,24 @@ Route::post('/search', function(Request $request){
     return view('product',['products' =>$products]);
 });
 
+
+
+
+
+
 Route::get('/addproduct', [ProductController::class, 'AddProduct']);//middleware oblige qu il doit etre connecté  tu peux faire if (auth()->check())
 Route::post('/storeproduct', [ProductController::class, 'storeproduct']);
 Route::get('/removeproduct/{productid?}', [ProductController::class, 'RemoveProducts']);
 Route::get('/editproduct/{productid?}', [ProductController::class, 'EditProducts']);
+
+
+Route::get('/addcategory', [CategoryController::class, 'Addcategory']);//middleware oblige qu il doit etre connecté  tu peux faire if (auth()->check())
+Route::post('/storecategory', [CategoryController::class, 'storecategory']);
+Route::get('/removecategory/{categoryid?}', [CategoryController::class, 'Removecategory']);
+
+
+
+
 
 Auth::routes(); //pour cacher register car ne sert a rien Auth::routes(['register'=>false]);
 
@@ -81,7 +96,6 @@ return redirect('/cart');
 Route::get('/AddProductImages/{productid}', [ProductController::class, 'AddProductImages']);
 Route::get('/removeproductphoto/{productid}', [ProductController::class, 'removeproductphoto']);
 Route::post('/storeProductImage', [ProductController::class, 'storeProductImage']);
-
 
 Route::get('/single-product/{productid}', [ProductController::class, 'showProduct']);
 Route::get('/Completeorder', [CartController::class, 'Completeorder'])->middleware('auth');

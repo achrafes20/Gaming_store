@@ -15,8 +15,11 @@
         <div class="text-right">
             <a href="/addproduct" class="btn btn-primary mt-5 mb-5 w-25">
                 <i class="fas fa-plus"></i> Add Product</a>
+            <a href="/addproduct" class="btn btn-primary mt-5 mb-5 w-35">
+                <i class="fas fa-plus"></i> Add Category</a>
 
         </div>
+        
 
         <table id="myTable" class="display">
             <thead>
