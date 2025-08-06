@@ -73,3 +73,6 @@ et modifier bootstrap /app.php
 php artisan lang:publish //pour ajouter le dossier lang automatique
 ----------------------------------------------------------------------------
 php artisan make:migration add_nameAR_to_products //pour ajouter une colonne a un table existant dans DB
+---------------------------------------------------------------------------------
+get et delete :recevoir les données (http)
+post et put en voyé les données cryptées (http)

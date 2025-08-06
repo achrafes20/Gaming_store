@@ -3,6 +3,7 @@
 use App\Http\Controllers\FirstController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
@@ -96,3 +97,5 @@ Route::post('/lang', function (Request $request) {
 Route::get('/admin', function(){
     return "admin panel";
 })->middleware('checkRole:admin,salesman');
+
+Route::get('/test',[TestController::class,'test']);
