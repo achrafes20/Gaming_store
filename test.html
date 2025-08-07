@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonTech - Cybernetic Enhancements</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Cyberpunk Font -->
+    <link href="https://fonts.cdnfonts.com/css/cyberpunk" rel="stylesheet">
+    <style>
+        :root {
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-purple: #d300c5;
+            --dark-bg: #0d0221;
+            --darker-bg: #02000d;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            overflow-x: hidden;
+            background-image:
+                linear-gradient(rgba(5, 217, 232, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 217, 232, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .cyber-font {
+            font-family: 'Cyberpunk', sans-serif;
+        }
+
+        .neon-text-pink {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink);
+        }
+
+        .neon-text-blue {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
+        }
+
+        .neon-border-pink {
+            border: 1px solid var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink), inset 0 0 10px var(--neon-pink);
+        }
+
+        .neon-border-blue {
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 10px var(--neon-blue), inset 0 0 10px var(--neon-blue);
+        }
+
+        .product-card {
+            background-color: rgba(13, 2, 33, 0.8);
+            transition: all 0.3s ease;
+            border: 1px solid var(--neon-purple);
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 42, 109, 0.3);
+        }
+
+        .btn-cyber {
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+            color: white;
+            border: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-cyber:hover {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 42, 109, 0.4);
+        }
+
+        .glitch-effect {
+            position: relative;
+        }
+
+        .glitch-effect::before {
+            content: attr(data-text);
+            position: absolute;
+            left: -2px;
+            text-shadow: 2px 0 var(--neon-blue);
+            color: var(--neon-pink);
+            background: var(--dark-bg);
+            overflow: hidden;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch-effect 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-effect {
+            0% { clip: rect(30px, 9999px, 50px, 0) }
+            10% { clip: rect(10px, 9999px, 30px, 0) }
+            20% { clip: rect(50px, 9999px, 30px, 0) }
+            30% { clip: rect(30px, 9999px, 10px, 0) }
+            40% { clip: rect(40px, 9999px, 60px, 0) }
+            50% { clip: rect(50px, 9999px, 30px, 0) }
+            60% { clip: rect(20px, 9999px, 60px, 0) }
+            70% { clip: rect(40px, 9999px, 20px, 0) }
+            80% { clip: rect(60px, 9999px, 50px, 0) }
+            90% { clip: rect(30px, 9999px, 60px, 0) }
+            100% { clip: rect(70px, 9999px, 40px, 0) }
+        }
+
+        .scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 95%,
+                rgba(5, 217, 232, 0.1) 96%
+            );
+            background-size: 100% 5px;
+            z-index: 1000;
+            pointer-events: none;
+            animation: scanline 4s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0) }
+            100% { transform: translateY(100vh) }
+        }
+
+        .product-image {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .product-image img {
+            transition: transform 0.5s ease;
+        }
+
+        .product-image:hover img {
+            transform: scale(1.05);
+        }
+
+        .spec-item {
+            border-left: 3px solid var(--neon-blue);
+            padding-left: 15px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Scanline Effect -->
+    <div class="scanline"></div>
+
+    <!-- Header -->
+    <header class="container-fluid py-3 neon-border-blue mb-5">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="cyber-font neon-text-pink glitch-effect" data-text="NEON TECH">NEON TECH</h1>
+                <p class="neon-text-blue">YOUR BODY IS OBSOLETE</p>
+            </div>
+            <div class="col-md-6 text-end">
+                <button class="btn btn-cyber me-2">LOGIN</button>
+                <button class="btn btn-cyber">CART (3)</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <div class="row">
+            <!-- Product Images -->
+            <div class="col-lg-6">
+                <div class="product-image mb-4 neon-border-pink p-2">
+                    <img src="public/assets/img/1.jpg" class="img-fluid w-100" alt="Quantum Optics" id="mainImage">
+                </div>
+                <div class="row">
+                    <div class="col-3 thumb">
+                        <img src="public/assets/img/a.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 1">
+                    </div>
+                    <div class="col-3 thumb">
+                        <img src="public/assets/img/abt.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 2">
+                    </div>
+                    <div class="col-3 thumb">
+                        <img src="public/assets/img/breadcrumb-bg.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 3">
+                    </div>
+                    <div class="col-3 thumb">
+                        <img src="public/assets/img/hero-bg-2.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 4">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="col-lg-6">
+                <h2 class="cyber-font neon-text-pink mb-3">QUANTUM OPTICS MK.IV</h2>
+                <p class="text-muted">PRODUCT ID: QO-247-9X</p>
+
+                <div class="d-flex align-items-center mb-4">
+                    <div class="me-3">
+                        <span class="neon-text-blue fs-4">$4,299</span>
+                        <span class="text-decoration-line-through text-muted ms-2">$5,999</span>
+                    </div>
+                    <span class="badge bg-danger">-30%</span>
+                </div>
+
+                <div class="mb-4">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="neon-text-blue me-2">★★★★★</span>
+                        <span>(47 reviews)</span>
+                    </div>
+                    <div class="progress neon-border-blue" style="height: 5px;">
+                        <div class="progress-bar bg-info" role="progressbar" style="width: 92%"></div>
+                    </div>
+                </div>
+
+                <p class="mb-4">Upgrade your vision with the latest in cybernetic enhancement technology. Quantum Optics MK.IV provides 20/0.5 vision, night vision, thermal imaging, and augmented reality overlay in a sleek, biocompatible package.</p>
+
+                <div class="mb-4">
+                    <h5 class="neon-text-blue mb-3">FEATURES:</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">✔ 8K resolution with 240Hz refresh</li>
+                        <li class="mb-2">✔ Built-in HUD with AR capabilities</li>
+                        <li class="mb-2">✔ Night vision & thermal imaging modes</li>
+                        <li class="mb-2">✔ Neural link compatibility</li>
+                        <li class="mb-2">✔ 3-year warranty</li>
+                    </ul>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-6 mb-3 mb-md-0">
+                        <label for="colorSelect" class="form-label neon-text-blue">COLOR:</label>
+                        <select class="form-select bg-dark text-white neon-border-blue" id="colorSelect">
+                            <option>Neon Pink</option>
+                            <option>Cyber Blue</option>
+                            <option>Matrix Green</option>
+                            <option>Stealth Black</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="qtySelect" class="form-label neon-text-blue">QUANTITY:</label>
+                        <div class="input-group">
+                            <button class="btn btn-outline-info" type="button" id="minusBtn">-</button>
+                            <input type="text" class="form-control bg-dark text-white text-center neon-border-blue" value="1" id="qtyInput">
+                            <button class="btn btn-outline-info" type="button" id="plusBtn">+</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-3">
+                    <button class="btn btn-cyber btn-lg py-3">ADD TO CART</button>
+                    <button class="btn btn-outline-info btn-lg py-3">BUY NOW</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <ul class="nav nav-tabs border-bottom-0" id="productTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active neon-text-blue" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab">TECH SPECS</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link neon-text-blue" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">USER REVIEWS</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link neon-text-blue" id="faq-tab" data-bs-toggle="tab" data-bs-target="#faq" type="button" role="tab">FAQ</button>
+                    </li>
+                </ul>
+
+                <div class="tab-content product-card p-4" id="productTabsContent">
+                    <div class="tab-pane fade show active" id="specs" role="tabpanel">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="spec-item">
+                                    <h5 class="neon-text-pink">DISPLAY</h5>
+                                    <p>8K OLED (7680 × 4320) @ 240Hz</p>
+                                </div>
+                                <div class="spec-item">
+                                    <h5 class="neon-text-pink">FOV</h5>
+                                    <p>180° horizontal, 150° vertical</p>
+                                </div>
+                                <div class="spec-item">
+                                    <h5 class="neon-text-pink">LOW LIGHT</h5>
+                                    <p>Starlight vision (0.0001 lux)</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="spec-item">
+                                    <h5 class="neon-text-pink">CONNECTIVITY</h5>
+                                    <p>NeuralLink 4.0, WiFi 7, Bluetooth 6</p>
+                                </div>
+                                <div class="spec-item">
+                                    <h5 class="neon-text-pink">POWER</h5>
+                                    <p>Biometric induction, 72hr standby</p>
+                                </div>
+                                <div class="spec-item">
+                                    <h5 class="neon-text-pink">DIMENSIONS</h5>
+                                    <p>24mm × 18mm × 8mm, 12g</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="neon-text-pink mb-0">USER REVIEWS</h5>
+                                <button class="btn btn-sm btn-cyber">WRITE REVIEW</button>
+                            </div>
+
+                            <div class="product-card p-3 mb-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="neon-text-blue">NetRunner47</span>
+                                    <span>★★★★★</span>
+                                </div>
+                                <p>"These optics changed everything. The AR overlay integrates seamlessly with my neural implant. Worth every credit."</p>
+                                <small class="text-muted">Posted: 12.04.2077</small>
+                            </div>
+
+                            <div class="product-card p-3">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <span class="neon-text-blue">Johnny_Silverhand</span>
+                                    <span>★★★★☆</span>
+                                </div>
+                                <p>"Great optics, but the installation process was... intense. Make sure you go to a certified ripperdoc."</p>
+                                <small class="text-muted">Posted: 28.03.2077</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="faq" role="tabpanel">
+                        <div class="accordion" id="faqAccordion">
+                            <div class="accordion-item product-card border-0 mb-3">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button bg-dark text-white neon-text-blue" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                                        Is this compatible with my existing neural implant?
+                                    </button>
+                                </h2>
+                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Quantum Optics MK.IV is compatible with all NeuralLink 3.0+ systems. For older models, a firmware update may be required.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item product-card border-0 mb-3">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white neon-text-blue" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                                        What's the installation process like?
+                                    </button>
+                                </h2>
+                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Installation must be performed by a certified cyberware technician. The procedure takes approximately 2 hours under local anesthesia.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="accordion-item product-card border-0">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed bg-dark text-white neon-text-blue" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                                        Can I return the product if I'm not satisfied?
+                                    </button>
+                                </h2>
+                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                                    <div class="accordion-body">
+                                        Due to the nature of cybernetic enhancements, returns are only accepted within 7 days if the product is unopened and unused.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Products -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3 class="cyber-font neon-text-pink mb-4">YOU MAY ALSO LIKE</h3>
+
+                <div class="row">
+                    <div class="col-md-3 mb-4">
+                        <div class="product-card p-3 h-100">
+                            <img src="https://via.placeholder.com/300x200/0d0221/d300c5?text=NEURAL+LINK" class="img-fluid mb-3">
+                            <h5 class="neon-text-blue">NEURAL LINK PRO</h5>
+                            <p class="text-muted">$3,299</p>
+                            <button class="btn btn-cyber w-100">VIEW</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-4">
+                        <div class="product-card p-3 h-100">
+                            <img src="https://via.placeholder.com/300x200/0d0221/05d9e8?text=SYNTH+SKIN" class="img-fluid mb-3">
+                            <h5 class="neon-text-blue">SYNTH SKIN MK.II</h5>
+                            <p class="text-muted">$2,799</p>
+                            <button class="btn btn-cyber w-100">VIEW</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-4">
+                        <div class="product-card p-3 h-100">
+                            <img src="https://via.placeholder.com/300x200/0d0221/ff2a6d?text=NANO+MUSCLE" class="img-fluid mb-3">
+                            <h5 class="neon-text-blue">NANO MUSCLE</h5>
+                            <p class="text-muted">$5,499</p>
+                            <button class="btn btn-cyber w-100">VIEW</button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mb-4">
+                        <div class="product-card p-3 h-100">
+                            <img src="https://via.placeholder.com/300x200/0d0221/ffffff?text=VOICE+MOD" class="img-fluid mb-3">
+                            <h5 class="neon-text-blue">VOICE MODULATOR</h5>
+                            <p class="text-muted">$1,899</p>
+                            <button class="btn btn-cyber w-100">VIEW</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="container-fluid mt-5 py-4 neon-border-blue">
+        <div class="row">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="cyber-font neon-text-pink mb-3">NEON TECH</h5>
+                <p>Upgrading humanity since 2065.</p>
+                <p>Night City, California Free State</p>
+            </div>
+            <div class="col-md-4 mb-4 mb-md-0">
+                <h5 class="neon-text-blue mb-3">QUICK LINKS</h5>
+                <ul class="list-unstyled">
+                    <li class="mb-2"><a href="#" class="text-decoration-none neon-text-blue">About Us</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none neon-text-blue">Shipping Policy</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none neon-text-blue">Returns</a></li>
+                    <li class="mb-2"><a href="#" class="text-decoration-none neon-text-blue">Contact</a></li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h5 class="neon-text-blue mb-3">NEWSLETTER</h5>
+                <p>Subscribe for the latest cyberware drops.</p>
+                <div class="input-group mb-3">
+                    <input type="email" class="form-control bg-dark text-white neon-border-blue" placeholder="Your email">
+                    <button class="btn btn-cyber" type="button">SUBSCRIBE</button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <p class="text-muted">© 2077 NEON TECH. All rights reserved. A subsidiary of Arasaka Corporation.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JS -->
+    <script>
+        // Thumbnail image click handler
+        document.querySelectorAll('.thumb-img').forEach(img => {
+            img.addEventListener('click', function() {
+                const mainSrc = this.src.replace('150x100', '600x400');
+                document.getElementById('mainImage').src = mainSrc;
+
+                // Remove active class from all thumbs
+                document.querySelectorAll('.thumb-img').forEach(i => {
+                    i.classList.remove('neon-border-pink');
+                    i.classList.add('neon-border-blue');
+                });
+
+                // Add active class to clicked thumb
+                this.classList.remove('neon-border-blue');
+                this.classList.add('neon-border-pink');
+            });
+        });
+
+        // Quantity buttons
+        document.getElementById('plusBtn').addEventListener('click', function() {
+            const qtyInput = document.getElementById('qtyInput');
+            qtyInput.value = parseInt(qtyInput.value) + 1;
+        });
+
+        document.getElementById('minusBtn').addEventListener('click', function() {
+            const qtyInput = document.getElementById('qtyInput');
+            if (parseInt(qtyInput.value) > 1) {
+                qtyInput.value = parseInt(qtyInput.value) - 1;
+            }
+        });
+
+        // Glitch effect on hover for cyberpunk elements
+        document.querySelectorAll('.cyber-font, .neon-text-pink, .neon-text-blue').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                this.classList.add('glitch-effect');
+            });
+
+            el.addEventListener('mouseleave', function() {
+                this.classList.remove('glitch-effect');
+            });
+        });
+    </script>
+</body>
+</html>

@@ -732,7 +732,7 @@
         });
 
         // Floating animation for slide images
-        gsap.to('.cyber-hologram', {
+        gsap.to('.cybaer-hologram', {
             y: 20,
             duration: 3,
             repeat: -1,

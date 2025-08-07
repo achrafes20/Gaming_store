@@ -67,7 +67,7 @@
             <nav class="cyber-nav">
                 <ul class="cyber-nav-list">
                     <li class="cyber-nav-item">
-                        <a href="/" class="cyber-nav-link active">
+                        <a href="/" class="cyber-nav-link">
                             <span class="cyber-nav-icon"><i class="fas fa-home"></i></span>
                             <span class="cyber-nav-text">HOME</span>
                         </a>
@@ -279,7 +279,7 @@
     </button>
 
     <!-- Scripts -->
-    <script src="{{ asset('assets/js/jquery-3.6.0.min.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ asset('assets/js/cyber-main.js') }}"></script>
 

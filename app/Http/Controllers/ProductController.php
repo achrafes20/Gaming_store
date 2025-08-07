@@ -168,7 +168,7 @@ class ProductController extends Controller
         $product = Product::with('Category', 'ProductPhotos')->find($productid); //tu utilise with quand tu modifie models
         $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $productid)
             ->inRandomOrder()
-            ->limit(3)
+            ->limit(4)
             ->get();
         return view('showProduct', ['product' => $product, 'relatedProducts' => $relatedProducts]);
     }

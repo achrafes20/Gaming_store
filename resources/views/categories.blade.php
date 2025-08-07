@@ -23,10 +23,10 @@
         </div>
 
         <!-- Cyber Products Grid -->
-        <div class="cyber-products-grid">
+        <div class="cyber-products-grid" >
             @foreach ($products as $item)
             <div class="cyber-product-card _{{$item->category_id}}" data-aos="fade-up">
-                <div class="cyber-product-badge">NEW</div>
+
 
                 <div class="cyber-product-image">
                     <a href="/single-product/{{$item->id}}">
@@ -73,16 +73,8 @@
             @endforeach
         </div>
 
-        <!-- Cyber Pagination -->
-        <div class="cyber-pagination">
-            <ul>
-                <li><a href="#" class="cyber-pagination-prev"><i class="fas fa-chevron-left"></i></a></li>
-                <li><a href="#">1</a></li>
-                <li><a href="#" class="cyber-pagination-active">2</a></li>
-                <li><a href="#">3</a></li>
-                <li><a href="#" class="cyber-pagination-next"><i class="fas fa-chevron-right"></i></a></li>
-            </ul>
-        </div>
+
+
     </div>
 </div>
 
@@ -179,7 +171,6 @@
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
         gap: 30px;
-        margin-bottom: 60px;
     }
 
     .cyber-product-card {
