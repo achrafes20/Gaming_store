@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Product;
 use App\Models\Categories;
 use App\Models\Cart;
+use App\Http\Controllers\CouponController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -113,3 +114,7 @@ Route::get('/admin', function(){
 })->middleware('checkRole:admin,salesman');
 
 Route::get('/test',[TestController::class,'test']);
+
+
+
+Route::post('/coupon/apply', [CouponController::class, 'apply'])->name('coupon.apply');
