@@ -96,7 +96,7 @@
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
-                    
+
                 </div>
 
 
@@ -282,7 +282,7 @@
 
     .cyber-form-input {
         width: 100%;
-        padding: 15px 15px 15px 45px;
+        padding: 15px 15px 15px 15px;
         background: rgba(10, 10, 26, 0.7);
         border: 1px solid rgba(0, 240, 255, 0.2);
         border-radius: 8px;

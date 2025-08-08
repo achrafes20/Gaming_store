@@ -76,3 +76,9 @@ php artisan make:migration add_nameAR_to_products //pour ajouter une colonne a u
 ---------------------------------------------------------------------------------
 get et delete :recevoir les données (http)
 post et put en voyé les données cryptées (http)
+---------------------------------------------------------------------------------
+give a page using html css js et bootstrap  products for a ecommerce website using style  cyberpunk
+
+pour meme principe et structure de ca
+
+modifier ca

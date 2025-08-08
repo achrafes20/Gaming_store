@@ -175,15 +175,15 @@
             <div class="col-lg-6">
                 @if($product->ProductPhotos->count() > 0)
                 <div class="product-image mb-4 neon-border-pink p-2">
-                    <img src="{{ asset($product->imagepath) }}" class="img-fluid w-100" alt="{{ $product->name }}" id="mainImage">
+                    <img style="height:500px;" src="{{ asset($product->imagepath) }}" class="img-fluid w-100" alt="{{ $product->name }}" id="mainImage">
                 </div>
                 <div class="row">
-                    <div class="col-3 thumb">
-            <img src="{{ asset($product->imagepath) }}" class="img-fluid thumb-img neon-border-blue p-1" alt="{{ $product->name }} variation">
+                    <div class="col-2 thumb">
+            <img style="width: 80px;height:80px;" src="{{ asset($product->imagepath) }}" class="img-fluid thumb-img neon-border-blue p-1" alt="{{ $product->name }} variation">
         </div>
                     @foreach ($product->ProductPhotos as $item)
-                    <div class="col-3 thumb">
-                        <img src="{{ asset($item->imagepath) }}" class="img-fluid thumb-img neon-border-blue p-1" alt="{{ $product->name }} variation">
+                    <div class="col-2 thumb">
+                        <img style="width: 80px;height:80px;" src="{{ asset($item->imagepath) }}" class="img-fluid thumb-img neon-border-blue p-1" alt="{{ $product->name }} variation">
                     </div>
                     @endforeach
                 </div>
@@ -201,7 +201,7 @@
 
                 <div class="d-flex align-items-center mb-4">
                     <div class="me-3">
-                        <span class="neon-text-blue fs-4">${{ number_format($product->price, 2) }}</span>
+                        <span class="neon-text-blue fs-4">{{ number_format($product->price, 2) }} Dh</span>
                         @if($product->price < $product->old_price)
                         <span class="text-decoration-line-through text-muted ms-2">${{ number_format($product->old_price, 2) }}</span>
                         @endif
@@ -231,7 +231,7 @@
                             <input type="text" class="form-control bg-dark text-white text-center neon-border-blue" value="1" id="qtyInput" max="{{ $product->quantity }}">
                             <button class="btn btn-outline-info" type="button" id="plusBtn">+</button>
                         </div>
-                        <small class="text-muted">{{ $product->quantity }} available</small>
+                        <small style="color: grey">{{ $product->quantity }} available</small>
                     </div>
                 </div>
 
@@ -245,8 +245,7 @@
                     <ul class="list-unstyled">
                         <li class="mb-2"><span class="neon-text-pink">Model:</span> {{ $product->name }}</li>
                         <li class="mb-2"><span class="neon-text-pink">Category:</span> {{ $product->Category->name }}</li>
-                        <li class="mb-2"><span class="neon-text-pink">Dimensions:</span> Standard cybernetic size</li>
-                        <li class="mb-2"><span class="neon-text-pink">Weight:</span> Lightweight composite</li>
+
                         <li class="mb-2"><span class="neon-text-pink">Warranty:</span> 2 Years</li>
                     </ul>
                 </div>

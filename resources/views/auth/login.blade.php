@@ -31,7 +31,7 @@
                 <!-- Email Field -->
                 <div class="cyber-form-group">
                     <div class="cyber-input-container">
-                        <input id="email" type="email" class="cyber-form-input @error('email') is-invalid @enderror"
+                        <input  id="email" type="email" class="cyber-form-input @error('email') is-invalid @enderror"
                                name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
                         <label for="email" class="cyber-input-label">
                             <i class="fas fa-envelope"></i> Email Address
@@ -256,7 +256,7 @@
 
     .cyber-form-input {
         width: 100%;
-        padding: 15px 15px 15px 45px;
+        padding: 15px 15px 15px 15px;
         background: rgba(10, 10, 26, 0.7);
         border: 1px solid rgba(0, 240, 255, 0.2);
         border-radius: 8px;

@@ -29,12 +29,12 @@
                     <input type="hidden" name="product_id" id="product_id" value="{{ $product->id }}">
 
                     <div class="cyber-file-upload">
-                        <label for="photo" class="cyber-upload-label">
+                        <label for="photos" class="cyber-upload-label">
                             <div class="cyber-upload-icon">
                                 <i class="fas fa-cloud-upload-alt"></i>
                             </div>
-                            <div class="cyber-upload-text">SELECT IMAGE FILE</div>
-                            <input type="file" name="photo" id="photo" class="cyber-file-input">
+                            <div class="cyber-upload-text">SELECT IMAGE FILES</div>
+                            <input type="file" name="photos[]" id="photos" class="cyber-file-input" multiple>
                         </label>
                         <div class="cyber-upload-preview" id="cyber-upload-preview"></div>
                     </div>
@@ -48,7 +48,7 @@
                     </div>
 
                     <span class="cyber-error">
-                        @error('photo')
+                        @error('photos.*')
                             {{ $message }}
                         @enderror
                     </span>
@@ -270,15 +270,18 @@
 
         .cyber-upload-preview {
             margin-top: 20px;
-            display: none;
-            text-align: center;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
 
         .cyber-upload-preview img {
-            max-width: 200px;
-            max-height: 200px;
+            max-width: 100px;
+            max-height: 100px;
             border-radius: 5px;
             border: 2px solid var(--cyber-primary);
+            object-fit: cover;
         }
 
         .cyber-upload-submit {
@@ -609,21 +612,35 @@
                 once: true
             });
 
-            // File input preview
-            const fileInput = document.getElementById('photo');
+            // File input preview for multiple files
+            const fileInput = document.getElementById('photos');
             const filePreview = document.getElementById('cyber-upload-preview');
 
             if (fileInput && filePreview) {
                 fileInput.addEventListener('change', function() {
-                    if (this.files && this.files[0]) {
-                        const reader = new FileReader();
+                    filePreview.innerHTML = ''; // Clear previous previews
 
-                        reader.onload = function(e) {
-                            filePreview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
-                            filePreview.style.display = 'block';
+                    if (this.files && this.files.length > 0) {
+                        for (let i = 0; i < this.files.length; i++) {
+                            const file = this.files[i];
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+
+                                reader.onload = function(e) {
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.alt = 'Preview ' + (i + 1);
+                                    img.style.maxWidth = '100px';
+                                    img.style.maxHeight = '100px';
+                                    img.style.margin = '5px';
+                                    img.style.borderRadius = '5px';
+                                    img.style.border = '2px solid var(--cyber-primary)';
+                                    filePreview.appendChild(img);
+                                }
+
+                                reader.readAsDataURL(file);
+                            }
                         }
-
-                        reader.readAsDataURL(this.files[0]);
                     }
                 });
             }

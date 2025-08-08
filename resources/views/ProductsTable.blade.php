@@ -66,8 +66,15 @@
                                 </td>
                                 <td>
                                     <div class="cyber-product-img">
+                                         <a href="/single-product/{{$item->id}}">
                                         <img src='{{ asset($item->imagepath) }}' alt="{{ $item->name }}">
-                                        <div class="cyber-img-overlay"></div>
+
+                                        <div class="product-overlay">
+                                <div class="quick-view">
+                                    <i class="fas fa-eye"></i> QUICK VIEW
+                                </div>
+                            </div>
+                        </a>
                                     </div>
                                 </td>
                                 <td>
@@ -131,6 +138,28 @@
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+        .product-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+        .quick-view {
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            padding: 8px 15px;
+            border-radius: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.8rem;
         }
 
         .cyber-hero-overlay {

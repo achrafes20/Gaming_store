@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text("description");
             $table->text("imagepath");
             $table->integer("quantity");
-            $table->decimal("price",8,2);   //8 chiffre et 2 nombre apres la virgule  1234567.89  (trop long 9)
+            $table->decimal("price");   //8 chiffre et 2 nombre apres la virgule  1234567.89  (trop long 9)
             $table->foreignId("category_id")->constrained('categories')->onDelete("cascade"); //si le category_id est supprimé, le produit est supprimé
             /*
             Autre methode

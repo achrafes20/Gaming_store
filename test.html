@@ -3,16 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeonTech - Cybernetic Enhancements</title>
+    <title>NeonGrid - Product Reviews</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Cyberpunk Font -->
     <link href="https://fonts.cdnfonts.com/css/cyberpunk" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
             --neon-pink: #ff2a6d;
             --neon-blue: #05d9e8;
             --neon-purple: #d300c5;
+            --neon-green: #00ff9d;
             --dark-bg: #0d0221;
             --darker-bg: #02000d;
         }
@@ -42,6 +45,11 @@
             text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
         }
 
+        .neon-text-green {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green);
+        }
+
         .neon-border-pink {
             border: 1px solid var(--neon-pink);
             box-shadow: 0 0 10px var(--neon-pink), inset 0 0 10px var(--neon-pink);
@@ -56,6 +64,7 @@
             background-color: rgba(13, 2, 33, 0.8);
             transition: all 0.3s ease;
             border: 1px solid var(--neon-purple);
+            height: 100%;
         }
 
         .product-card:hover {
@@ -130,23 +139,113 @@
             100% { transform: translateY(100vh) }
         }
 
+        .review-card {
+            background-color: rgba(13, 2, 33, 0.7);
+            border: 1px solid var(--neon-blue);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .review-card:hover {
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
+        }
+
+        .rating-stars {
+            color: var(--neon-green);
+            font-size: 1.2rem;
+        }
+
+        .review-date {
+            color: #666;
+            font-size: 0.8rem;
+        }
+
+        .review-author {
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+
+        .verified-buyer {
+            color: var(--neon-green);
+            font-size: 0.8rem;
+            margin-left: 5px;
+        }
+
+        .form-control {
+            background-color: rgba(13, 2, 33, 0.7);
+            border: 1px solid var(--neon-blue);
+            color: white;
+        }
+
+        .form-control:focus {
+            background-color: rgba(13, 2, 33, 0.9);
+            border-color: var(--neon-pink);
+            box-shadow: 0 0 10px var(--neon-pink);
+            color: white;
+        }
+
+        .rating-input {
+            display: none;
+        }
+
+        .rating-label {
+            cursor: pointer;
+            font-size: 2rem;
+            color: #666;
+            transition: color 0.2s;
+        }
+
+        .rating-input:checked ~ .rating-label {
+            color: var(--neon-green);
+        }
+
+        .rating-label:hover,
+        .rating-label:hover ~ .rating-label {
+            color: var(--neon-green);
+        }
+
+        .progress-bar {
+            background-color: var(--neon-green);
+        }
+
+        .progress {
+            background-color: rgba(5, 217, 232, 0.1);
+            height: 10px;
+        }
+
+        .nav-tabs .nav-link {
+            color: var(--neon-blue);
+            border: none;
+        }
+
+        .nav-tabs .nav-link.active {
+            color: var(--neon-pink);
+            background: transparent;
+            border-bottom: 2px solid var(--neon-pink);
+        }
+
         .product-image {
-            position: relative;
-            overflow: hidden;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .product-image img {
-            transition: transform 0.5s ease;
+            max-height: 100%;
+            width: auto;
         }
 
-        .product-image:hover img {
-            transform: scale(1.05);
-        }
-
-        .spec-item {
-            border-left: 3px solid var(--neon-blue);
-            padding-left: 15px;
-            margin-bottom: 15px;
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: var(--neon-purple);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
         }
     </style>
 </head>
@@ -158,8 +257,8 @@
     <header class="container-fluid py-3 neon-border-blue mb-5">
         <div class="row">
             <div class="col-md-6">
-                <h1 class="cyber-font neon-text-pink glitch-effect" data-text="NEON TECH">NEON TECH</h1>
-                <p class="neon-text-blue">YOUR BODY IS OBSOLETE</p>
+                <h1 class="cyber-font neon-text-pink glitch-effect" data-text="NEONGRID">NEONGRID</h1>
+                <p class="neon-text-blue">USER REVIEWS DATABASE</p>
             </div>
             <div class="col-md-6 text-end">
                 <button class="btn btn-cyber me-2">LOGIN</button>
@@ -170,254 +269,240 @@
 
     <!-- Main Content -->
     <div class="container">
-        <div class="row">
-            <!-- Product Images -->
-            <div class="col-lg-6">
-                <div class="product-image mb-4 neon-border-pink p-2">
-                    <img src="public/assets/img/1.jpg" class="img-fluid w-100" alt="Quantum Optics" id="mainImage">
-                </div>
-                <div class="row">
-                    <div class="col-3 thumb">
-                        <img src="public/assets/img/a.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 1">
-                    </div>
-                    <div class="col-3 thumb">
-                        <img src="public/assets/img/abt.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 2">
-                    </div>
-                    <div class="col-3 thumb">
-                        <img src="public/assets/img/breadcrumb-bg.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 3">
-                    </div>
-                    <div class="col-3 thumb">
-                        <img src="public/assets/img/hero-bg-2.jpg" class="img-fluid thumb-img neon-border-blue p-1" alt="Thumb 4">
-                    </div>
-                </div>
-            </div>
-
+        <div class="row mb-5">
             <!-- Product Info -->
-            <div class="col-lg-6">
-                <h2 class="cyber-font neon-text-pink mb-3">QUANTUM OPTICS MK.IV</h2>
-                <p class="text-muted">PRODUCT ID: QO-247-9X</p>
-
-                <div class="d-flex align-items-center mb-4">
-                    <div class="me-3">
-                        <span class="neon-text-blue fs-4">$4,299</span>
-                        <span class="text-decoration-line-through text-muted ms-2">$5,999</span>
+            <div class="col-md-5">
+                <div class="product-card p-4 h-100">
+                    <div class="product-image mb-4">
+                        <img src="https://via.placeholder.com/400x300/0d0221/ff2a6d?text=QUANTUM+OPTICS" class="img-fluid" alt="Quantum Optics">
                     </div>
-                    <span class="badge bg-danger">-30%</span>
+                    <h2 class="cyber-font neon-text-pink mb-3">QUANTUM OPTICS MK.IV</h2>
+                    <div class="d-flex align-items-center mb-3">
+                        <div class="rating-stars me-3">★★★★★</div>
+                        <span>4.8 (47 reviews)</span>
+                    </div>
+                    <p class="mb-4">Upgrade your vision with the latest in cybernetic enhancement technology. Quantum Optics MK.IV provides 20/0.5 vision, night vision, thermal imaging, and augmented reality overlay.</p>
+                    <button class="btn btn-cyber w-100">BUY NOW</button>
                 </div>
+            </div>
 
-                <div class="mb-4">
-                    <div class="d-flex align-items-center mb-2">
-                        <span class="neon-text-blue me-2">★★★★★</span>
-                        <span>(47 reviews)</span>
-                    </div>
-                    <div class="progress neon-border-blue" style="height: 5px;">
-                        <div class="progress-bar bg-info" role="progressbar" style="width: 92%"></div>
-                    </div>
-                </div>
+            <!-- Reviews Summary -->
+            <div class="col-md-7">
+                <div class="product-card p-4 h-100">
+                    <h3 class="cyber-font neon-text-pink mb-4">USER REVIEWS</h3>
 
-                <p class="mb-4">Upgrade your vision with the latest in cybernetic enhancement technology. Quantum Optics MK.IV provides 20/0.5 vision, night vision, thermal imaging, and augmented reality overlay in a sleek, biocompatible package.</p>
-
-                <div class="mb-4">
-                    <h5 class="neon-text-blue mb-3">FEATURES:</h5>
-                    <ul class="list-unstyled">
-                        <li class="mb-2">✔ 8K resolution with 240Hz refresh</li>
-                        <li class="mb-2">✔ Built-in HUD with AR capabilities</li>
-                        <li class="mb-2">✔ Night vision & thermal imaging modes</li>
-                        <li class="mb-2">✔ Neural link compatibility</li>
-                        <li class="mb-2">✔ 3-year warranty</li>
-                    </ul>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-6 mb-3 mb-md-0">
-                        <label for="colorSelect" class="form-label neon-text-blue">COLOR:</label>
-                        <select class="form-select bg-dark text-white neon-border-blue" id="colorSelect">
-                            <option>Neon Pink</option>
-                            <option>Cyber Blue</option>
-                            <option>Matrix Green</option>
-                            <option>Stealth Black</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label for="qtySelect" class="form-label neon-text-blue">QUANTITY:</label>
-                        <div class="input-group">
-                            <button class="btn btn-outline-info" type="button" id="minusBtn">-</button>
-                            <input type="text" class="form-control bg-dark text-white text-center neon-border-blue" value="1" id="qtyInput">
-                            <button class="btn btn-outline-info" type="button" id="plusBtn">+</button>
+                    <!-- Rating Summary -->
+                    <div class="row mb-4">
+                        <div class="col-md-4 text-center mb-3 mb-md-0">
+                            <div class="display-4 neon-text-green">4.8</div>
+                            <div class="rating-stars mb-2">★★★★★</div>
+                            <div>47 reviews</div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">5★</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 10px;">
+                                    <div class="progress-bar" style="width: 85%;"></div>
+                                </div>
+                                <span>40</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">4★</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 10px;">
+                                    <div class="progress-bar" style="width: 10%;"></div>
+                                </div>
+                                <span>5</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">3★</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 10px;">
+                                    <div class="progress-bar" style="width: 2%;"></div>
+                                </div>
+                                <span>1</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="me-2">2★</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 10px;">
+                                    <div class="progress-bar" style="width: 1%;"></div>
+                                </div>
+                                <span>1</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <span class="me-2">1★</span>
+                                <div class="progress flex-grow-1 mx-2" style="height: 10px;">
+                                    <div class="progress-bar" style="width: 0%;"></div>
+                                </div>
+                                <span>0</span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="d-grid gap-3">
-                    <button class="btn btn-cyber btn-lg py-3">ADD TO CART</button>
-                    <button class="btn btn-outline-info btn-lg py-3">BUY NOW</button>
+                    <!-- Review Filters -->
+                    <div class="mb-4">
+                        <ul class="nav nav-tabs">
+                            <li class="nav-item">
+                                <a class="nav-link active" data-bs-toggle="tab" href="#all-reviews">ALL</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#positive-reviews">POSITIVE</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#critical-reviews">CRITICAL</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-bs-toggle="tab" href="#with-media">WITH MEDIA</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Add Review Button -->
+                    <button class="btn btn-cyber w-100 mb-4" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                        <i class="fas fa-plus-circle me-2"></i>ADD YOUR REVIEW
+                    </button>
+
+                    <!-- Reviews List -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="all-reviews">
+                            <!-- Review 1 -->
+                            <div class="review-card p-4 mb-3">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar me-3 neon-text-pink">NT</div>
+                                        <div>
+                                            <span class="review-author">NetRunner47</span>
+                                            <span class="verified-buyer"><i class="fas fa-check-circle"></i> Verified Buyer</span>
+                                        </div>
+                                    </div>
+                                    <div class="rating-stars" title="5 stars">★★★★★</div>
+                                </div>
+                                <h5 class="neon-text-blue">Game changing optics!</h5>
+                                <p class="mb-3">These optics changed everything. The AR overlay integrates seamlessly with my neural implant. Night vision is crystal clear even in complete darkness. Worth every credit.</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="review-date">Posted: 12.04.2077</span>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-info me-2"><i class="fas fa-thumbs-up"></i> 24</button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-thumbs-down"></i> 2</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Review 2 -->
+                            <div class="review-card p-4 mb-3">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar me-3 neon-text-green">JS</div>
+                                        <div>
+                                            <span class="review-author">Johnny_Silverhand</span>
+                                            <span class="verified-buyer"><i class="fas fa-check-circle"></i> Verified Buyer</span>
+                                        </div>
+                                    </div>
+                                    <div class="rating-stars" title="4 stars">★★★★☆</div>
+                                </div>
+                                <h5 class="neon-text-blue">Great but installation is intense</h5>
+                                <p class="mb-3">The optics themselves are fantastic - crystal clear with great features. But the installation process was... intense. Make sure you go to a certified ripperdoc, not some back-alley chop shop.</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="review-date">Posted: 28.03.2077</span>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-info me-2"><i class="fas fa-thumbs-up"></i> 18</button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-thumbs-down"></i> 3</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Review 3 -->
+                            <div class="review-card p-4">
+                                <div class="d-flex justify-content-between mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar me-3 neon-text-blue">CK</div>
+                                        <div>
+                                            <span class="review-author">CorpoKid</span>
+                                            <span class="verified-buyer"><i class="fas fa-check-circle"></i> Verified Buyer</span>
+                                        </div>
+                                    </div>
+                                    <div class="rating-stars" title="5 stars">★★★★★</div>
+                                </div>
+                                <h5 class="neon-text-blue">Perfect for corporate espionage</h5>
+                                <p class="mb-3">The thermal imaging has helped me spot hidden security systems multiple times. The zoom function is incredible - I can read documents on a desk from across the street. Only complaint is the battery life could be better when using all features simultaneously.</p>
+                                <div class="d-flex justify-content-between">
+                                    <span class="review-date">Posted: 15.03.2077</span>
+                                    <div>
+                                        <button class="btn btn-sm btn-outline-info me-2"><i class="fas fa-thumbs-up"></i> 32</button>
+                                        <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-thumbs-down"></i> 5</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Other tabs would go here -->
+                        <div class="tab-pane fade" id="positive-reviews">
+                            <!-- Positive reviews content -->
+                        </div>
+                        <div class="tab-pane fade" id="critical-reviews">
+                            <!-- Critical reviews content -->
+                        </div>
+                        <div class="tab-pane fade" id="with-media">
+                            <!-- Reviews with media content -->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Product Details -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <ul class="nav nav-tabs border-bottom-0" id="productTabs" role="tablist">
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link active neon-text-blue" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab">TECH SPECS</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link neon-text-blue" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">USER REVIEWS</button>
-                    </li>
-                    <li class="nav-item" role="presentation">
-                        <button class="nav-link neon-text-blue" id="faq-tab" data-bs-toggle="tab" data-bs-target="#faq" type="button" role="tab">FAQ</button>
-                    </li>
-                </ul>
-
-                <div class="tab-content product-card p-4" id="productTabsContent">
-                    <div class="tab-pane fade show active" id="specs" role="tabpanel">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="spec-item">
-                                    <h5 class="neon-text-pink">DISPLAY</h5>
-                                    <p>8K OLED (7680 × 4320) @ 240Hz</p>
-                                </div>
-                                <div class="spec-item">
-                                    <h5 class="neon-text-pink">FOV</h5>
-                                    <p>180° horizontal, 150° vertical</p>
-                                </div>
-                                <div class="spec-item">
-                                    <h5 class="neon-text-pink">LOW LIGHT</h5>
-                                    <p>Starlight vision (0.0001 lux)</p>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="spec-item">
-                                    <h5 class="neon-text-pink">CONNECTIVITY</h5>
-                                    <p>NeuralLink 4.0, WiFi 7, Bluetooth 6</p>
-                                </div>
-                                <div class="spec-item">
-                                    <h5 class="neon-text-pink">POWER</h5>
-                                    <p>Biometric induction, 72hr standby</p>
-                                </div>
-                                <div class="spec-item">
-                                    <h5 class="neon-text-pink">DIMENSIONS</h5>
-                                    <p>24mm × 18mm × 8mm, 12g</p>
-                                </div>
+    <!-- Review Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="background-color: var(--dark-bg); border: 1px solid var(--neon-pink);">
+                <div class="modal-header neon-border-pink">
+                    <h5 class="modal-title cyber-font neon-text-pink" id="reviewModalLabel">ADD YOUR REVIEW</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="reviewForm">
+                        <div class="mb-4 text-center">
+                            <h5 class="neon-text-blue mb-3">RATE THIS PRODUCT</h5>
+                            <div class="rating-container">
+                                <input type="radio" id="star5" name="rating" value="5" class="rating-input">
+                                <label for="star5" class="rating-label">★</label>
+                                <input type="radio" id="star4" name="rating" value="4" class="rating-input">
+                                <label for="star4" class="rating-label">★</label>
+                                <input type="radio" id="star3" name="rating" value="3" class="rating-input">
+                                <label for="star3" class="rating-label">★</label>
+                                <input type="radio" id="star2" name="rating" value="2" class="rating-input">
+                                <label for="star2" class="rating-label">★</label>
+                                <input type="radio" id="star1" name="rating" value="1" class="rating-input">
+                                <label for="star1" class="rating-label">★</label>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="tab-pane fade" id="reviews" role="tabpanel">
                         <div class="mb-4">
-                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                <h5 class="neon-text-pink mb-0">USER REVIEWS</h5>
-                                <button class="btn btn-sm btn-cyber">WRITE REVIEW</button>
-                            </div>
+                            <label for="reviewTitle" class="form-label neon-text-blue">REVIEW TITLE</label>
+                            <input type="text" class="form-control" id="reviewTitle" placeholder="Summarize your experience">
+                        </div>
 
-                            <div class="product-card p-3 mb-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="neon-text-blue">NetRunner47</span>
-                                    <span>★★★★★</span>
-                                </div>
-                                <p>"These optics changed everything. The AR overlay integrates seamlessly with my neural implant. Worth every credit."</p>
-                                <small class="text-muted">Posted: 12.04.2077</small>
-                            </div>
+                        <div class="mb-4">
+                            <label for="reviewText" class="form-label neon-text-blue">YOUR REVIEW</label>
+                            <textarea class="form-control" id="reviewText" rows="5" placeholder="Tell others about your experience with this product"></textarea>
+                        </div>
 
-                            <div class="product-card p-3">
-                                <div class="d-flex justify-content-between mb-2">
-                                    <span class="neon-text-blue">Johnny_Silverhand</span>
-                                    <span>★★★★☆</span>
-                                </div>
-                                <p>"Great optics, but the installation process was... intense. Make sure you go to a certified ripperdoc."</p>
-                                <small class="text-muted">Posted: 28.03.2077</small>
+                        <div class="mb-4">
+                            <label class="form-label neon-text-blue">UPLOAD PHOTOS/VIDEO</label>
+                            <div class="border-dashed p-4 text-center" style="border: 2px dashed var(--neon-blue); border-radius: 5px; cursor: pointer;">
+                                <i class="fas fa-cloud-upload-alt fa-2x neon-text-blue mb-2"></i>
+                                <p class="neon-text-blue">Drag & drop files here or click to browse</p>
+                                <small class="text-muted">Maximum 5 files (JPG, PNG, MP4)</small>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="tab-pane fade" id="faq" role="tabpanel">
-                        <div class="accordion" id="faqAccordion">
-                            <div class="accordion-item product-card border-0 mb-3">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button bg-dark text-white neon-text-blue" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                                        Is this compatible with my existing neural implant?
-                                    </button>
-                                </h2>
-                                <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
-                                    <div class="accordion-body">
-                                        Quantum Optics MK.IV is compatible with all NeuralLink 3.0+ systems. For older models, a firmware update may be required.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="accordion-item product-card border-0 mb-3">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed bg-dark text-white neon-text-blue" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                                        What's the installation process like?
-                                    </button>
-                                </h2>
-                                <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                    <div class="accordion-body">
-                                        Installation must be performed by a certified cyberware technician. The procedure takes approximately 2 hours under local anesthesia.
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="accordion-item product-card border-0">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button collapsed bg-dark text-white neon-text-blue" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                                        Can I return the product if I'm not satisfied?
-                                    </button>
-                                </h2>
-                                <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
-                                    <div class="accordion-body">
-                                        Due to the nature of cybernetic enhancements, returns are only accepted within 7 days if the product is unopened and unused.
-                                    </div>
-                                </div>
-                            </div>
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input" id="verifiedPurchase">
+                            <label class="form-check-label" for="verifiedPurchase">I confirm this is a verified purchase</label>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Related Products -->
-        <div class="row mt-5">
-            <div class="col-12">
-                <h3 class="cyber-font neon-text-pink mb-4">YOU MAY ALSO LIKE</h3>
-
-                <div class="row">
-                    <div class="col-md-3 mb-4">
-                        <div class="product-card p-3 h-100">
-                            <img src="https://via.placeholder.com/300x200/0d0221/d300c5?text=NEURAL+LINK" class="img-fluid mb-3">
-                            <h5 class="neon-text-blue">NEURAL LINK PRO</h5>
-                            <p class="text-muted">$3,299</p>
-                            <button class="btn btn-cyber w-100">VIEW</button>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-cyber btn-lg">SUBMIT REVIEW</button>
                         </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="product-card p-3 h-100">
-                            <img src="https://via.placeholder.com/300x200/0d0221/05d9e8?text=SYNTH+SKIN" class="img-fluid mb-3">
-                            <h5 class="neon-text-blue">SYNTH SKIN MK.II</h5>
-                            <p class="text-muted">$2,799</p>
-                            <button class="btn btn-cyber w-100">VIEW</button>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="product-card p-3 h-100">
-                            <img src="https://via.placeholder.com/300x200/0d0221/ff2a6d?text=NANO+MUSCLE" class="img-fluid mb-3">
-                            <h5 class="neon-text-blue">NANO MUSCLE</h5>
-                            <p class="text-muted">$5,499</p>
-                            <button class="btn btn-cyber w-100">VIEW</button>
-                        </div>
-                    </div>
-
-                    <div class="col-md-3 mb-4">
-                        <div class="product-card p-3 h-100">
-                            <img src="https://via.placeholder.com/300x200/0d0221/ffffff?text=VOICE+MOD" class="img-fluid mb-3">
-                            <h5 class="neon-text-blue">VOICE MODULATOR</h5>
-                            <p class="text-muted">$1,899</p>
-                            <button class="btn btn-cyber w-100">VIEW</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -427,9 +512,9 @@
     <footer class="container-fluid mt-5 py-4 neon-border-blue">
         <div class="row">
             <div class="col-md-4 mb-4 mb-md-0">
-                <h5 class="cyber-font neon-text-pink mb-3">NEON TECH</h5>
-                <p>Upgrading humanity since 2065.</p>
-                <p>Night City, California Free State</p>
+                <h5 class="cyber-font neon-text-pink mb-3">NEONGRID</h5>
+                <p>Tech for the future, today.</p>
+                <p>Neon District, Level 47</p>
             </div>
             <div class="col-md-4 mb-4 mb-md-0">
                 <h5 class="neon-text-blue mb-3">QUICK LINKS</h5>
@@ -442,7 +527,7 @@
             </div>
             <div class="col-md-4">
                 <h5 class="neon-text-blue mb-3">NEWSLETTER</h5>
-                <p>Subscribe for the latest cyberware drops.</p>
+                <p>Subscribe for the latest tech drops.</p>
                 <div class="input-group mb-3">
                     <input type="email" class="form-control bg-dark text-white neon-border-blue" placeholder="Your email">
                     <button class="btn btn-cyber" type="button">SUBSCRIBE</button>
@@ -451,7 +536,7 @@
         </div>
         <div class="row mt-3">
             <div class="col-12 text-center">
-                <p class="text-muted">© 2077 NEON TECH. All rights reserved. A subsidiary of Arasaka Corporation.</p>
+                <p class="text-muted">© 2077 NEONGRID. All rights reserved. A subsidiary of Night Corp.</p>
             </div>
         </div>
     </footer>
@@ -461,35 +546,71 @@
 
     <!-- Custom JS -->
     <script>
-        // Thumbnail image click handler
-        document.querySelectorAll('.thumb-img').forEach(img => {
-            img.addEventListener('click', function() {
-                const mainSrc = this.src.replace('150x100', '600x400');
-                document.getElementById('mainImage').src = mainSrc;
+        // Rating stars interaction
+        document.querySelectorAll('.rating-label').forEach(label => {
+            label.addEventListener('click', function() {
+                const ratingInput = this.previousElementSibling;
+                ratingInput.checked = true;
 
-                // Remove active class from all thumbs
-                document.querySelectorAll('.thumb-img').forEach(i => {
-                    i.classList.remove('neon-border-pink');
-                    i.classList.add('neon-border-blue');
-                });
+                // Update all stars up to this one
+                let current = this;
+                while (current) {
+                    if (current.classList.contains('rating-label')) {
+                        current.style.color = 'var(--neon-green)';
+                    }
+                    current = current.previousElementSibling;
+                    if (current && current.classList.contains('rating-input')) {
+                        current = current.previousElementSibling;
+                    }
+                }
 
-                // Add active class to clicked thumb
-                this.classList.remove('neon-border-blue');
-                this.classList.add('neon-border-pink');
+                // Reset stars after this one
+                let next = this.nextElementSibling;
+                while (next) {
+                    if (next.classList.contains('rating-label')) {
+                        next.style.color = '#666';
+                    }
+                    next = next.nextElementSibling;
+                }
             });
         });
 
-        // Quantity buttons
-        document.getElementById('plusBtn').addEventListener('click', function() {
-            const qtyInput = document.getElementById('qtyInput');
-            qtyInput.value = parseInt(qtyInput.value) + 1;
-        });
+        // Form submission
+        document.getElementById('reviewForm').addEventListener('submit', function(e) {
+            e.preventDefault();
 
-        document.getElementById('minusBtn').addEventListener('click', function() {
-            const qtyInput = document.getElementById('qtyInput');
-            if (parseInt(qtyInput.value) > 1) {
-                qtyInput.value = parseInt(qtyInput.value) - 1;
+            // Get form values
+            const rating = document.querySelector('input[name="rating"]:checked')?.value;
+            const title = document.getElementById('reviewTitle').value;
+            const review = document.getElementById('reviewText').value;
+
+            if (!rating) {
+                alert('Please select a rating');
+                return;
             }
+
+            if (!title || !review) {
+                alert('Please fill in all fields');
+                return;
+            }
+
+            // In a real app, you would send this data to your server
+            console.log('Review submitted:', { rating, title, review });
+
+            // Show success message
+            alert('Thank you for your review! It will be visible after moderation.');
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('reviewModal'));
+            modal.hide();
+
+            // Reset form
+            this.reset();
+
+            // Reset star colors
+            document.querySelectorAll('.rating-label').forEach(label => {
+                label.style.color = '#666';
+            });
         });
 
         // Glitch effect on hover for cyberpunk elements
@@ -500,6 +621,52 @@
 
             el.addEventListener('mouseleave', function() {
                 this.classList.remove('glitch-effect');
+            });
+        });
+
+        // Like/Dislike buttons
+        document.querySelectorAll('.btn-outline-info, .btn-outline-secondary').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const icon = this.querySelector('i');
+                const count = this.querySelector('span') || this.nextElementSibling.querySelector('span');
+
+                if (this.classList.contains('active')) {
+                    // Already active - remove like/dislike
+                    this.classList.remove('active');
+                    this.classList.remove('btn-info');
+                    this.classList.add('btn-outline-info');
+                    count.textContent = parseInt(count.textContent) - 1;
+
+                    if (icon.classList.contains('fa-thumbs-up')) {
+                        icon.classList.remove('fa-thumbs-up');
+                        icon.classList.add('fa-thumbs-up');
+                    } else {
+                        icon.classList.remove('fa-thumbs-down');
+                        icon.classList.add('fa-thumbs-down');
+                    }
+                } else {
+                    // Not active - add like/dislike
+                    const isLike = this.classList.contains('btn-outline-info');
+
+                    // Remove any existing active state on sibling buttons
+                    const parent = this.parentElement;
+                    parent.querySelectorAll('.btn').forEach(b => {
+                        b.classList.remove('active');
+                        b.classList.remove('btn-info');
+                        if (b.classList.contains('btn-outline-info')) {
+                            b.classList.add('btn-outline-info');
+                        } else {
+                            b.classList.add('btn-outline-secondary');
+                        }
+                    });
+
+                    // Set this button as active
+                    this.classList.add('active');
+                    this.classList.remove('btn-outline-info');
+                    this.classList.remove('btn-outline-secondary');
+                    this.classList.add('btn-info');
+                    count.textContent = parseInt(count.textContent) + 1;
+                }
             });
         });
     </script>

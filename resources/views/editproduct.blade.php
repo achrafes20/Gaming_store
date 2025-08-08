@@ -20,28 +20,7 @@
         </div>
     </div>
 
-    <!-- Cyber Codes Display Section -->
-    <div class="cyber-codes-section">
-        <div class="container">
-            <div class="cyber-codes-container">
-                <div class="cyber-code-box" data-aos="fade-right">
-                    <h3 class="cyber-code-title">PRODUCT <span class="cyber-accent">QR CODE</span></h3>
-                    <div class="cyber-code-display">
-                        {!! $qrCode !!}
-                    </div>
-                    <div class="cyber-code-desc">Scan for product details</div>
-                </div>
-
-                <div class="cyber-code-box" data-aos="fade-left">
-                    <h3 class="cyber-code-title">PRODUCT <span class="cyber-accent">BARCODE</span></h3>
-                    <div class="cyber-code-display">
-                        {!! $barcode !!}
-                    </div>
-                    <div class="cyber-code-desc">For inventory tracking</div>
-                </div>
-            </div>
-        </div>
-    </div>
+    
 
     <!-- Cyberpunk Form Section -->
     <div class="cyber-form-section">

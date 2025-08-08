@@ -78,12 +78,14 @@
                             <span class="cyber-nav-text">PRODUCTS</span>
                         </a>
                     </li>
+                    @if(Auth::check() && (Auth::user() && Auth::user()->role == 'admin' || Auth::user()->role == 'salesman'))
                     <li class="cyber-nav-item">
-                        <a href="/addproduct" class="cyber-nav-link">
-                            <span class="cyber-nav-icon"><i class="fas fa-plus-circle"></i></span>
-                            <span class="cyber-nav-text">ADD PRODUCT</span>
+                        <a href="/ProductsTable" class="cyber-nav-link">
+                            <span class="cyber-nav-icon" style="color: red"><i class="fas fa-gear"></i></span>
+                            <span class="cyber-nav-text" style="color: red">Admin Page</span>
                         </a>
                     </li>
+                    @endif
                     <li class="cyber-nav-item">
                         <a href="/reviews" class="cyber-nav-link">
                             <span class="cyber-nav-icon"><i class="fas fa-star"></i></span>

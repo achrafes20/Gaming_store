@@ -42,7 +42,7 @@ class CategoryController extends Controller
         if ($categoryid != null) {
             $currentcategory = Categories::find($categoryid);
             $currentcategory->delete();
-            return redirect('/ProductsTable');
+            return redirect('/');
         } else {
             abort(403, "please enter category id in the route");
         }

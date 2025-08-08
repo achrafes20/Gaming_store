@@ -1,171 +1,108 @@
 @extends('Layouts.master')
 @section('content')
-    <!-- Cyberpunk Hero Section -->
-    <div class="cyber-hero-section">
-        <div class="cyber-hero-overlay"></div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-8 offset-lg-2 text-center">
-                    <div class="cyber-hero-text">
-                        <p class="cyber-subtitle">Neon Market</p>
-                        <h1 class="cyber-title">OUR <span class="cyber-accent">PRODUCTS</span></h1>
-                        <div class="cyber-pulse-animation">
-                            <div class="pulse-circle"></div>
-                            <div class="pulse-circle delay-1"></div>
-                            <div class="pulse-circle delay-2"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Cyberpunk Products Section -->
-    <div class="cyber-products-section" >
-        <div class="container">
-            <div class="row ">
-                <div class="col-lg-8 offset-lg-2 text-center">
-                    <div class="cyber-section-title">
-                        <h3>HIGH-TECH <span class="cyber-accent">ORGANICS</span></h3>
-                        <p class="cyber-section-desc">Premium bio-engineered nutrients for the cyber-enhanced lifestyle</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row ">
-                @foreach ($products as $item)
-                <div class="col-lg-4 col-md-6 text-center" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                    <div class="cyber-product-card">
-                        <div class="cyber-product-image">
-                            <a href="/single-product/{{ $item->id }}">
-                                <img src="{{ asset($item->imagepath) }}" alt="{{ $item->name }}" class="cyber-product-img">
-                                <div class="cyber-product-overlay">
-                                    <div class="cyber-product-badge">NEW</div>
-                                </div>
-                                <div class="cyber-product-hover-effect"></div>
-                            </a>
-                        </div>
-                        <div class="cyber-product-info">
-                            <h3 class="cyber-product-name">{{ $item->name }}</h3>
-                            <p class="cyber-product-desc">{{ $item->description }}</p>
-                            <div class="cyber-product-actions">
-                                <a href="/addproducttocart/{{ $item->id }}" class="cyber-cart-btn">
-                                    <span class="cyber-btn-icon"><i class="fas fa-shopping-cart"></i></span>
-                                    <span class="cyber-btn-text">ADD TO CART</span>
-                                    <span class="cyber-btn-pulse"></span>
-                                </a>
-
-                                @if(Auth::check() && (Auth::user() && Auth::user()->role == 'admin' || Auth::user()->role == 'salesman'))
-                                <div class="cyber-admin-actions mt-3">
-                                    <a href="/removeproduct/{{ $item->id }}" class="cyber-admin-btn delete-btn">
-                                        <i class="fas fa-trash"></i> DELETE
-                                    </a>
-                                    <a href="/editproduct/{{ $item->id }}" class="cyber-admin-btn edit-btn">
-                                        <i class="fas fa-cog"></i> EDIT
-                                    </a>
-                                </div>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
-
-    <!-- Floating Tech Elements -->
-    <div class="cyber-floating-elements">
-        <div class="cyber-orb orb-1"></div>
-        <div class="cyber-orb orb-2"></div>
-        <div class="cyber-orb orb-3"></div>
-        <div class="cyber-circuit-line"></div>
-    </div>
-
-    @push('styles')
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeonCore - Cyberpunk Tech Store</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Cyberpunk Font -->
+    <link href="https://fonts.cdnfonts.com/css/cyberpunk" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
-        /* Cyberpunk/Futurist Theme Styles */
         :root {
-            --cyber-primary: #00f0ff;
-            --cyber-secondary: #ff00f0;
-            --cyber-dark: #0a0a1a;
-            --cyber-light: #e0e0ff;
-            --cyber-accent: #00ff88;
-            --cyber-danger: #ff003c;
-            --cyber-warning: #ffcc00;
-            --cyber-bg: rgba(10, 10, 26, 0.8);
-            --cyber-border: rgba(0, 240, 255, 0.2);
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-purple: #d300c5;
+            --neon-green: #00ff9d;
+            --dark-bg: #0d0221;
+            --darker-bg: #02000d;
         }
 
         body {
-            background-color: var(--cyber-dark);
-            color: var(--cyber-light);
-            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
             overflow-x: hidden;
+            background-image:
+                linear-gradient(rgba(5, 217, 232, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(5, 217, 232, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
         }
 
-        /* Hero Section */
-        .cyber-hero-section {
+        .cyber-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .neon-text-pink {
+            color: var(--neon-pink);
+            text-shadow: 0 0 5px var(--neon-pink), 0 0 10px var(--neon-pink);
+        }
+
+        .neon-text-blue {
+            color: var(--neon-blue);
+            text-shadow: 0 0 5px var(--neon-blue), 0 0 10px var(--neon-blue);
+        }
+
+        .neon-text-green {
+            color: var(--neon-green);
+            text-shadow: 0 0 5px var(--neon-green), 0 0 10px var(--neon-green);
+        }
+
+        .hero-section {
             position: relative;
             height: 400px;
-            background: linear-gradient(135deg, #0a3a1a 0%, #1a6330 50%, #0a3a1a 100%);
-            overflow: hidden;
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3a 50%, #0a0a1a 100%);
             display: flex;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
+            margin-bottom: 50px;
         }
 
-        .cyber-hero-overlay {
+        .hero-overlay {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(0,240,255,0.1)" stroke-width="0.5" stroke-dasharray="5,5"/></svg>');
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 L0,100 Z" fill="none" stroke="rgba(5, 217, 232, 0.1)" stroke-width="0.5" stroke-dasharray="5,5"/></svg>');
             opacity: 0.5;
         }
 
-        .cyber-hero-text {
+        .hero-content {
             position: relative;
             z-index: 2;
             text-align: center;
             padding: 20px;
         }
-        .cyber-products-section .row {
-    display: flex;
-    flex-wrap: wrap;
-}
 
-
-        .cyber-subtitle {
-            color: var(--cyber-primary);
+        .hero-subtitle {
+            color: var(--neon-blue);
             font-size: 1.2rem;
             letter-spacing: 3px;
             text-transform: uppercase;
             margin-bottom: 15px;
-            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            text-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
         }
 
-        .cyber-title {
+        .hero-title {
             font-size: 3.5rem;
-            font-weight: 700;
-            background: linear-gradient(90deg, var(--cyber-light), var(--cyber-primary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+            font-weight: bold;
+            color: var(--neon-pink);
             margin-bottom: 30px;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        .cyber-title .cyber-accent {
-            background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
+        .hero-title span {
+            color: var(--neon-blue);
         }
 
-        .cyber-pulse-animation {
+        .pulse-animation {
             position: relative;
             height: 100px;
             display: flex;
@@ -178,7 +115,7 @@
             width: 20px;
             height: 20px;
             border-radius: 50%;
-            background-color: var(--cyber-accent);
+            background-color: var(--neon-blue);
             opacity: 0;
             animation: pulse 3s infinite;
         }
@@ -202,209 +139,177 @@
             }
         }
 
-        /* Products Section */
-        .cyber-products-section {
-            padding: 100px 0;
-            position: relative;
-        }
-
-        .cyber-section-title {
-            margin-bottom: 50px;
-        }
-
-        .cyber-section-title h3 {
-            font-size: 2.5rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: var(--cyber-light);
-            margin-bottom: 15px;
-        }
-
-        .cyber-section-title .cyber-accent {
-            background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-primary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .cyber-section-desc {
-            color: var(--cyber-light);
-            opacity: 0.8;
-            max-width: 600px;
-            margin: 0 auto;
-            font-size: 1.1rem;
-        }
-
-        /* Product Card */
-        .cyber-product-card {
-            background: var(--cyber-bg);
-            border: 1px solid var(--cyber-border);
-            border-radius: 10px;
-            padding: 25px;
-            margin-bottom: 30px;
-            transition: all 0.4s ease;
+        .product-card {
+            background-color: rgba(13, 2, 33, 0.8);
+            transition: all 0.3s ease;
+            border: 1px solid var(--neon-purple);
+            height: 100%;
             position: relative;
             overflow: hidden;
+            margin-bottom: 30px;
+            padding: 20px;
         }
 
-        .cyber-product-card::before {
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 42, 109, 0.3);
+        }
+
+        .product-card::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, rgba(255, 0, 240, 0.05) 100%);
-            z-index: -1;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                transparent 45%,
+                rgba(5, 217, 232, 0.1) 50%,
+                transparent 55%
+            );
+            transform: rotate(45deg);
+            z-index: 1;
+            pointer-events: none;
+            animation: scan 6s linear infinite;
         }
 
-        .cyber-product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0, 240, 255, 0.2);
+        @keyframes scan {
+            0% { transform: translateY(-100%) rotate(45deg); }
+            100% { transform: translateY(100%) rotate(45deg); }
         }
 
-        .cyber-product-image {
+        .product-image {
             position: relative;
             height: 250px;
             margin-bottom: 20px;
             overflow: hidden;
-            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.3);
         }
 
-        .cyber-product-img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            transition: all 0.5s ease;
+        .product-image img {
+            max-height: 100%;
+            width: auto;
+            transition: transform 0.5s ease;
+            z-index: 2;
         }
 
-        .cyber-product-overlay {
+        .product-card:hover .product-image img {
+            transform: scale(1.05);
+        }
+
+        .product-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.7) 100%);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: all 0.3s ease;
         }
 
-        .cyber-product-badge {
+        .product-badge {
             position: absolute;
             top: 15px;
             right: 15px;
-            background: var(--cyber-accent);
-            color: var(--cyber-dark);
+            background: var(--neon-pink);
+            color: white;
             padding: 5px 15px;
             border-radius: 20px;
             font-weight: bold;
             font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
+            z-index: 3;
         }
 
-        .cyber-product-hover-effect {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1) 0%, rgba(255, 0, 240, 0.1) 100%);
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .cyber-product-card:hover .cyber-product-hover-effect {
-            opacity: 1;
-        }
-
-        .cyber-product-card:hover .cyber-product-img {
-            transform: scale(1.05);
-        }
-
-        .cyber-product-info {
+        .product-info {
             text-align: center;
         }
 
-        .cyber-product-name {
+        .product-name {
             font-size: 1.4rem;
-            color: var(--cyber-light);
+            color: var(--neon-blue);
             margin-bottom: 15px;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
-        .cyber-product-desc {
-            color: var(--cyber-light);
+        .product-desc {
+            color: #fff;
             opacity: 0.8;
             margin-bottom: 20px;
             font-size: 0.95rem;
             min-height: 60px;
         }
 
-        /* Cart Button */
-        .cyber-cart-btn {
+        .btn-cyber {
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-purple));
+            color: white;
+            border: none;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
             position: relative;
+            overflow: hidden;
+            z-index: 1;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-transform: uppercase;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 12px 25px;
-            background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-primary));
-            color: var(--cyber-dark);
-            border: none;
-            border-radius: 50px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            font-size: 0.9rem;
         }
 
-        .cyber-cart-btn:hover {
+        .btn-cyber:hover {
+            background: linear-gradient(45deg, var(--neon-purple), var(--neon-pink));
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.4);
+            box-shadow: 0 5px 15px rgba(255, 42, 109, 0.4);
+            color: white;
         }
 
-        .cyber-btn-icon {
+        .btn-cyber::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .btn-cyber:hover::before {
+            left: 100%;
+        }
+
+        .btn-cyber i {
             margin-right: 10px;
         }
 
-        .cyber-btn-text {
-            position: relative;
-            z-index: 1;
-        }
-
-        .cyber-btn-pulse {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, var(--cyber-primary), var(--cyber-accent));
-            opacity: 0;
-            border-radius: 50px;
-            animation: pulseBtn 2s infinite;
-        }
-
-        @keyframes pulseBtn {
-            0% {
-                transform: scale(0.95);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(1.2);
-                opacity: 0;
-            }
-        }
-
-        /* Admin Buttons */
-        .cyber-admin-actions {
+        .admin-actions {
             display: flex;
             justify-content: center;
             gap: 10px;
+            margin-top: 15px;
             flex-wrap: wrap;
         }
 
-        .cyber-admin-btn {
+        .admin-btn {
             padding: 8px 15px;
             border-radius: 5px;
             font-size: 0.8rem;
@@ -417,12 +322,12 @@
             align-items: center;
         }
 
-        .cyber-admin-btn i {
+        .admin-btn i {
             margin-right: 5px;
         }
 
         .delete-btn {
-            background: var(--cyber-danger);
+            background: var(--neon-pink);
             color: white;
         }
 
@@ -432,179 +337,214 @@
         }
 
         .edit-btn {
-            background: var(--cyber-primary);
-            color: var(--cyber-dark);
+            background: var(--neon-blue);
+            color: var(--dark-bg);
         }
 
         .edit-btn:hover {
             background: #00d0e0;
             transform: translateY(-2px);
+            color: var(--dark-bg);
         }
 
-        /* Floating Elements */
-        .cyber-floating-elements {
+        .section-title {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .section-title h3 {
+            font-size: 2.5rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--neon-pink);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--neon-blue);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .scanline {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 95%,
+                rgba(5, 217, 232, 0.1) 96%
+            );
+            background-size: 100% 5px;
+            z-index: 1000;
             pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
+            animation: scanline 4s linear infinite;
         }
 
-        .cyber-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.2;
-        }
-
-        .orb-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--cyber-organic);
-            top: -100px;
-            left: -100px;
-            animation: float 15s infinite ease-in-out;
-        }
-
-        .orb-2 {
-            width: 200px;
-            height: 200px;
-            background: var(--cyber-primary);
-            bottom: -50px;
-            right: -50px;
-            animation: float 12s infinite ease-in-out reverse;
-        }
-
-        .orb-3 {
-            width: 150px;
-            height: 150px;
-            background: var(--cyber-secondary);
-            top: 50%;
-            right: 10%;
-            animation: float 10s infinite ease-in-out 2s;
-        }
-
-        .cyber-circuit-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(0,240,255,0.03)" stroke-width="1"/></svg>');
-            opacity: 0.1;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-            50% {
-                transform: translate(20px, 20px);
-            }
+        @keyframes scanline {
+            0% { transform: translateY(0) }
+            100% { transform: translateY(100vh) }
         }
 
         /* Responsive Adjustments */
         @media (max-width: 992px) {
-            .cyber-title {
+            .hero-title {
                 font-size: 2.8rem;
             }
 
-            .cyber-section-title h3 {
+            .section-title h3 {
                 font-size: 2rem;
             }
 
-            .cyber-product-card {
-                padding: 20px;
+            .product-card {
+                padding: 15px;
             }
 
-            .cyber-product-image {
+            .product-image {
                 height: 200px;
             }
         }
 
         @media (max-width: 768px) {
-            .cyber-title {
+            .hero-title {
                 font-size: 2.2rem;
             }
 
-            .cyber-subtitle {
+            .hero-subtitle {
                 font-size: 1rem;
             }
 
-            .cyber-section-title h3 {
+            .section-title h3 {
                 font-size: 1.8rem;
             }
 
-            .cyber-product-name {
+            .product-name {
                 font-size: 1.2rem;
             }
 
-            .cyber-cart-btn {
+            .btn-cyber {
                 padding: 10px 20px;
                 font-size: 0.8rem;
             }
         }
 
         @media (max-width: 576px) {
-            .cyber-hero-section {
+            .hero-section {
                 height: 300px;
             }
 
-            .cyber-title {
+            .hero-title {
                 font-size: 1.8rem;
             }
 
-            .cyber-section-title h3 {
+            .section-title h3 {
                 font-size: 1.5rem;
             }
 
-            .cyber-product-image {
+            .product-image {
                 height: 180px;
             }
 
-            .cyber-admin-actions {
+            .admin-actions {
                 flex-direction: column;
                 align-items: center;
             }
 
-            .cyber-admin-btn {
+            .admin-btn {
                 width: 100%;
                 justify-content: center;
             }
         }
     </style>
-    @endpush
+</head>
+<body>
+    <!-- Scanline Effect -->
+    <div class="scanline"></div>
 
-    @push('scripts')
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container">
+            <div class="hero-content">
+                <p class="hero-subtitle">Neon Market</p>
+                <h1 class="hero-title">OUR <span>PRODUCTS</span></h1>
+                <div class="pulse-animation">
+                    <div class="pulse-circle"></div>
+                    <div class="pulse-circle delay-1"></div>
+                    <div class="pulse-circle delay-2"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Section -->
+    <div class="container">
+        <div class="section-title">
+            <h3 class="cyber-font neon-text-pink">HIGH-TECH <span class="neon-text-blue">ORGANICS</span></h3>
+            <p class="neon-text-blue">Premium bio-engineered nutrients for the cyber-enhanced lifestyle</p>
+        </div>
+
+        <div class="row">
+            @foreach ($products as $item)
+            <div class="col-lg-4 col-md-6">
+                <div class="product-card">
+                    <div class="product-image">
+                        <a href="/single-product/{{ $item->id }}">
+                            <img style="width: 300px;" src="{{ asset($item->imagepath) }}" alt="{{ $item->name }} ">
+                            <div class="product-overlay"></div>
+
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-name">{{ $item->name }}</h3>
+                        
+                        <div class="product-actions">
+                            <a href="/addproducttocart/{{ $item->id }}" class="btn-cyber">
+                                <i class="fas fa-shopping-cart"></i> ADD TO CART
+                            </a>
+
+                            @if(Auth::check() && (Auth::user() && Auth::user()->role == 'admin' || Auth::user()->role == 'salesman'))
+                            <div class="admin-actions mt-3">
+                                <a href="/removeproduct/{{ $item->id }}" class="admin-btn delete-btn">
+                                    <i class="fas fa-trash"></i> DELETE
+                                </a>
+                                <a href="/editproduct/{{ $item->id }}" class="admin-btn edit-btn">
+                                    <i class="fas fa-cog"></i> EDIT
+                                </a>
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Font Awesome -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
+    <!-- Custom JS -->
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Initialize AOS animation library
-            AOS.init({
-                duration: 800,
-                easing: 'ease-in-out',
-                once: true
-            });
-
             // Add hover effect to product cards
-            const productCards = document.querySelectorAll('.cyber-product-card');
+            const productCards = document.querySelectorAll('.product-card');
             productCards.forEach(card => {
                 card.addEventListener('mouseenter', function() {
-                    const img = this.querySelector('.cyber-product-img');
+                    const img = this.querySelector('img');
                     if (img) {
                         img.style.transform = 'scale(1.05)';
                     }
                 });
 
                 card.addEventListener('mouseleave', function() {
-                    const img = this.querySelector('.cyber-product-img');
+                    const img = this.querySelector('img');
                     if (img) {
                         img.style.transform = '';
                     }
@@ -613,10 +553,10 @@
 
             // Add pulse animation to products periodically
             setInterval(function() {
-                const products = document.querySelectorAll('.cyber-product-card');
+                const products = document.querySelectorAll('.product-card');
                 products.forEach((product, index) => {
                     setTimeout(() => {
-                        product.style.boxShadow = '0 0 20px rgba(0, 240, 255, 0.3)';
+                        product.style.boxShadow = '0 0 20px rgba(255, 42, 109, 0.3)';
                         setTimeout(() => {
                             product.style.boxShadow = '';
                         }, 1000);
@@ -625,5 +565,6 @@
             }, 8000);
         });
     </script>
-    @endpush
+</body>
+</html>
 @endsection

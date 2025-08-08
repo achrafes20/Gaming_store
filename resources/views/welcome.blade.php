@@ -1,9 +1,14 @@
 @extends("Layouts.master")
 @section('content')
+<!-- Scanline Effect -->
+<div class="scanline"></div>
+
+
+
 <!-- Cyberpunk Hero Slider -->
 <div class="cyber-slider">
     <!-- Slide 1 -->
-    <div class="cyber-slide" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);">
+    <div class="cyber-slide active" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);">
         <div class="cyber-slide-overlay"></div>
         <div class="container">
             <div class="row">
@@ -13,11 +18,11 @@
                         <h1 class="cyber-title">ULTIMATE TECH <span class="cyber-accent">COLLECTION</span></h1>
                         <p class="cyber-subtitle">Experience the future of technology today with our cutting-edge devices</p>
                         <div class="cyber-buttons">
-                            <a href="/categories" class="cyber-btn-primary">
+                            <a href="/categories" class="btn-cyber-primary">
                                 <span>EXPLORE PRODUCTS</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
-                            <a href="/contact" class="cyber-btn-secondary">
+                            <a href="/contact" class="btn-cyber-secondary">
                                 <span>CONTACT US</span>
                                 <i class="fas fa-comment-alt"></i>
                             </a>
@@ -44,11 +49,11 @@
                         <h1 class="cyber-title">PREMIUM <span class="cyber-accent">ELECTRONICS</span></h1>
                         <p class="cyber-subtitle">Discover the latest tech innovations with our 100% authentic collection</p>
                         <div class="cyber-buttons justify-content-center">
-                            <a href="/categories" class="cyber-btn-primary">
+                            <a href="/categories" class="btn-cyber-primary">
                                 <span>SHOP NOW</span>
                                 <i class="fas fa-shopping-bag"></i>
                             </a>
-                            <a href="/contact" class="cyber-btn-secondary">
+                            <a href="/contact" class="btn-cyber-secondary">
                                 <span>GET SUPPORT</span>
                                 <i class="fas fa-headset"></i>
                             </a>
@@ -70,11 +75,11 @@
                         <h1 class="cyber-title">MEGA <span class="cyber-accent">DISCOUNTS</span></h1>
                         <p class="cyber-subtitle">Limited time offers on our most advanced tech products</p>
                         <div class="cyber-buttons justify-content-end">
-                            <a href="/categories" class="cyber-btn-primary">
+                            <a href="/categories" class="btn-cyber-primary">
                                 <span>VIEW DEALS</span>
                                 <i class="fas fa-tag"></i>
                             </a>
-                            <a href="/contact" class="cyber-btn-secondary">
+                            <a href="/contact" class="btn-cyber-secondary">
                                 <span>LEARN MORE</span>
                                 <i class="fas fa-info-circle"></i>
                             </a>
@@ -155,9 +160,10 @@
                 <div class="cyber-product-info">
                     <h3>{{ $item->name }}</h3>
                     <p>{{ Str::limit($item->description, 100) }}</p>
+                    <a href="/product/{{$item->id}}" class="btn-cyber-primary w-100">VIEW PRODUCTS</a>
 
                     @if(Auth::check() && (Auth::user() && Auth::user()->role == 'admin' || Auth::user()->role == 'salesman'))
-                    <a href="/removecategory/{{ $item->id }}" class="cyber-delete-btn">
+                    <a href="/removecategory/{{ $item->id }}" class="cyber-delete-btn mt-2">
                         <i class="fas fa-trash"></i> DELETE CATEGORY
                     </a>
                     @endif
@@ -170,6 +176,9 @@
 </div>
 <!-- End Cyber Products Section -->
 
+
+@endsection
+
 @push('styles')
 <style>
     /* Cyberpunk Theme Variables */
@@ -181,6 +190,52 @@
         --cyber-darker: #050510;
         --cyber-light: #e0e0ff;
         --cyber-card-bg: rgba(20, 20, 40, 0.8);
+        --cyber-error: #ff003c;
+    }
+
+    body {
+        background-color: var(--cyber-dark);
+        color: var(--cyber-light);
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
+        overflow-x: hidden;
+        background-image:
+            linear-gradient(rgba(0, 240, 255, 0.05) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 240, 255, 0.05) 1px, transparent 1px);
+        background-size: 20px 20px;
+    }
+
+    .cyber-font {
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
+    }
+
+    .neon-text-primary {
+        color: var(--cyber-primary);
+        text-shadow: 0 0 5px var(--cyber-primary), 0 0 10px var(--cyber-primary);
+    }
+
+    .neon-text-secondary {
+        color: var(--cyber-secondary);
+        text-shadow: 0 0 5px var(--cyber-secondary), 0 0 10px var(--cyber-secondary);
+    }
+
+    .neon-text-accent {
+        color: var(--cyber-accent);
+        text-shadow: 0 0 5px var(--cyber-accent), 0 0 10px var(--cyber-accent);
+    }
+
+    .neon-border-primary {
+        border: 1px solid var(--cyber-primary);
+        box-shadow: 0 0 10px var(--cyber-primary), inset 0 0 10px var(--cyber-primary);
+    }
+
+    .neon-border-secondary {
+        border: 1px solid var(--cyber-secondary);
+        box-shadow: 0 0 10px var(--cyber-secondary), inset 0 0 10px var(--cyber-secondary);
+    }
+
+    .neon-border-accent {
+        border: 1px solid var(--cyber-accent);
+        box-shadow: 0 0 10px var(--cyber-accent), inset 0 0 10px var(--cyber-accent);
     }
 
     /* Cyber Slider */
@@ -230,7 +285,7 @@
     }
 
     .cyber-glitch {
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
         font-size: 1.2rem;
         color: var(--cyber-primary);
         text-transform: uppercase;
@@ -261,7 +316,7 @@
     }
 
     .cyber-title {
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
         font-size: 3.5rem;
         font-weight: bold;
         color: var(--cyber-light);
@@ -285,7 +340,7 @@
         flex-wrap: wrap;
     }
 
-    .cyber-btn-primary {
+    .btn-cyber-primary {
         display: inline-flex;
         align-items: center;
         padding: 12px 25px;
@@ -298,23 +353,25 @@
         letter-spacing: 1px;
         transition: all 0.3s ease;
         font-size: 0.9rem;
+        border: none;
     }
 
-    .cyber-btn-primary:hover {
+    .btn-cyber-primary:hover {
         transform: translateY(-3px);
         box-shadow: 0 5px 15px rgba(0, 240, 255, 0.4);
+        color: var(--cyber-dark);
     }
 
-    .cyber-btn-primary i {
+    .btn-cyber-primary i {
         margin-left: 10px;
         transition: transform 0.3s ease;
     }
 
-    .cyber-btn-primary:hover i {
+    .btn-cyber-primary:hover i {
         transform: translateX(5px);
     }
 
-    .cyber-btn-secondary {
+    .btn-cyber-secondary {
         display: inline-flex;
         align-items: center;
         padding: 12px 25px;
@@ -330,9 +387,10 @@
         font-size: 0.9rem;
     }
 
-    .cyber-btn-secondary:hover {
+    .btn-cyber-secondary:hover {
         background: rgba(0, 240, 255, 0.1);
         transform: translateY(-3px);
+        color: var(--cyber-light);
     }
 
     .cyber-slide-image {
@@ -393,7 +451,7 @@
     }
 
     .cyber-feature-content h3 {
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
         color: var(--cyber-light);
         margin-bottom: 10px;
         font-size: 1.3rem;
@@ -435,7 +493,7 @@
     }
 
     .cyber-section-glitch {
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
         font-size: 1.5rem;
         color: var(--cyber-primary);
         text-transform: uppercase;
@@ -466,7 +524,7 @@
     }
 
     .cyber-section-header h2 {
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
         font-size: 2.5rem;
         color: var(--cyber-light);
         margin-bottom: 15px;
@@ -550,7 +608,7 @@
     }
 
     .cyber-product-info h3 {
-        font-family: 'Orbitron', sans-serif;
+        font-family: 'Orbitron', 'Rajdhani', sans-serif;
         color: var(--cyber-light);
         margin-bottom: 10px;
         font-size: 1.3rem;
@@ -624,6 +682,29 @@
         50% { transform: translateY(-20px); }
     }
 
+    /* Scanline Effect */
+    .scanline {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+            to bottom,
+            transparent 95%,
+            rgba(0, 240, 255, 0.1) 96%
+        );
+        background-size: 100% 5px;
+        z-index: 1000;
+        pointer-events: none;
+        animation: scanline 4s linear infinite;
+    }
+
+    @keyframes scanline {
+        0% { transform: translateY(0) }
+        100% { transform: translateY(100vh) }
+    }
+
     /* Responsive Styles */
     @media (max-width: 992px) {
         .cyber-title {
@@ -653,7 +734,7 @@
             flex-direction: column;
         }
 
-        .cyber-btn-primary, .cyber-btn-secondary {
+        .btn-cyber-primary, .btn-cyber-secondary {
             width: 100%;
             justify-content: center;
         }
@@ -684,8 +765,17 @@
 @endpush
 
 @push('scripts')
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- GSAP -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+<!-- AOS Animation -->
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<!-- Cyberpunk Font -->
+<link href="https://fonts.cdnfonts.com/css/cyberpunk" rel="stylesheet">
+<!-- Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Initialize AOS animation
@@ -732,14 +822,77 @@
         });
 
         // Floating animation for slide images
-        gsap.to('.cybaer-hologram', {
+        gsap.to('.cyber-hologram', {
             y: 20,
             duration: 3,
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut"
         });
+
+        // Add to cart animation
+        document.querySelectorAll('.btn-cyber-primary').forEach(btn => {
+            if (btn.textContent.trim() === 'ADD TO CART') {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    // Animation
+                    const originalText = this.innerHTML;
+                    this.innerHTML = '<i class="fas fa-check"></i> ADDED';
+                    this.style.background = 'var(--cyber-accent)';
+
+                    // Update cart count
+                    const cartCount = document.querySelector('.cart-count');
+                    cartCount.textContent = parseInt(cartCount.textContent) + 1;
+
+                    // Create flying item effect
+                    const productCard = this.closest('.cyber-product-card');
+                    const productImage = productCard.querySelector('.cyber-product-image img').cloneNode();
+                    productImage.style.position = 'fixed';
+                    productImage.style.width = '50px';
+                    productImage.style.height = 'auto';
+                    productImage.style.zIndex = '1001';
+                    productImage.style.pointerEvents = 'none';
+                    productImage.style.transition = 'all 0.5s ease';
+
+                    const rect = productCard.getBoundingClientRect();
+                    productImage.style.left = rect.left + 'px';
+                    productImage.style.top = rect.top + 'px';
+                    document.body.appendChild(productImage);
+
+                    const cartRect = document.querySelector('.fa-shopping-cart').closest('button').getBoundingClientRect();
+
+                    setTimeout(() => {
+                        productImage.style.left = (cartRect.left + cartRect.width/2 - 25) + 'px';
+                        productImage.style.top = (cartRect.top + cartRect.height/2 - 25) + 'px';
+                        productImage.style.opacity = '0';
+                        productImage.style.transform = 'scale(0.5)';
+                    }, 50);
+
+                    // Remove after animation
+                    setTimeout(() => {
+                        productImage.remove();
+                    }, 550);
+
+                    // Reset button after delay
+                    setTimeout(() => {
+                        this.innerHTML = originalText;
+                        this.style.background = 'linear-gradient(90deg, var(--cyber-primary), var(--cyber-accent))';
+                    }, 2000);
+                });
+            }
+        });
+
+        // Glitch effect on hover for cyberpunk elements
+        document.querySelectorAll('.cyber-font, .neon-text-primary, .neon-text-secondary').forEach(el => {
+            el.addEventListener('mouseenter', function() {
+                this.classList.add('glitch-effect');
+            });
+
+            el.addEventListener('mouseleave', function() {
+                this.classList.remove('glitch-effect');
+            });
+        });
     });
 </script>
 @endpush
-@endsection

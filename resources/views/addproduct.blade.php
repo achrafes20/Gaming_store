@@ -121,13 +121,30 @@
                                     <div class="cyber-file-container">
                                         <label for="photo" class="cyber-file-label">
                                             <span class="cyber-file-icon"><i class="fas fa-camera"></i></span>
-                                            <span class="cyber-file-text">UPLOAD PRODUCT IMAGE</span>
+                                            <span class="cyber-file-text">UPLOAD MAIN IMAGE</span>
                                             <input type="file" name="photo" id="photo" class="cyber-file-input">
                                         </label>
                                         <div class="cyber-file-preview" id="cyber-file-preview"></div>
                                     </div>
                                     <span class="cyber-error">
                                         @error('photo')
+                                            {{ $message }}
+                                        @enderror
+                                    </span>
+                                </div>
+
+                                <!-- Multiple Images Upload Section -->
+                                <div class="cyber-form-group">
+                                    <div class="cyber-file-container">
+                                        <label for="photos" class="cyber-file-label">
+                                            <span class="cyber-file-icon"><i class="fas fa-images"></i></span>
+                                            <span class="cyber-file-text">UPLOAD ADDITIONAL IMAGES (MULTIPLE)</span>
+                                            <input type="file" name="photos[]" id="photos" class="cyber-file-input" multiple>
+                                        </label>
+                                        <div class="cyber-multi-preview" id="cyber-multi-preview"></div>
+                                    </div>
+                                    <span class="cyber-error">
+                                        @error('photos.*')
                                             {{ $message }}
                                         @enderror
                                     </span>
@@ -449,6 +466,22 @@
             border: 1px solid var(--cyber-primary);
         }
 
+        /* Multiple Images Preview */
+        .cyber-multi-preview {
+            margin-top: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .cyber-multi-preview img {
+            max-width: 100px;
+            max-height: 100px;
+            border-radius: 5px;
+            border: 1px solid var(--cyber-primary);
+            object-fit: cover;
+        }
+
         /* Error Messages */
         .cyber-error {
             display: block;
@@ -653,7 +686,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // File input preview
+            // Main image preview
             const fileInput = document.getElementById('photo');
             const filePreview = document.getElementById('cyber-file-preview');
 
@@ -668,6 +701,38 @@
                         }
 
                         reader.readAsDataURL(this.files[0]);
+                    }
+                });
+            }
+
+            // Multiple images preview
+            const multiFileInput = document.getElementById('photos');
+            const multiFilePreview = document.getElementById('cyber-multi-preview');
+
+            if (multiFileInput && multiFilePreview) {
+                multiFileInput.addEventListener('change', function() {
+                    multiFilePreview.innerHTML = ''; // Clear previous previews
+
+                    if (this.files && this.files.length > 0) {
+                        for (let i = 0; i < this.files.length; i++) {
+                            const file = this.files[i];
+                            if (file.type.startsWith('image/')) {
+                                const reader = new FileReader();
+
+                                reader.onload = function(e) {
+                                    const img = document.createElement('img');
+                                    img.src = e.target.result;
+                                    img.alt = 'Preview ' + (i + 1);
+                                    img.style.maxWidth = '100px';
+                                    img.style.maxHeight = '100px';
+                                    img.style.borderRadius = '5px';
+                                    img.style.border = '1px solid var(--cyber-primary)';
+                                    multiFilePreview.appendChild(img);
+                                }
+
+                                reader.readAsDataURL(file);
+                            }
+                        }
                     }
                 });
             }
