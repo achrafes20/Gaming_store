@@ -1,0 +1,50 @@
+name: Deploy Laravel to InfinityFree
+
+on:
+  push:
+    branches:
+      - main   # Change si ta branche s'appelle autrement
+  workflow_dispatch: # Permet de lancer manuellement depuis GitHub
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Récupérer le code du repo
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2️⃣ Préparer les fichiers pour le déploiement
+      - name: Prepare deployment files
+        run: |
+          mkdir -p deploy-htdocs
+          rsync -av --progress ./ deploy-htdocs/ \
+            --exclude=vendor/ \
+            --exclude=node_modules/ \
+            --exclude=.env \
+            --exclude=storage/logs/ \
+            --exclude=.gitignore \
+            --exclude=storage/framework/ \
+            --exclude=public/
+
+          # Créer les dossiers nécessaires à Laravel
+          mkdir -p deploy-htdocs/storage/{logs,framework/{cache,sessions,views},app/public}
+          mkdir -p deploy-htdocs/bootstrap/cache
+          touch deploy-htdocs/storage/logs/laravel.log
+          chmod -R 755 deploy-htdocs/storage deploy-htdocs/bootstrap/cache
+
+      # 3️⃣ Déployer sur InfinityFree via FTP
+      - name: Upload to InfinityFree
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.0
+        with:
+          server: ${{ secrets.INFINITYFREE_HOST }}       # Ex: ftpupload.net
+          username: ${{ secrets.INFINITYFREE_USERNAME }} # Ton identifiant FTP
+          password: ${{ secrets.INFINITYFREE_PASSWORD }} # Ton mot de passe FTP
+          local-dir: ./deploy-htdocs/
+          server-dir: /htdocs/laravel/
+          exclude: |
+            .env
+            .gitignore
+          security: loose
+          dry-run: false
