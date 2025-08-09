@@ -26,7 +26,7 @@ jobs:
             --exclude=storage/logs/ \
             --exclude=.gitignore \
             --exclude=storage/framework/ \
-            --exclude=public/storage
+            --exclude=public/
 
           # Créer les dossiers nécessaires à Laravel
           mkdir -p deploy-htdocs/storage/{logs,framework/{cache,sessions,views},app/public}
@@ -42,7 +42,7 @@ jobs:
           username: ${{ secrets.INFINITYFREE_USERNAME }} # Ton identifiant FTP
           password: ${{ secrets.INFINITYFREE_PASSWORD }} # Ton mot de passe FTP
           local-dir: ./deploy-htdocs/
-          server-dir: /htdocs/
+          server-dir: /htdocs/laravel/
           exclude: |
             .env
             .gitignore
