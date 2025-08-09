@@ -1,0 +1,37 @@
+ # --- Déploiement InfinityFree -----------
+    - name: Prepare backend files
+      if: github.event_name == 'push'
+      run: |
+        mkdir -p deploy-htdocs
+        rsync -av --progress ./ deploy-htdocs/ \
+          --exclude=vendor/ \
+          --exclude=node_modules/ \
+          --exclude=.env \
+          --exclude=storage/logs/ \
+          --exclude=.gitignore \
+          --exclude=storage/framework/ \
+          --exclude=public/storage
+        
+        # Créer les dossiers nécessaires avec permissions
+        mkdir -p deploy-htdocs/storage/{logs,framework/{cache,sessions,views},app/public}
+        mkdir -p deploy-htdocs/bootstrap/cache
+        touch deploy-htdocs/storage/logs/laravel.log
+        chmod -R 755 deploy-htdocs/storage deploy-htdocs/bootstrap/cache
+
+    - name: Upload to InfinityFree via FTP
+      if: github.event_name == 'push'
+      uses: SamKirkland/FTP-Deploy-Action@4.3.0
+      with:
+        server: ${{ secrets.INFINITYFREE_HOST }}
+        username: ${{ secrets.INFINITYFREE_USERNAME }}
+        password: ${{ secrets.INFINITYFREE_PASSWORD }}
+        port: ${{ secrets.INFINITYFREE_FTP_PORT || 21 }}
+        local-dir: ./deploy-htdocs/
+        server-dir: ./htdocs/
+        exclude: |
+          .env
+          .gitignore
+        security: loose  # Seules options valides : 'loose' ou 'strict'
+        dry-run: false
+
+    
