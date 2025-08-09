@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head >
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="TechSphere - Futuristic Electronics eCommerce Platform">
 
     <!-- title -->
-    <title>TechSphere | Next-Gen Electronics</title>
+    <title>NextLevelGaming | Next-Gen Electronics</title>
 
     <!-- favicon -->
-    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/cyber-favicon.png') }}">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
 
     <!-- google font -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
@@ -25,6 +25,7 @@
     <!-- main css -->
     <link rel="stylesheet" href="{{ asset('assets/css/cyber-main.css') }}">
 
+
     @stack('styles')
 </head>
 
@@ -34,16 +35,21 @@
         <div class="cyber-loader-inner">
             <div class="cyber-loader-circle"></div>
             <div class="cyber-loader-text">
+                <span>N</span>
+                <span>E</span>
+                <span>X</span>
                 <span>T</span>
+                <span>L</span>
                 <span>E</span>
-                <span>C</span>
-                <span>H</span>
-                <span>S</span>
-                <span>P</span>
-                <span>H</span>
+                <span>V</span>
                 <span>E</span>
-                <span>R</span>
-                <span>E</span>
+                <span>L</span>
+                <span>G</span>
+                <span>A</span>
+                <span>M</span>
+                <span>I</span>
+                <span>N</span>
+                <span>G</span>
             </div>
             <div class="cyber-loader-progress">
                 <div class="cyber-loader-bar"></div>
@@ -56,12 +62,19 @@
     <header class="cyber-header" id="cyberHeader">
         <div class="cyber-header-container">
             <!-- Cyber Logo -->
-            <div class="cyber-logo">
-                <a href="/">
-                    <div class="cyber-logo-glitch" data-text="TECHSPHERE">TECHSPHERE</div>
-                    <span class="cyber-logo-sub">ELECTRONICS</span>
-                </a>
-            </div>
+           <div class="cyber-logo">
+    <a href="/">
+        <img src="{{ asset('assets/img/logo.png') }}" alt="NextLevel Logo" class="cyber-logo-img">
+
+        <div class="cyber-logo-text">
+            <div class="cyber-logo-glitch" data-text="NextLevel">NextLevel</div>
+            <span class="cyber-logo-sub" style="margin-left: 160px">Gaming</span>
+        </div>
+    </a>
+</div>
+
+
+
 
             <!-- Cyber Navigation -->
             <nav class="cyber-nav">

@@ -136,8 +136,21 @@ body {
 /* Cyber Logo */
 .cyber-logo a {
     display: flex;
-    flex-direction: column;
+    align-items: center; /* aligne image + bloc texte verticalement */
+    gap: 10px; /* espace entre image et texte */
     text-decoration: none;
+}
+
+.cyber-logo-img {
+    height: 40px; /* taille du logo */
+    width: auto;
+}
+
+.cyber-logo-text {
+    display: flex;
+    flex-direction: column; /* met "NextLevel" au-dessus et "Gaming" en dessous */
+    line-height: 1.5; /* réduit l’espace vertical */
+    
 }
 
 .cyber-logo-glitch {

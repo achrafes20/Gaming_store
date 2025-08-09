@@ -31,7 +31,7 @@
                 </div>
                 <div class="col-lg-5">
                     <div class="cyber-slide-image">
-                        <img src="{{ asset('assets/img/cyber-product-1.png') }}" alt="Tech Product" class="cyber-hologram">
+                        <img style="width: 150px" src="{{ asset('assets/img/logo.png') }}" alt="Tech Product" class="cyber-hologram">
                     </div>
                 </div>
             </div>
