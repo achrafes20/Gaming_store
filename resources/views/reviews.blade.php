@@ -18,6 +18,7 @@
         </div>
     </div>
 </div>
+
 <!-- End Cyber Breadcrumb Section -->
 
 <!-- Cyber Review Form Section -->
@@ -98,27 +99,18 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-10 offset-lg-1 text-center">
-                <div class="cyber-section-header" data-aos="fade-up">
+                <div style="text-align: center" class="cyber-section-header" data-aos="fade-up">
                     <div class="cyber-glitch" data-text="TECH FEEDBACK">TECH FEEDBACK</div>
-                    <h2>CUSTOMER <span class="cyber-accent">REVIEWS</span></h2>
-                    <p>What our clients say about our products and service</p>
+                    <h2 style="text-align: center">CUSTOMER <span class="cyber-accent">REVIEWS</span></h2>
+                    <p style="text-align: center">What our clients say about our products and service</p>
                 </div>
 
                 <div class="cyber-testimonials-slider">
                     @foreach ($reviews as $item)
                     <div class="cyber-testimonial-card" data-aos="fade-up">
                         <div class="cyber-client-avatar">
-                            <div class="cyber-avatar-circle">
-                                <img src="{{ asset('assets/img/cyber-avatar.png') }}" alt="Avatar">
-                                <div class="cyber-avatar-glow"></div>
-                            </div>
-                            <div class="cyber-client-rating">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                            </div>
+                            
+
                         </div>
                         <div class="cyber-client-meta">
                             <h3>{{ $item->name }} <span>{{ $item->subject }}</span></h3>
@@ -128,11 +120,9 @@
                             <div class="cyber-testimonial-footer">
                                 <div class="cyber-client-contact">
                                     <i class="fas fa-envelope"></i> {{ $item->email }}
-                                    <i class="fas fa-phone"></i> {{ $item->phone }}
+
                                 </div>
-                                <div class="cyber-quote-icon">
-                                    <i class="fas fa-quote-right"></i>
-                                </div>
+
                             </div>
                         </div>
                         <div class="cyber-testimonial-glow"></div>
@@ -167,6 +157,7 @@
         display: flex;
         align-items: center;
         overflow: hidden;
+        justify-content: center;
     }
 
     .cyber-breadcrumb-overlay {
@@ -466,10 +457,13 @@
         padding: 80px 0;
         background: var(--cyber-dark);
         position: relative;
+
+
     }
 
     .cyber-section-header {
         margin-bottom: 60px;
+
     }
 
     .cyber-section-header h2 {
@@ -477,11 +471,13 @@
         font-size: 2.5rem;
         color: var(--cyber-light);
         margin-bottom: 15px;
+
     }
 
     .cyber-section-header p {
         color: rgba(224, 224, 255, 0.7);
         font-size: 1.1rem;
+
     }
 
     .cyber-accent {

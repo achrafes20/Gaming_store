@@ -69,7 +69,7 @@ class ProductController extends Controller
         'price' => 'required|integer',
         'quantity' => 'required|integer',
         'description' => 'required',
-        'photo' => 'image|max:2048|required',
+        'photo' => 'image|max:2048',
         'photos.*' => 'image|max:2048', // Validation pour les images multiples
     ]);
 

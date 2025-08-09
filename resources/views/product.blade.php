@@ -466,26 +466,13 @@
     <div class="scanline"></div>
 
     <!-- Hero Section -->
-    <div class="hero-section">
-        <div class="hero-overlay"></div>
-        <div class="container">
-            <div class="hero-content">
-                <p class="hero-subtitle">Neon Market</p>
-                <h1 class="hero-title">OUR <span>PRODUCTS</span></h1>
-                <div class="pulse-animation">
-                    <div class="pulse-circle"></div>
-                    <div class="pulse-circle delay-1"></div>
-                    <div class="pulse-circle delay-2"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+
 
     <!-- Products Section -->
     <div class="container">
         <div class="section-title">
-            <h3 class="cyber-font neon-text-pink">HIGH-TECH <span class="neon-text-blue">ORGANICS</span></h3>
-            <p class="neon-text-blue">Premium bio-engineered nutrients for the cyber-enhanced lifestyle</p>
+            <h3 class="cyber-font neon-text-pink">OUR <span class="neon-text-blue">PRODUCTS</span></h3>
+
         </div>
 
         <div class="row">
@@ -501,7 +488,7 @@
                     </div>
                     <div class="product-info">
                         <h3 class="product-name">{{ $item->name }}</h3>
-                        
+
                         <div class="product-actions">
                             <a href="/addproducttocart/{{ $item->id }}" class="btn-cyber">
                                 <i class="fas fa-shopping-cart"></i> ADD TO CART
