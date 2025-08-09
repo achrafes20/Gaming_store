@@ -62,57 +62,93 @@ class ProductController extends Controller
 
 
     public function storeproduct(Request $request)
-    {
-        $request->validate([
-            'name' => ['required',  'max:100'], //unique:products dans le meme nom dans la DB
-            'price' => 'required|integer',
-            'quantity' => 'required|integer',
-            'description' => 'required',
-            'photo' => 'image|mimes:jpg,jpeg,png,gif,svg|max:2048',
-        ]);
-        //Modification
+{
+    // Validation des champs de base du produit
+    $request->validate([
+        'name' => ['required'], // unique:products pour éviter les doublons
+        'price' => 'required|integer',
+        'quantity' => 'required|integer',
+        'description' => 'required',
+        'photo' => 'image|max:2048',
+        'photos.*' => 'image|max:2048', // Validation pour les images multiples
+    ]);
 
-        if ($request->id) {
-            $currentProduct = Product::find($request->id);
-            $currentProduct->name = $request->name;
-            $currentProduct->price = $request->price;
-            $currentProduct->quantity = $request->quantity;
-            $currentProduct->description = $request->description;
-            $currentProduct->category_id = $request->category_id;
+    // Modification d'un produit existant
+    if ($request->id) {
+        $currentProduct = Product::find($request->id);
+        $currentProduct->name = $request->name;
+        $currentProduct->price = $request->price;
+        $currentProduct->quantity = $request->quantity;
+        $currentProduct->description = $request->description;
+        $currentProduct->category_id = $request->category_id;
 
-            if ($request->has('photo')) {
-                $path = $request->photo->move(
-                    'uploads',
-                    Str::uuid()->toString() . '-' .  $request->photo->getClientOriginalName()
-                );
-                $currentProduct->imagepath = $path;
-            }
-
-            $currentProduct->save();
-            return redirect('/product');
-
-            //Ajouter un nouveau produit
-        } else {
-            $newProduct = new Product();
-            $newProduct->name = $request->name;
-            $newProduct->price = $request->price;
-            $newProduct->quantity = $request->quantity;
-            $newProduct->description = $request->description;
-            $newProduct->category_id = $request->category_id;
-
-            $path = '';
-            if ($request->has('photo')) {
-                $path = $request->photo->move(
-                    'uploads',
-                    Str::uuid()->toString() . '-' .  $request->photo->getClientOriginalName()
-                );
-            }
-
-            $newProduct->imagepath = $path;
-            $newProduct->save();
-            return redirect('/');
+        if ($request->has('photo')) {
+            $path = $request->photo->move(
+                'uploads',
+                Str::uuid()->toString() . '-' .  $request->photo->getClientOriginalName()
+            );
+            $currentProduct->imagepath = $path;
         }
+
+        $currentProduct->save();
+
+        // Gestion des images supplémentaires pour un produit existant
+        if ($request->hasfile('photos')) {
+            foreach ($request->file('photos') as $file) {
+                $photo = new ProductPhoto();
+                $photo->product_id = $currentProduct->id;
+
+                $path = $file->move(
+                    'uploads',
+                    Str::uuid()->toString() . '-' . $file->getClientOriginalName()
+                );
+
+                $photo->imagepath = $path;
+                $photo->save();
+            }
+        }
+
+        return redirect('/product');
     }
+    // Création d'un nouveau produit
+    else {
+        $newProduct = new Product();
+        $newProduct->name = $request->name;
+        $newProduct->price = $request->price;
+        $newProduct->quantity = $request->quantity;
+        $newProduct->description = $request->description;
+        $newProduct->category_id = $request->category_id;
+
+        $path = '';
+        if ($request->has('photo')) {
+            $path = $request->photo->move(
+                'uploads',
+                Str::uuid()->toString() . '-' .  $request->photo->getClientOriginalName()
+            );
+        }
+
+        $newProduct->imagepath = $path;
+        $newProduct->save();
+
+        // Gestion des images supplémentaires pour un nouveau produit
+        if ($request->hasfile('photos')) {
+            foreach ($request->file('photos') as $file) {
+                $photo = new ProductPhoto();
+                $photo->product_id = $newProduct->id;
+
+                $path = $file->move(
+                    'uploads',
+                    Str::uuid()->toString() . '-' . $file->getClientOriginalName()
+                );
+
+                $photo->imagepath = $path;
+                $photo->save();
+            }
+        }
+
+        return redirect('/ProductsTable');
+    }
+}
 
     public function ProductsTable()
     {
@@ -140,35 +176,38 @@ class ProductController extends Controller
     }
 
 
-    public function storeProductImage(Request $request)
-    {
-        $request->validate([
-            'product_id' => 'required',
-            'photo' => 'image|mimes:jpg,jpeg,png,gif|max:2048',
-        ]);
+   public function storeProductImage(Request $request)
+{
+    $request->validate([
+        'product_id' => 'required',
+        'photos.*' => 'image|max:2048', // Notez le .* pour indiquer un tableau
+        'photos' => 'required', // photos est maintenant requis
+    ]);
 
+    if ($request->hasfile('photos')) {
+        foreach ($request->file('photos') as $file) {
+            $photo = new ProductPhoto();
+            $photo->product_id = $request->product_id;
 
-        $photo = new ProductPhoto();
-        $photo->product_id = $request->product_id;
-
-        $path = '';
-        if ($request->has('photo')) {
-            $path = $request->photo->move(
+            $path = $file->move(
                 'uploads',
-                Str::uuid()->toString() . '-' .  $request->photo->getClientOriginalName()
+                Str::uuid()->toString() . '-' . $file->getClientOriginalName()
             );
+
             $photo->imagepath = $path;
+            $photo->save();
         }
-        $photo->save();
-        return redirect('/ProductsTable');
     }
+
+    return redirect('/ProductsTable');
+}
 
     public function showProduct($productid)
     {
         $product = Product::with('Category', 'ProductPhotos')->find($productid); //tu utilise with quand tu modifie models
         $relatedProducts = Product::where('category_id', $product->category_id)->where('id', '!=', $productid)
             ->inRandomOrder()
-            ->limit(3)
+            ->limit(4)
             ->get();
         return view('showProduct', ['product' => $product, 'relatedProducts' => $relatedProducts]);
     }
