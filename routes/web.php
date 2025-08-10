@@ -61,6 +61,8 @@ Route::get('/editproduct/{productid?}', [ProductController::class, 'EditProducts
 
 Route::get('/addcategory', [CategoryController::class, 'Addcategory']);//middleware oblige qu il doit etre connecté  tu peux faire if (auth()->check())
 Route::post('/storecategory', [CategoryController::class, 'storecategory']);
+
+
 Route::get('/removecategory/{categoryid?}', [CategoryController::class, 'Removecategory']);
 
 
@@ -115,6 +117,10 @@ Route::get('/admin', function(){
 
 Route::get('/test',[TestController::class,'test']);
 
-
+Route::get('/categoryadmin', [CategoryController::class, 'categoryadmin']);
 
 Route::post('/coupon/apply', [CouponController::class, 'apply'])->name('coupon.apply');
+Route::get('/addcoupon', [CouponController::class, 'addcoupon']);
+Route::post('/storecoupon', [CouponController::class, 'storecoupon']);
+Route::get('/coupons', [CouponController::class, 'coupons']);
+Route::get('/RemoveCoupon/{couponid?}', [CouponController::class, 'RemoveCoupon']);

@@ -206,18 +206,18 @@
         <div class="cyber-footer-grid">
             <!-- About Column -->
             <div class="cyber-footer-column" data-aos="fade-up">
-                <h3 class="cyber-footer-title">ABOUT TECHSPHERE</h3>
-                <div class="cyber-footer-logo">TECHSPHERE</div>
+                <h3 class="cyber-footer-title">ABOUT NEXTLEVELGAMING</h3>
+                <div class="cyber-footer-logo" style="font-size: 20px">NEXTLEVELGAMING</div>
                 <p class="cyber-footer-text">
                     We deliver the future today. Cutting-edge electronics for the next generation of tech enthusiasts
                     and professionals pushing the boundaries of innovation.
                 </p>
                 <div class="cyber-footer-social">
-                    <a href="#" class="cyber-social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" class="cyber-social-link"><i class="fab fa-twitter"></i></a>
-                    <a href="#" class="cyber-social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="cyber-social-link"><i class="fab fa-linkedin-in"></i></a>
-                    <a href="#" class="cyber-social-link"><i class="fab fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=100080119152617" class="cyber-social-link"><i class="fab fa-facebook-f"></i></a>
+
+                    <a href="https://www.instagram.com/achraf_esserrar/" class="cyber-social-link"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/in/achraf-es-serrar-300bb2279/" class="cyber-social-link"><i class="fab fa-linkedin-in"></i></a>
+
                 </div>
             </div>
 
@@ -228,9 +228,9 @@
                     <li><a href="/"><i class="fas fa-arrow-right"></i> Home</a></li>
                     <li><a href="/categories"><i class="fas fa-arrow-right"></i> Products</a></li>
                     <li><a href="/reviews"><i class="fas fa-arrow-right"></i> Reviews</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> About Us</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Contact</a></li>
-                    <li><a href="#"><i class="fas fa-arrow-right"></i> Privacy Policy</a></li>
+                    <li><a href="/login"><i class="fas fa-arrow-right"></i> Login</a></li>
+                    <li><a href="/register"><i class="fas fa-arrow-right"></i> Register</a></li>
+                    <li><a href="/cart"><i class="fas fa-arrow-right"></i> Cart</a></li>
                 </ul>
             </div>
 
@@ -240,15 +240,15 @@
                 <ul class="cyber-footer-contact">
                     <li>
                         <i class="fas fa-map-marker-alt"></i>
-                        <span>Neo-Tokyo District, Cyber City 2077</span>
+                        <span>Tétouan,Morocco</span>
                     </li>
                     <li>
                         <i class="fas fa-envelope"></i>
-                        <span>info@techsphere.io</span>
+                        <span>achrafes764@gmail.com</span>
                     </li>
                     <li>
                         <i class="fas fa-phone-alt"></i>
-                        <span>+1 (555) TECH-007</span>
+                        <span>0620830449</span>
                     </li>
                     <li>
                         <i class="fas fa-clock"></i>
@@ -275,7 +275,7 @@
         <!-- Copyright -->
         <div class="cyber-copyright">
             <div class="cyber-copyright-container">
-                <p>&copy; 2023 TECHSPHERE. ALL RIGHTS RESERVED.</p>
+                <p>&copy; 2025 NEXTLEVELGAMING. ALL RIGHTS RESERVED.</p>
                 <div class="cyber-payment-methods">
                     <i class="fab fa-cc-visa"></i>
                     <i class="fab fa-cc-mastercard"></i>

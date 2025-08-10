@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('coupons', function (Blueprint $table) {
     $table->id();
     $table->string('code')->unique();
-    $table->decimal('discount', 8, 2); // montant ou pourcentage
+    $table->decimal('discount'); // montant ou pourcentage
     $table->enum('type', ['fixed', 'percent']); // type de remise
     $table->integer('usage_limit')->nullable(); // nb max utilisations
     $table->timestamp('expires_at')->nullable(); // date d’expiration

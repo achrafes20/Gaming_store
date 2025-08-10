@@ -22,16 +22,11 @@
                                 <span>EXPLORE PRODUCTS</span>
                                 <i class="fas fa-arrow-right"></i>
                             </a>
-                            <a href="/contact" class="btn-cyber-secondary">
+                            <a href="/reviews" class="btn-cyber-secondary">
                                 <span>CONTACT US</span>
                                 <i class="fas fa-comment-alt"></i>
                             </a>
                         </div>
-                    </div>
-                </div>
-                <div class="col-lg-5">
-                    <div class="cyber-slide-image">
-                        <img style="width: 150px" src="{{ asset('assets/img/logo.png') }}" alt="Tech Product" class="cyber-hologram">
                     </div>
                 </div>
             </div>
@@ -53,7 +48,7 @@
                                 <span>SHOP NOW</span>
                                 <i class="fas fa-shopping-bag"></i>
                             </a>
-                            <a href="/contact" class="btn-cyber-secondary">
+                            <a href="/reviews" class="btn-cyber-secondary">
                                 <span>GET SUPPORT</span>
                                 <i class="fas fa-headset"></i>
                             </a>
@@ -79,8 +74,8 @@
                                 <span>VIEW DEALS</span>
                                 <i class="fas fa-tag"></i>
                             </a>
-                            <a href="/contact" class="btn-cyber-secondary">
-                                <span>LEARN MORE</span>
+                            <a href="/reviews" class="btn-cyber-secondary">
+                                <span>CONTACT US</span>
                                 <i class="fas fa-info-circle"></i>
                             </a>
                         </div>
@@ -139,9 +134,9 @@
         <div class="row">
             <div class="col-lg-8 offset-lg-2 text-center">
                 <div class="cyber-section-header" data-aos="fade-up">
-                    <div class="cyber-section-glitch" data-text="OUR COLLECTION">OUR COLLECTION</div>
-                    <h2>FEATURED <span class="cyber-accent">CATEGORIES</span></h2>
-                    <p>Explore our cutting-edge technology categories and discover the future today</p>
+                    <div class="cyber-section-glitch" data-text="OUR COLLECTION" style="text-align: center">OUR COLLECTION</div>
+                    <h2 style="text-align: center">FEATURED <span class="cyber-accent">CATEGORIES</span></h2>
+                    <p>Explore our cutting-edge technology categories and discover the future </p>
                 </div>
             </div>
         </div>
@@ -244,6 +239,7 @@
         height: 100vh;
         max-height: 800px;
         overflow: hidden;
+
     }
 
     .cyber-slide {

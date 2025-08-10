@@ -12,30 +12,37 @@ class CategoryController extends Controller
     {
         return view('addcategory');
     }
+
     public function storecategory(Request $request)
-    {
-        $request->validate([
-            'name' => ['required',  'max:100'], //unique:products dans le meme nom dans la DB
-            'description' => 'required',
-            'photo' => 'image|mimes:jpg,jpeg,png,gif,svg|max:2048',
-        ]);
-            $newcategory = new Categories();
-            $newcategory->name = $request->name;
-            $newcategory->description = $request->description;
+{
+    $request->validate([
+        'name' => ['required', 'max:100'],
+        'description' => 'required',
+        'photo' => $request->id ? 'nullable|image' : 'required|image',
+    ]);
 
-            $path = '';
-            if ($request->has('photo')) {
-                $path = $request->photo->move(
-                    'uploads',
-                    Str::uuid()->toString() . '-' .  $request->photo->getClientOriginalName()
-                );
-            }
-
-            $newcategory->imagepath = $path;
-            $newcategory->save();
-
-         return redirect('/ProductsTable');
+    if ($request->id) {
+        // Modification
+        $category = Categories::findOrFail($request->id);
+    } else {
+        // Création
+        $category = new Categories();
     }
+
+    $category->name = $request->name;
+    $category->description = $request->description;
+
+    if ($request->hasFile('photo')) {
+        $filename = Str::uuid()->toString() . '-' . $request->photo->getClientOriginalName();
+        $request->photo->move(public_path('uploads'), $filename);
+        $category->imagepath = 'uploads/' . $filename;
+    }
+
+    $category->save();
+
+    return redirect('/ProductsTable');
+}
+
 
     public function RemoveCategory($categoryid = null)
     {
@@ -47,7 +54,9 @@ class CategoryController extends Controller
             abort(403, "please enter category id in the route");
         }
     }
-
-
+    public function categoryadmin(){
+        $categories = Categories::all();
+        return view('categoryadmin', ['category'=>$categories]);
+    }
 
 }

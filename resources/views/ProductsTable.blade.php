@@ -34,9 +34,14 @@
                     <span>ADD PRODUCT</span>
                     <div class="cyber-btn-hover"></div>
                 </a>
-                <a href="/addcategory" class="cyber-action-btn add-category">
+                <a href="/categoryadmin" class="cyber-action-btn add-category">
                     <i class="fas fa-layer-group"></i>
-                    <span>ADD CATEGORY</span>
+                    <span>CATEGORY</span>
+                    <div class="cyber-btn-hover"></div>
+                </a>
+                <a href="/coupons" class="cyber-action-btn add-category">
+                    <i class="fas fa-layer-group"></i>
+                    <span>COUPON</span>
                     <div class="cyber-btn-hover"></div>
                 </a>
             </div>
