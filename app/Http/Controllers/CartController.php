@@ -54,5 +54,18 @@ public function previousorder(Request $request){
 
     return view('previousorder',['orders'=>$result]);
 }
+
+public function cart_increment($cartid){
+    $cart=Cart::find($cartid);
+    $cart->quantity++;
+    $cart->save();
+    return Redirect::back();
+}
+public function cart_decrement($cartid){
+    $cart=Cart::find($cartid);
+    $cart->quantity--;
+    $cart->save();
+    return Redirect::back();
+}
 }
 

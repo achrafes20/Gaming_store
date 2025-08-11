@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
 use App\Models\Categories;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -209,6 +210,10 @@ class ProductController extends Controller
             ->inRandomOrder()
             ->limit(4)
             ->get();
-        return view('showProduct', ['product' => $product, 'relatedProducts' => $relatedProducts]);
+
+        $cart=Cart::find($productid);
+
+
+        return view('showProduct', ['product' => $product, 'relatedProducts' => $relatedProducts,'cart'=>$cart]);
     }
 }

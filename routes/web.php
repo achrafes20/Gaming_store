@@ -129,3 +129,7 @@ Route::get('/RemoveCoupon/{couponid?}', [CouponController::class, 'RemoveCoupon'
 Route::get('/users', [UsersController::class, 'users']);
 Route::get('/Users_admin/{userid?}', [UsersController::class, 'users_admin']);
 Route::get('/Users_client/{userid?}', [UsersController::class, 'users_client']);
+
+
+Route::get('/cart_increment/{cartid}', [CartController::class, 'cart_increment']);
+Route::get('/cart_decrement/{cartid}', [CartController::class, 'cart_decrement']);
