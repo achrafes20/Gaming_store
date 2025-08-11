@@ -2,12 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Product;
-use App\Models\Review;
-use App\Models\Categories;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -17,44 +12,498 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $categories = [
-    ['id' => 1, 'name' => 'Iphone', 'description' => 'Smartphones Apple performants et élégants.', 'imagepath' => 'assets\img\categories\iphone.jpg'],
-    ['id' => 2, 'name' => 'Camera', 'description' => 'Appareils photo haute résolution pour amateurs et professionnels.', 'imagepath' => 'assets\img\categories\camera.jpg'],
-    ['id' => 3, 'name' => 'Laptop', 'description' => 'Ordinateurs portables puissants pour le travail et le divertissement.', 'imagepath' => 'assets\img\categories\laptop.jpg'],
-    ['id' => 4, 'name' => 'Headphones', 'description' => 'Casques audio sans fil avec réduction de bruit.', 'imagepath' => 'assets\img\categories\headphones.jpg'],
-    ['id' => 5, 'name' => 'Smartwatch', 'description' => 'Montres connectées avec suivi de santé et notifications.', 'imagepath' => 'assets\img\categories\smartwatch.jpg'],
-    ['id' => 6, 'name' => 'Tablet', 'description' => 'Tablettes légères idéales pour lire, naviguer ou regarder des vidéos.', 'imagepath' => 'assets\img\categories\tablet.jpg'],
-    ['id' => 7, 'name' => 'Gaming Console', 'description' => 'Consoles de jeux dernière génération pour une expérience immersive.', 'imagepath' => 'assets\img\categories\gaming_console.jpg'],
-    ['id' => 8, 'name' => 'TV', 'description' => 'Téléviseurs 4K UHD avec écran large et son Dolby.', 'imagepath' => 'assets\img\categories\tv.jpg'],
-    ['id' => 9, 'name' => 'Drone', 'description' => 'Drones avec caméra pour prises de vues aériennes.', 'imagepath' => 'assets\img\categories\drone.jpg'],
-    ['id' => 10, 'name' => 'Speaker', 'description' => 'Enceintes Bluetooth portables avec son clair et puissant.', 'imagepath' => 'assets\img\categories\speaker.jpg']
-];
-
-    DB::table('categories')->insertOrIgnore($categories);//il va l ajouter si n existe pas seulement !
-
-
-for($i=1; $i<=25; $i++){
-        Product::create([
-            'name' => 'Product'.$i,
-            'description'=>'This is product number'.$i,
-            'price' => rand(100, 100),
-            'quantity'=>rand(1, 50),
-            'imagepath' => '',
-            'category_id' => rand(1,10),
+        DB::table('categories')->insert([
+            [
+                'id' => 16,
+                'name' => 'Gaming Desktops',
+                'description' => 'Powerful machines for smooth and immersive gaming experiences.',
+                'imagepath' => 'uploads\\bdaa8482-ed39-4eb1-a6db-9e3fbae4fc61-81jzy0GXlQL._UF894,1000_QL80_.jpg',
+                'created_at' => '2025-08-08 16:03:22',
+                'updated_at' => '2025-08-08 16:03:22',
+            ],
+            [
+                'id' => 17,
+                'name' => 'Gaming Laptops',
+                'description' => 'High-performance laptops for work, study, or gaming on the go.',
+                'imagepath' => 'uploads\\e8fe28ab-5da4-4afa-a7fb-31fc44a603b3-81Cm1VMdxrL._AC_SL1500_.jpg',
+                'created_at' => '2025-08-08 16:10:02',
+                'updated_at' => '2025-08-08 16:10:02',
+            ],
         ]);
-    }
-
-    for($i=1; $i<=3; $i++){
-        Review::create([
-            'name' => 'Review'.$i,
-            'phone'=>'number'.$i,
-            'email' => "test@gmail.com",
-            'subject'=>rand(1, 50),
-            'message' => '',
-
+        DB::table('products')->insert([
+            [
+                'id' => 80,
+                'name' => 'Alienware - 16X Aurora 16" 240Hz Gaming Laptop WQXGA - Intel Core Ultra 9 275HX with 32GB Memory - NVIDIA GeForce RTX 5060 - 1TB SDD - Blue',
+                'description' => "Alienware 16X Aurora delivers an immersive gaming-first experience in a sleek design. Get the performance you need, anywhere – powered by Intel® Core™ Ultra HX processors (Series 2) and NVIDIA GeForce RTX™ 5060 Laptop GPUs.\r\n16\" WQXGA (2560 x 1600) 240Hz, 3ms, ComfortView Plus, NVIDIA G-SYNC and Advanced Optimus, 100% DCIP-3\r\nIntel® Core™ Ultra 9 Processor 275HX (36MB cache, 24 cores, 2.1 to 5.4 GHz P-Core) Processor\r\nNVIDIA® GeForce RTX™ 5060, 8 GB GDDR7 Graphics\r\n32GB, 2x16GB, DDR5, 5600 MT/s Memory\r\n1TB, M.2 PCIe NVMe SSD",
+                'imagepath' => 'uploads\\35aacc69-662b-4510-8b49-1cfb3828adee-8f42eeb5-7c37-4666-9323-344a1991bbfa.png',
+                'quantity' => 20,
+                'price' => 18000,
+                'category_id' => 17,
+                'created_at' => '2025-08-08 16:50:20',
+                'updated_at' => '2025-08-08 16:50:20',
+            ],
+            [
+                'id' => 81,
+                'name' => 'RAZER BLADE 18 – INTEL CORE I9-13980HX, 32GO RAM DDR5, SSD 2TO, RTX 4090, QHD+ 240HZ, WINDOWS 11',
+                'description' => "Performance extrême pour les jeux AAA, le streaming, le montage vidéo 4K et la 3D.\r\n\r\nÉcran 18 pouces QHD+ à 240 Hz, parfait pour les FPS compétitifs et les travaux créatifs.\r\n\r\nDesign élégant et durable, en aluminium fraisé CNC.\r\n\r\nTechnologie avancée de refroidissement pour un fonctionnement silencieux et stable même sous pression.\r\n\r\nPortabilité et autonomie avec un chargeur GaN compact et efficace.",
+                'imagepath' => 'uploads\\a12230fa-7396-4e7d-9777-48051b1828d3-razer-blade-18-rtx-4090-i9-13980hx-13e-gen-32go-ram-ddr5-ssd-2to-qhd-240hz-windows-11-pc-gamer-casa-maroc.jpg',
+                'quantity' => 0,
+                'price' => 35990,
+                'category_id' => 17,
+                'created_at' => '2025-08-08 17:33:53',
+                'updated_at' => '2025-08-08 17:33:53',
+            ],
+            [
+                'id' => 82,
+                'name' => 'MSI GF63 Thin 12VE-026ES i7-12650H|32 GB|1 TB|15,6\"|RTX 4050 6 Go W11',
+                'description' => "Le MSI GF63 Thin 12VE-026ES offre une puissance de jeu exceptionnelle dans un format fin et léger. Avec son processeur Intel Core i7 de 12e génération, 32 GB de RAM, un SSD de 1 TB et sa carte graphique NVIDIA RTX 4050, il assure des performances fluides pour tous vos jeux préférés et vos tâches multimédias intensives.",
+                'imagepath' => 'uploads\\1edababc-9e1e-40c9-9de6-53c22e9523ed-msi-gf63-thin-12ve-026es-i7-12650h16-gb512-gb156rtx-4050-6-go-w11-pc-gamer-casa-maroc.jpg',
+                'quantity' => 18,
+                'price' => 12490,
+                'category_id' => 17,
+                'created_at' => '2025-08-08 17:39:23',
+                'updated_at' => '2025-08-08 17:39:23',
+            ],
+            [
+                'id' => 83,
+                'name' => 'Alienware X16 R2 Ultra 9-185H | RTX 4080 12 Go | 16″ 480 Hz 3ms',
+                'description' => "Plongez dans une nouvelle dimension du gaming avec l'Alienware x16 R2, un concentré de puissance et de design. Conçu pour les joueurs exigeants, ce PC portable ultra haut de gamme combine des performances exceptionnelles avec un écran ultra fluide de 480 Hz, le tout dans un châssis premium en alliage métallique.\r\n\r\n🔹 Processeur Intel® Core™ Ultra 9 185H – 16 cœurs de nouvelle génération pour des performances multitâches et gaming de haut niveau.\r\n🔹 Carte graphique NVIDIA® GeForce RTX 4080 12 Go – Profitez du ray tracing et de l'intelligence artificielle pour un rendu graphique spectaculaire.\r\n🔹 Écran 16″ FHD+ 480 Hz / 3 ms – Une réactivité extrême pour les jeux compétitifs, avec compatibilité G-SYNC et Advanced Optimus.\r\n🔹 Mémoire 32 Go LPDDR5X – Vitesse et fluidité même dans les tâches les plus lourdes.\r\n🔹 Stockage SSD 1 To NVMe – Démarrage ultra rapide, chargements instantanés et espace confortable pour vos jeux et fichiers.\r\n🔹 Refroidissement Cryo-Tech™ – Système à chambre à vapeur pour maintenir les performances même en pleine session.\r\n🔹 Éclairage AlienFX RGB – Personnalisation avancée sur plusieurs zones, clavier compris.\r\n🔹 Connectique complète – Thunderbolt 4, HDMI 2.1, USB-C, lecteur microSD, Wi-Fi 7.",
+                'imagepath' => 'uploads\\9cccad21-54fc-4369-83be-fe268942df66-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc.jpg',
+                'quantity' => 8,
+                'price' => 37900,
+                'category_id' => 17,
+                'created_at' => '2025-08-08 17:44:56',
+                'updated_at' => '2025-08-08 17:44:56',
+            ],
+            [
+                'id' => 85,
+                'name' => 'MSI - Stealth A16 AI+ -Copilot+PC- 16\"240Hz QHD Ultra Thin Gaming Laptop- AMD Ryzen AI 9-365 with 32GB Memory-RTX 4070-1TB SSD - Core Black - Open Box - Fair',
+                'description' => "SLIM, SHARP, STYLISH. Stealth 16 AI Studio is the full evolution for coming era. Born for AI, design and performance. A mighty combination for gaming, business and creativity. Succeed in whatever you strive for, no matter where you go.",
+                'imagepath' => 'uploads\\52201d92-52b3-41e4-9933-ba74885449e3-1de90f05-7bd6-4494-959b-90a9b142f9a4.webp',
+                'quantity' => 3,
+                'price' => 14390,
+                'category_id' => 17,
+                'created_at' => '2025-08-08 18:03:05',
+                'updated_at' => '2025-08-08 18:03:05',
+            ],
+            [
+                'id' => 87,
+                'name' => 'Allied Gaming - Stinger Gaming Desktop - AMD Ryzen 5 5600X - 16GB Memory - NVIDIA GeForce RTX 3060 Ti - 1TB NVMe SSD - White',
+                'description' => "Start your journey with Allied's Stinger gaming desktop computer. With the AMD's Ryzen 5 5600X processor, 16GB DDR4 memory , 1TB NVMe storage with lightning fast load time, and NVIDIA GeForce RTX 3060 Ti graphics card, you will enjoy immersive, seamless gaming experience with highly realistic visuals.",
+                'imagepath' => 'uploads\\87e413ce-171c-40d1-9631-141e5b2d5194-dcadd6bb-1525-4b2e-b5d9-e2529df03b68.webp',
+                'quantity' => 3,
+                'price' => 20000,
+                'category_id' => 16,
+                'created_at' => '2025-08-08 18:12:24',
+                'updated_at' => '2025-08-08 18:12:24',
+            ],
+            [
+                'id' => 88,
+                'name' => 'CORSAIR - VENGEANCE i5200 Gaming Desktop-Intel Core Ultra 9 285K-64GB DDR5 6400MHz-NVIDIA GeForce 5090-2TB SSD-2TB SSD - Black',
+                'description' => "Step up your game with a CORSAIR VENGEANCE i5200 Series Gaming PC, powered by an Intel Core Ultra processor, GeForce RTX™ 50 Series graphics, and CORSAIR DOMINATOR TITANIUM RGB DDR5 Memory. Built into the iCUE LINK 2500X RGB Dual Chamber Case, it offers stunning views of your PC's internals through tempered glass panels, along with impressive cooling performance from side, rear, roof, and bottom fans. The VENGEANCE i5200 Series is cooled by an iCUE LINK TITAN 360 RX RGB Liquid CPU Cooler and nine iCUE LINK RX120 RGB Fans with AirGuide technology for concentrated cooling. Equipped with a high-speed M.2 NVMe SSD and easily upgradeable, thanks to a mATX form factor.",
+                'imagepath' => 'uploads\\2379e684-641e-40a7-9593-b5aa145027b7-dbe343e1-0a6d-43b0-8eff-84d5064f78e7.webp',
+                'quantity' => 2,
+                'price' => 60000,
+                'category_id' => 16,
+                'created_at' => '2025-08-08 18:14:33',
+                'updated_at' => '2025-08-08 18:14:33',
+            ],
+            [
+                'id' => 89,
+                'name' => 'CLX - SET Gaming Desktop - Intel Core i5 14400F - 16GB DDR5 5600 Memory - GeForce RTX 4060 - 1TB NVMe M.2 SSD - Black',
+                'description' => "Advance your gaming skill-level with this advanced CLX Set Desktop PC that's designed to deliver high performance for individuals on a budget without sacrificing higher framerate gameplay. This CLX gamer boasts massive power from a 10-core Intel Core i5 14400F processor with a Max Turbo Frequency of 4.7GHz! Then to experience exceptional smooth gameplay, that power has been paired with the amazing GeForce RTX 4060 graphics card that has 8GB of dedicated GDDR6 memory of its own, plus NVIDIA DLSS 3 that uses AI technology for frame multiplying performance that improves the game image quality and provides an immersive visual experience while you battle in the top titles of today. And when you're trying to be your best, you need quick responsiveness, which will come from the  16GB of 5600MHz DDR5 RGB memory, as well from the lightning-fast 1TB NVMe M.2 SSD, so multitasking is seamless, and long load times are a thing of the past. Even though this may be a budget-friendly system, it has what you need to compete, and it doesn't lack in impressive, stylish looks either, as this sleek Mini-Tower gaming chassis radiates sophistication and style. Its tempered glass panels and stunning RGB fans not only add to its aesthetic appeal but also promote optimal airflow, keeping your system cool whenever the competition heats up. Stay connected with wired and WiFi network capabilities, plus enjoy the convenience of Windows 11 Home preinstalled for a smooth gaming experience out of the box. Crafted with precision and quality workmanship, this CLX Set is backed by exceptional support, ensuring reliability and performance that exceed expectations. So get back in the game and start competing with true gaming power...CLX Set!",
+                'imagepath' => 'uploads\\4bb91848-3fa9-42a8-a61d-fbb25efb03a3-6580504_sd.webp',
+                'quantity' => 5,
+                'price' => 15000,
+                'category_id' => 16,
+                'created_at' => '2025-08-08 18:16:46',
+                'updated_at' => '2025-08-08 18:16:46',
+            ],
+            [
+                'id' => 90,
+                'name' => 'Cobratype - Ghost Gaming Desktop - AMD Ryzen 9 9900X - 64GB DDR5 Memory - NVIDIA GeForce RTX 5090 - 2TB NVMe - White',
+                'description' => "Craftsmanship meets gaming with the Ghost gaming PC, which is meticulously crafted for both performance and uncompromising quality. The AMD Ryzen 9 9900X combined with an NVIDIA GeForce RTX 5090 provide a smooth gaming experience, while the 2TB NVME SSD delivers ample storage and quick load times. Embark on your virtual journey with the Cobratype Ghost.",
+                'imagepath' => 'uploads\\acdaefea-7e29-4c07-b092-796d821dc3d6-90158d0a-2f2c-4f44-bbe9-91da6113569f.webp',
+                'quantity' => 6,
+                'price' => 50000,
+                'category_id' => 16,
+                'created_at' => '2025-08-08 18:18:35',
+                'updated_at' => '2025-08-08 18:18:35',
+            ],
+             [
+                'id' => 91,
+                'name' => 'Skytech Gaming - AZURE3 Gaming PC - AMD Ryzen 7 9800X3D - 64GB Memory - NVIDIA GeForce RTX 5070 Ti - 2TB NVMe SSD - White',
+                'description' => "Embark on your gaming adventures with the latest from SkyTech Gaming—the remarkable AZURE3 gaming rig. Harness the sheer power of an AMD Ryzen 7 9800X3D processor paired with 64GB of high-speed DDR5 6000 MHz RGB memory for unparalleled performance. The 2 TB NVMe storage offers ultra-fast game load times, ensuring you spend more time playing and less time waiting. And with the NVIDIA GeForce RTX 5070 Ti graphics card at its core, the AZURE3 produces breathtakingly detailed visuals for a truly enveloping gaming experience.",
+                'imagepath' => 'uploads\\b673ba0c-78cd-4598-99e4-c60884a887e0-bfe4f731-f1b5-4288-8796-d1211f838bf4.webp',
+                'quantity' => 20,
+                'price' => 25000,
+                'category_id' => 16,
+                'created_at' => '2025-08-08 18:21:33',
+                'updated_at' => '2025-08-08 18:21:33',
+            ],
         ]);
+        DB::table('product_photos')->insert([
+            [
+                'id' => 10,
+                'imagepath' => 'uploads\\8ca5ff04-0701-476e-84f9-33d845308705-f0eeb1ef-2d9e-464f-aae1-c38b4753745e.webp',
+                'product_id' => 80,
+                'created_at' => '2025-08-08 17:10:16',
+                'updated_at' => '2025-08-08 17:10:16',
+            ],
+            [
+                'id' => 11,
+                'imagepath' => 'uploads\\8e83ac78-df48-4068-b4a3-a50602601f5f-3f9bd2b9-9d78-46d7-9ccd-43bea10f0eb4.webp',
+                'product_id' => 80,
+                'created_at' => '2025-08-08 17:10:16',
+                'updated_at' => '2025-08-08 17:10:16',
+            ],
+            [
+                'id' => 12,
+                'imagepath' => 'uploads\\780b0758-24a3-4c21-9dec-a602250ae9b1-db40ecfa-d13c-4f70-810b-7d5f0b82f0c6.webp',
+                'product_id' => 80,
+                'created_at' => '2025-08-08 17:10:16',
+                'updated_at' => '2025-08-08 17:10:16',
+            ],
+            [
+                'id' => 13,
+                'imagepath' => 'uploads\\3d03a822-332a-4e7e-bd94-a62d2394bf80-21127654-05bf-4f71-91eb-3197cd386ccf.webp',
+                'product_id' => 80,
+                'created_at' => '2025-08-08 17:10:16',
+                'updated_at' => '2025-08-08 17:10:16',
+            ],
+            [
+                'id' => 14,
+                'imagepath' => 'uploads\\f1d79e40-0f61-41ea-bafc-dd158f65ba84-3a0e2d33-33c1-4158-a231-ff30877ee470.webp',
+                'product_id' => 80,
+                'created_at' => '2025-08-08 17:10:16',
+                'updated_at' => '2025-08-08 17:10:16',
+            ],
+            [
+                'id' => 15,
+                'imagepath' => 'uploads\\a7d71836-33f1-4a16-a71d-c6b6b1bf320d-razer-blade-18-rtx-4090-i9-13980hx-13e-gen-32go-ram-ddr5-ssd-2to-qhd-240hz-windows-11-pc-gamer-casa-maroc (4).jpg',
+                'product_id' => 81,
+                'created_at' => '2025-08-08 17:35:15',
+                'updated_at' => '2025-08-08 17:35:15',
+            ],
+            [
+                'id' => 16,
+                'imagepath' => 'uploads\\9c0c67ff-e246-4953-b4da-35440f51cae6-razer-blade-18-rtx-4090-i9-13980hx-13e-gen-32go-ram-ddr5-ssd-2to-qhd-240hz-windows-11-pc-gamer-casa-maroc (3).jpg',
+                'product_id' => 81,
+                'created_at' => '2025-08-08 17:35:15',
+                'updated_at' => '2025-08-08 17:35:15',
+            ],
+            [
+                'id' => 17,
+                'imagepath' => 'uploads\\52f269da-45df-4468-9b74-25152eab9c79-razer-blade-18-rtx-4090-i9-13980hx-13e-gen-32go-ram-ddr5-ssd-2to-qhd-240hz-windows-11-pc-gamer-casa-maroc (2).jpg',
+                'product_id' => 81,
+                'created_at' => '2025-08-08 17:35:15',
+                'updated_at' => '2025-08-08 17:35:15',
+            ],
+            [
+                'id' => 18,
+                'imagepath' => 'uploads\\bb49c262-cd33-433f-98b6-41753df064f2-razer-blade-18-rtx-4090-i9-13980hx-13e-gen-32go-ram-ddr5-ssd-2to-qhd-240hz-windows-11-pc-gamer-casa-maroc (1).jpg',
+                'product_id' => 81,
+                'created_at' => '2025-08-08 17:35:15',
+                'updated_at' => '2025-08-08 17:35:15',
+            ],
+            [
+                'id' => 19,
+                'imagepath' => 'uploads\\18026480-95f1-4ca5-9851-1d96a3408532-msi-gf63-thin-12ve-026es-i7-12650h16-gb512-gb156rtx-4050-6-go-w11-pc-gamer-casa-maroc (4).jpg',
+                'product_id' => 82,
+                'created_at' => '2025-08-08 17:39:40',
+                'updated_at' => '2025-08-08 17:39:40',
+            ],
+            [
+                'id' => 20,
+                'imagepath' => 'uploads\\0a8863d9-0944-43c7-a739-f247c97627a2-msi-gf63-thin-12ve-026es-i7-12650h16-gb512-gb156rtx-4050-6-go-w11-pc-gamer-casa-maroc (3).jpg',
+                'product_id' => 82,
+                'created_at' => '2025-08-08 17:39:40',
+                'updated_at' => '2025-08-08 17:39:40',
+            ],
+            [
+                'id' => 21,
+                'imagepath' => 'uploads\\55437b93-d468-43ab-813f-2317fe11aeee-msi-gf63-thin-12ve-026es-i7-12650h16-gb512-gb156rtx-4050-6-go-w11-pc-gamer-casa-maroc (2).jpg',
+                'product_id' => 82,
+                'created_at' => '2025-08-08 17:39:40',
+                'updated_at' => '2025-08-08 17:39:40',
+            ],
+            [
+                'id' => 22,
+                'imagepath' => 'uploads\\7094f5ae-d3f9-471d-a650-420112ca5051-msi-gf63-thin-12ve-026es-i7-12650h16-gb512-gb156rtx-4050-6-go-w11-pc-gamer-casa-maroc (1).jpg',
+                'product_id' => 82,
+                'created_at' => '2025-08-08 17:39:40',
+                'updated_at' => '2025-08-08 17:39:40',
+            ],
+            [
+                'id' => 29,
+                'imagepath' => 'uploads\\fa787b87-f84a-4a4f-8814-e766d6beb717-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (8).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 30,
+                'imagepath' => 'uploads\\cb5ce940-e089-46a0-bd6a-e536892148e1-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (7).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 31,
+                'imagepath' => 'uploads\\551df112-296f-4199-9ec8-6c471507e3d1-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (6).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 32,
+                'imagepath' => 'uploads\\00d8bfa2-501c-4459-a6d5-42019680a993-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (5).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 33,
+                'imagepath' => 'uploads\\c6dd55f3-245e-4f02-a389-15d273739732-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (4).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 34,
+                'imagepath' => 'uploads\\122077b8-5c74-4c8e-b6fd-d453e4ab87df-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (3).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 35,
+                'imagepath' => 'uploads\\0423d570-950b-41a7-bb65-9917713f549a-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (2).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 36,
+                'imagepath' => 'uploads\\4794cb6e-9f49-41bf-a3d7-b4ebc9f0f522-alienware-x16-r2-ultra-9-185h-rtx-4080-12-go-16-480-hz-3ms-pc-gamer-casa-maroc (1).jpg',
+                'product_id' => 83,
+                'created_at' => '2025-08-08 17:53:22',
+                'updated_at' => '2025-08-08 17:53:22',
+            ],
+            [
+                'id' => 37,
+                'imagepath' => 'uploads\\a0bbab5a-5c57-493a-800e-a59c39db297a-adfd3ad6-e8cb-481f-8f37-661a310b5b08.webp',
+                'product_id' => 85,
+                'created_at' => '2025-08-08 18:03:05',
+                'updated_at' => '2025-08-08 18:03:05',
+            ],
+            [
+                'id' => 38,
+                'imagepath' => 'uploads\\28ea69b7-2be7-4fe1-86bf-48ba5c117ad3-c549d5ff-e137-4760-a6f4-0f47b5db2ed9.webp',
+                'product_id' => 85,
+                'created_at' => '2025-08-08 18:03:05',
+                'updated_at' => '2025-08-08 18:03:05',
+            ],
+            [
+                'id' => 39,
+                'imagepath' => 'uploads\\d0ce29e8-497d-4cb6-ad46-5e113ee91ee1-18ef2084-80dd-49df-8c42-7f2c90c9a872.webp',
+                'product_id' => 85,
+                'created_at' => '2025-08-08 18:03:05',
+                'updated_at' => '2025-08-08 18:03:05',
+            ],
+            [
+                'id' => 40,
+                'imagepath' => 'uploads\\3e9799fb-958a-4d3b-8fb1-63bb65701402-a5857254-d51f-4130-b32f-b9a89e3dceb5.webp',
+                'product_id' => 85,
+                'created_at' => '2025-08-08 18:03:05',
+                'updated_at' => '2025-08-08 18:03:05',
+            ],
+            [
+                'id' => 44,
+                'imagepath' => 'uploads\\945559ad-9921-4c25-bfd9-04808616f66f-44d151ef-cc5f-4976-bf6a-bc71d0c87a49.webp',
+                'product_id' => 87,
+                'created_at' => '2025-08-08 18:12:24',
+                'updated_at' => '2025-08-08 18:12:24',
+            ],
+            [
+                'id' => 45,
+                'imagepath' => 'uploads\\b86df6a6-49bd-4b04-bfcb-dcf86d05e2de-bd5e49d4-a18d-4209-9222-0b67298bcf14.webp',
+                'product_id' => 87,
+                'created_at' => '2025-08-08 18:12:24',
+                'updated_at' => '2025-08-08 18:12:24',
+            ],
+            [
+                'id' => 46,
+                'imagepath' => 'uploads\\47e11670-5533-486c-817f-29b82f074cf4-f5531623-92b4-4269-af51-7e693dde8f60.webp',
+                'product_id' => 87,
+                'created_at' => '2025-08-08 18:12:24',
+                'updated_at' => '2025-08-08 18:12:24',
+            ],
+            [
+                'id' => 47,
+                'imagepath' => 'uploads\\201f01ed-bf8d-4d43-a031-a1960146c997-b6073197-3c06-4125-908d-208302f8de5d.webp',
+                'product_id' => 88,
+                'created_at' => '2025-08-08 18:14:33',
+                'updated_at' => '2025-08-08 18:14:33',
+            ],
+            [
+                'id' => 48,
+                'imagepath' => 'uploads\\4341825b-eeaa-4bae-b1f0-f6c8cc842f0c-24d1f8c6-ec02-4789-8b43-ba2c86debcc3.webp',
+                'product_id' => 88,
+                'created_at' => '2025-08-08 18:14:33',
+                'updated_at' => '2025-08-08 18:14:33',
+            ],
+            [
+                'id' => 49,
+                'imagepath' => 'uploads\\38e6cbcf-6038-4394-816f-9b72f6cf0cd2-5a93d0d4-5b29-4f82-8d48-2a174958ab57.webp',
+                'product_id' => 88,
+                'created_at' => '2025-08-08 18:14:33',
+                'updated_at' => '2025-08-08 18:14:33',
+            ],
+            [
+                'id' => 50,
+                'imagepath' => 'uploads\\848b2b2b-ca8b-4fb6-b611-0ec8c8ce5a04-d074080e-5c89-4334-a8a0-65db35974c0c.webp',
+                'product_id' => 88,
+                'created_at' => '2025-08-08 18:14:33',
+                'updated_at' => '2025-08-08 18:14:33',
+            ],
+            [
+                'id' => 51,
+                'imagepath' => 'uploads\\e14965e4-b5b0-41fd-87a9-5de86a0ce087-6580504_bd.webp',
+                'product_id' => 89,
+                'created_at' => '2025-08-08 18:16:46',
+                'updated_at' => '2025-08-08 18:16:46',
+            ],
+            [
+                'id' => 52,
+                'imagepath' => 'uploads\\60ac9639-beed-4a9d-a159-e5f86cbe16c9-6580504ld.webp',
+                'product_id' => 89,
+                'created_at' => '2025-08-08 18:16:46',
+                'updated_at' => '2025-08-08 18:16:46',
+            ],
+            [
+                'id' => 53,
+                'imagepath' => 'uploads\\7bfdde3f-fe53-4f64-8ba3-7666c90a0271-6580504_rd.webp',
+                'product_id' => 89,
+                'created_at' => '2025-08-08 18:16:46',
+                'updated_at' => '2025-08-08 18:16:46',
+            ],
+            [
+                'id' => 54,
+                'imagepath' => 'uploads\\6aa46e3a-509d-4e46-88e5-80b120889d4e-c697cb10-d546-41ee-bf69-1fea716adc58.webp',
+                'product_id' => 90,
+                'created_at' => '2025-08-08 18:18:35',
+                'updated_at' => '2025-08-08 18:18:35',
+            ],
+            [
+                'id' => 55,
+                'imagepath' => 'uploads\\c7f96ba7-bef4-4440-b1be-8cddb93134e2-2a17f07e-d1f9-4406-bfd7-ede2557e83a1.webp',
+                'product_id' => 90,
+                'created_at' => '2025-08-08 18:18:35',
+                'updated_at' => '2025-08-08 18:18:35',
+            ],
+            [
+                'id' => 56,
+                'imagepath' => 'uploads\\fb9cf44f-a015-4013-b4f4-702b93346e42-31f0c642-f3f1-4861-b461-82269176b705.webp',
+                'product_id' => 90,
+                'created_at' => '2025-08-08 18:18:35',
+                'updated_at' => '2025-08-08 18:18:35',
+            ],
+            [
+                'id' => 57,
+                'imagepath' => 'uploads\\a0342b48-7cdd-4504-ac35-92f79e391063-808424b4-4a27-4efc-a299-13ad350466b4.webp',
+                'product_id' => 90,
+                'created_at' => '2025-08-08 18:18:35',
+                'updated_at' => '2025-08-08 18:18:35',
+            ],
+            [
+                'id' => 58,
+                'imagepath' => 'uploads\\0973c368-4186-4069-a52e-ae7b722948e5-41640416-af31-4294-8759-b06e7b8bc3fb.webp',
+                'product_id' => 90,
+                'created_at' => '2025-08-08 18:18:35',
+                'updated_at' => '2025-08-08 18:18:35',
+            ],
+            [
+                'id' => 59,
+                'imagepath' => 'uploads\\180ce263-8ee6-44f4-8b94-f72cf54dcaeb-e0c2c611-1159-4d52-aba0-ddb3f64bf537.webp',
+                'product_id' => 91,
+                'created_at' => '2025-08-08 18:21:33',
+                'updated_at' => '2025-08-08 18:21:33',
+            ],
+            [
+                'id' => 60,
+                'imagepath' => 'uploads\\40c356f8-8959-4956-866f-ea587cb95f4d-f0a3d307-992f-4159-8d57-d4ea9414b76b.webp',
+                'product_id' => 91,
+                'created_at' => '2025-08-08 18:21:33',
+                'updated_at' => '2025-08-08 18:21:33',
+            ],
+            [
+                'id' => 61,
+                'imagepath' => 'uploads\\d9737ff2-727f-419d-a289-3859697f2891-fd02ee30-1256-40b3-8473-a12d19fc11f5.webp',
+                'product_id' => 91,
+                'created_at' => '2025-08-08 18:21:33',
+                'updated_at' => '2025-08-08 18:21:33',
+            ],
+        ]);
+
+        DB::table('reviews')->insert([
+            [
+                'id' => 6,
+                'name' => 'Akram Elalami',
+                'phone' => '0632154789',
+                'email' => 'akram.elalami@gmail.com',
+                'subject' => 'Top-Notch Gaming Gear!',
+                'message' => 'This website is a gamers dream come true! I found everything I needed—from high-quality gaming mice and mechanical keyboards to top-tier headsets—all at great prices. The checkout process was smooth, delivery was fast, and the packaging was perfect. The products work flawlessly, and the customer support team was friendly and quick to answer my questions. Highly recommended for anyone serious about gaming!',
+                'created_at' => '2025-08-09 15:44:27',
+                'updated_at' => '2025-08-09 15:44:27',
+            ],
+            [
+                'id' => 7,
+                'name' => 'Youssef Benani',
+                'phone' => '0785421560',
+                'email' => 'youssef.benani@gmail.com',
+                'subject' => 'Excellent Service & Quality Products',
+                'message' => 'I m beyond impressed with this website! The selection of gaming accessories is amazing, with all the latest gear at competitive prices. My order arrived quickly, well-packaged, and exactly as described. The quality is outstanding, and I can already feel the difference in my gaming setup. Customer service was polite and super helpful. I ll definitely be shopping here again!',
+                'created_at' => '2025-08-09 15:45:38',
+                'updated_at' => '2025-08-09 15:45:38',
+            ],
+            [
+                'id' => 8,
+                'name' => 'Alae Berk',
+                'phone' => '0632145201',
+                'email' => 'alae.berk@gmail.com',
+                'subject' => 'Best Place for Gaming Gear',
+                'message' => 'This store is my go-to for all gaming accessories! I bought a new headset and RGB keyboard, and both exceeded my expectations. The prices are fair, shipping was super fast, and the quality is top-tier. It s clear they care about gamers and only stock the best products.',
+                'created_at' => '2025-08-09 15:46:33',
+                'updated_at' => '2025-08-09 15:46:33',
+            ],
+        ]);
+
+        DB::table('users')->insert([
+            [
+                'id' => 1,
+                'name' => 'akram',
+                'email' => 'akram@gmail.com',
+                'email_verified_at' => null,
+                'password' => '$2y$12$KhA4ICV0R2rupwKauHbiq.dF/zfi/IrJypPZZz/fU0tnj.1mpaw2a',
+                'remember_token' => 'eVeAp3t7EmkQrrQaaswScHJSGPv4Lu2gkMxiU0BwWKzbclogIr4zLfVmpYox',
+                'created_at' => '2025-07-28 09:55:26',
+                'updated_at' => '2025-08-10 22:10:58',
+                'role' => '',
+            ],
+            [
+                'id' => 2,
+                'name' => 'admin',
+                'email' => 'admin@gmail.com',
+                'email_verified_at' => null,
+                'password' => '$2y$12$KhA4ICV0R2rupwKauHbiq.dF/zfi/IrJypPZZz/fU0tnj.1mpaw2a',
+                'remember_token' => 'lyOFUK8qncgvzKZzOLKNXhEmN4Xf1ZVMNkZjwf36m5HUndGnuyX2vLN0m4TZ',
+                'created_at' => null,
+                'updated_at' => '2025-08-10 22:10:54',
+                'role' => 'admin',
+            ],
+        ]);
+
+
     }
-}
-
-
 }

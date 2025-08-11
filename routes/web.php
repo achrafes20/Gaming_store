@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Order;
 use App\Models\Categories;
 use App\Models\Cart;
+use App\Models\Sub;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
@@ -158,4 +159,14 @@ Route::get('/orders', function(){
     $orders=Order::all();
     return view('orders',['orders'=>$orders]);
 
+});
+Route::post('/sub', function(Request $request){
+    $request->validate([
+        'email' => 'required'
+
+    ]);
+    $newsub= new Sub();
+        $newsub->email = $request->email;
+        $newsub->save();
+        return redirect()->back();
 });

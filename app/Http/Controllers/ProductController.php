@@ -53,7 +53,7 @@ class ProductController extends Controller
         if ($productid != null) {
             $currentProduct = Product::find($productid);
             $currentProduct->delete();
-            return redirect('/product');
+            return redirect()->back();
         } else {
             abort(403, "please enter product id in the route");
         }
@@ -109,7 +109,7 @@ class ProductController extends Controller
             }
         }
 
-        return redirect('/product');
+        return redirect()->back();
     }
     // Création d'un nouveau produit
     else {

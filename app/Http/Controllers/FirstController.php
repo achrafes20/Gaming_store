@@ -41,7 +41,7 @@ class FirstController extends Controller
         $newReview->subject = $request->subject;
         $newReview->message = $request->message;
         $newReview->save();
-        return redirect('/');
+        return redirect()->back();
     }
 
 

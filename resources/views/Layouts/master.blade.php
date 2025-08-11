@@ -213,10 +213,10 @@
                     and professionals pushing the boundaries of innovation.
                 </p>
                 <div class="cyber-footer-social">
-                    <a href="https://www.facebook.com/profile.php?id=100080119152617" class="cyber-social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a style="text-decoration: none;" href="https://www.facebook.com/profile.php?id=100080119152617" class="cyber-social-link"><i class="fab fa-facebook-f"></i></a>
 
-                    <a href="https://www.instagram.com/achraf_esserrar/" class="cyber-social-link"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/in/achraf-es-serrar-300bb2279/" class="cyber-social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a style="text-decoration: none;" href="https://www.instagram.com/achraf_esserrar/" class="cyber-social-link"><i class="fab fa-instagram"></i></a>
+                    <a style="text-decoration: none;" href="https://www.linkedin.com/in/achraf-es-serrar-300bb2279/" class="cyber-social-link"><i class="fab fa-linkedin-in"></i></a>
 
                 </div>
             </div>
@@ -263,8 +263,9 @@
                 <p class="cyber-footer-text">
                     Subscribe to get updates on new tech releases, exclusive deals and insider access.
                 </p>
-                <form class="cyber-newsletter-form">
-                    <input type="email" placeholder="Your Email" class="cyber-newsletter-input">
+                <form class="cyber-newsletter-form" method="POST" enctype="multipart/form-data" action="/sub">
+                    @csrf
+                    <input type="email" name="email" id="email" placeholder="Your Email" class="cyber-newsletter-input">
                     <button type="submit" class="cyber-newsletter-btn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
