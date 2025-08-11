@@ -6,7 +6,7 @@
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 ![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
 
-> A **Laravel-based** project for a modern and dynamic video game store.  
+> A **Laravel-based** project for a modern and dynamic gaming store.  
 > This guide will help you **install and run** the project locally.  
 
 ---
@@ -15,7 +15,7 @@
 
 Before starting, make sure you have installed:
 
-- **PHP** (compatible version with Laravel, e.g., PHP 8.1+)
+- **PHP** (compatible version with Laravel, e.g., PHP 8.2)
 - **Composer** (Dependency Manager for PHP)
 - A web server: **Apache**, **Nginx**, or Laravel’s built-in server (`php artisan serve`)
 - **Database**: MySQL, PostgreSQL, or SQLite
