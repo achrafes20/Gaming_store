@@ -175,7 +175,7 @@
             <div class="col-lg-6">
                 @if($product->ProductPhotos->count() > 0)
                 <div class="product-image mb-4 neon-border-pink p-2">
-                    <img style="height:500px;" src="{{ asset($product->imagepath) }}" class="img-fluid w-100" alt="{{ $product->name }}" id="mainImage">
+                    <img  src="{{ asset($product->imagepath) }}" class="img-fluid w-100" alt="{{ $product->name }}" id="mainImage">
                 </div>
                 <div class="row">
                     <div class="col-2 thumb">
@@ -189,7 +189,7 @@
                 </div>
                 @else
                 <div class="product-image mb-4 neon-border-pink p-2">
-                    <img src="{{ asset($product->imagepath) }}" class="img-fluid w-100" alt="{{ $product->name }}">
+                    <img style="width: 80px;height:80px;!important" src="{{ asset($product->imagepath) }}" class="img-fluid w-100" alt="{{ $product->name }}">
                 </div>
                 @endif
             </div>
@@ -225,12 +225,7 @@
                 <div class="row mb-4">
 
                     <div class="col-md-6">
-                        <label for="qtySelect" class="form-label neon-text-blue">QUANTITY:</label>
-                        <div class="input-group">
-                            <button class="btn btn-outline-info" type="button" id="minusBtn">-</button>
-                            <input type="text" class="form-control bg-dark text-white text-center neon-border-blue" value="1" id="qtyInput" max="{{ $product->quantity }}">
-                            <button class="btn btn-outline-info" type="button" id="plusBtn">+</button>
-                        </div>
+
                         <small style="color: grey">{{ $product->quantity }} available</small>
                     </div>
                 </div>

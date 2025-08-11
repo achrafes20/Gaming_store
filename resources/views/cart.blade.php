@@ -63,21 +63,31 @@
                                     <div class="cyber-price">${{ number_format($item->product->price, 2) }}</div>
                                 </div>
                                 <div class="cyber-cart-item-quantity">
-                            @if($item->quantity>1)
-                                    <div class="cyber-quantity-selector">
+                           <div class="cyber-quantity-selector">
+    {{-- Bouton decrement ou delete --}}
+    @if($item->quantity > 1)
+        <a href="/cart_decrement/{{ $item->id }}" class="cyber-qty-btn" style="text-decoration: none;">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    @else
+        <a href="/deletecartitem/{{ $item->id }}" class="cyber-qty-btn" style="text-decoration: none;">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    @endif
 
-    <a href="/cart_decrement/{{ $item->id }}" class="cyber-qty-btn cyber-qty-decrement" style="text-decoration: none;"><i class="fas fa-chevron-down"></i></a>
+    {{-- Valeur --}}
     <span class="cyber-qty-value">{{ $item->quantity }}</span>
-    <a href="/cart_increment/{{ $item->id }}" class="cyber-qty-btn cyber-qty-increment" style="text-decoration: none;"><i class="fas fa-chevron-up"></i></a>
-</div>
-@else
-<div class="cyber-quantity-selector">
 
-    <a href="/deletecartitem/{{ $item->id }}" class="cyber-qty-btn cyber-qty-decrement" style="text-decoration: none;"><i class="fas fa-chevron-down"></i></a>
-    <span class="cyber-qty-value">{{ $item->quantity }}</span>
-    <a href="/cart_increment/{{ $item->id }}" class="cyber-qty-btn cyber-qty-increment" style="text-decoration: none;"><i class="fas fa-chevron-up"></i></a>
+    {{-- Bouton increment (affiché uniquement si quantité < stock) --}}
+    @if($item->quantity < $item->product->quantity)
+        <a href="/cart_increment/{{ $item->id }}" class="cyber-qty-btn" style="text-decoration: none;">
+            <i class="fas fa-chevron-up"></i>
+        </a>
+    @endif
 </div>
-@endif
+
+
+
 
                                 </div>
                                 <div class="cyber-cart-item-total">

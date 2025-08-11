@@ -296,7 +296,12 @@
                 <div class="product-card p-3">
                     <div class="product-image mb-3">
                         <a href="/single-product/{{$item->id}}">
-                            <img style="width: 200px;" src="{{asset($item->imagepath)}}" alt="{{$item->name}}">
+                            <img style="max-width: 200px;
+            max-height: 200px;
+            border-radius: 5px;
+            border: 1px solid var(--cyber-primary);
+            object-fit: cover;
+            " src="{{asset($item->imagepath)}}" alt="{{$item->name}}">
                             <div class="product-overlay">
                                 <div class="quick-view">
                                     <i class="fas fa-eye"></i> QUICK VIEW

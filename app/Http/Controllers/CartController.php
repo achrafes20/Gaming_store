@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use App\Models\Order;
 use App\Models\orderdetails;
+use App\Models\Product;
 use Illuminate\Support\Facades\Redirect;
 
 class CartController extends Controller
@@ -23,28 +24,44 @@ class CartController extends Controller
         $cartProducts=Cart::with('Product')->where ('user_id',$user_id)->get();
     return view('Completeorder',['cartProducts'=>$cartProducts]);
 }
-public function StoreOrder(Request $request){
-    $newOrder=new Order();
-    $newOrder->name=$request->name;
-    $newOrder->address=$request->address;
-    $newOrder->email=$request->email;
-    $newOrder->phone=$request->phone;
-    $newOrder->note=$request->note;
-    $user_id=auth()->user()->id;
-    $newOrder->user_id=$user_id;
+public function StoreOrder(Request $request)
+{
+    $newOrder = new Order();
+    $newOrder->name = $request->name;
+    $newOrder->address = $request->address;
+    $newOrder->email = $request->email;
+    $newOrder->phone = $request->phone;
+    $newOrder->note = $request->note;
+    $user_id = auth()->user()->id;
+    $newOrder->user_id = $user_id;
     $newOrder->save();
-    $cartProducts=Cart::with('Product')->where('user_id',$user_id)->get();
-    foreach($cartProducts as $item){
-        $newOrderDetail=new orderdetails();
-        $newOrderDetail->product_id=$item->product_id;
-        $newOrderDetail->price=$item->Product->price;
-        $newOrderDetail->quantity=$item->quantity;
-        $newOrderDetail->order_id=$newOrder->id;
+
+    $cartProducts = Cart::with('Product')->where('user_id', $user_id)->get();
+
+    foreach ($cartProducts as $item) {
+        $newOrderDetail = new OrderDetails();
+        $newOrderDetail->product_id = $item->product_id;
+        $newOrderDetail->price = $item->Product->price;
+        $newOrderDetail->quantity = $item->quantity;
+        $newOrderDetail->order_id = $newOrder->id;
+
+        // Diminuer le stock du produit
+        $pr = Product::find($newOrderDetail->product_id);
+        if ($pr) {
+            $pr->quantity -= $newOrderDetail->quantity;
+            $pr->save();
+        }
+
         $newOrderDetail->save();
-}
-Cart::where('user_id', $user_id)->delete();
-session()->forget('discount');
-return Redirect('/');
+    }
+
+    // Vider le panier
+    Cart::where('user_id', $user_id)->delete();
+
+    // Supprimer la remise
+    session()->forget('discount');
+
+    return redirect('/');
 }
 
 public function previousorder(Request $request){
@@ -55,12 +72,21 @@ public function previousorder(Request $request){
     return view('previousorder',['orders'=>$result]);
 }
 
-public function cart_increment($cartid){
-    $cart=Cart::find($cartid);
-    $cart->quantity++;
-    $cart->save();
-    return Redirect::back();
+public function cart_increment($cartid)
+{
+    $cart = Cart::findOrFail($cartid);
+    $maxStock = $cart->product->quantity;
+
+    if ($cart->quantity < $maxStock) {
+        $cart->quantity++;
+        $cart->save();
+    }
+
+    return back();
 }
+
+
+
 public function cart_decrement($cartid){
     $cart=Cart::find($cartid);
     $cart->quantity--;
