@@ -229,11 +229,18 @@
                         <small style="color: grey">{{ $product->quantity }} available</small>
                     </div>
                 </div>
+                @if (  $product->quantity ==0)
+                <div class="d-grid gap-3">
+                    <a class="btn btn-cyber btn-lg py-3">OUT OF STOCK</a>
 
+                </div>
+                @else
                 <div class="d-grid gap-3">
                     <a href="/addproducttocart/{{ $product->id }}" class="btn btn-cyber btn-lg py-3">ADD TO CART</a>
 
                 </div>
+                @endif
+
 
                 <div class="cyber-tech-specs mt-4 product-card p-3">
                     <h5 class="neon-text-blue mb-3"><i class="fas fa-info-circle"></i> TECHNICAL SPECIFICATIONS</h5>

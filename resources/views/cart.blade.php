@@ -104,7 +104,7 @@
                                 </div>
                                 <h3>Your Tech Cart is Empty</h3>
                                 <p>Explore our latest electronic devices and add some tech magic to your cart!</p>
-                                <a href="/products" class="cyber-explore-btn">
+                                <a href="/categories" class="cyber-explore-btn">
                                     <span>Explore Products</span>
                                     <i class="fas fa-arrow-right"></i>
                                 </a>
@@ -141,6 +141,7 @@
                                     ) }}</span>
                             </div>
                         </div>
+                        @if (count($cartProducts) > 0)
 
                         <div class="cyber-promo-section">
                             <div class="cyber-promo-input">
@@ -155,12 +156,22 @@
                                 <p style="color: rgb(92, 253, 6)">Coupon applied: -{{ session('discount') }} DH</p>
                             @endif
                         </div>
+                        @endif
 
                         <div class="cyber-checkout-btns">
+
+                            @if (count($cartProducts) > 0)
                             <a href="/Completeorder" class="cyber-checkout-btn">
                                 <span>PROCEED TO CHECKOUT</span>
                                 <i class="fas fa-lock"></i>
                             </a>
+                            @else
+                            <a href="/categories" class="cyber-checkout-btn">
+                                <span>EXPLORE PRODUCTS</span>
+                                <i class="fas fa-shopping-basket"></i>
+                            </a>
+                            @endif
+
                             <a href="/previousorder" class="cyber-previous-orders-btn">
                                 <span>VIEW PREVIOUS ORDERS</span>
                                 <i class="fas fa-history"></i>
@@ -196,7 +207,16 @@
         <div class="cyber-mini-cart-total">
             ${{ number_format($cartProducts->sum(function ($item) {return $item->product->price * $item->quantity;}),2) }}
         </div>
-        <a href="/Completeorder" class="cyber-mini-checkout-btn">CHECKOUT</a>
+
+@if (count($cartProducts) == 0)
+<a href="/categories" class="cyber-explore-btn">
+                                    <span>Explore Products</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+
+@else
+<a href="/Completeorder" class="cyber-mini-checkout-btn">CHECKOUT</a>
+@endif
     </div>
 
     @push('styles')

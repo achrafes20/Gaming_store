@@ -300,8 +300,7 @@
             max-height: 200px;
             border-radius: 5px;
             border: 1px solid var(--cyber-primary);
-            object-fit: cover;
-            " src="{{asset($item->imagepath)}}" alt="{{$item->name}}">
+            object-fit: cover;" src="{{asset($item->imagepath)}}" alt="{{$item->name}}">
                             <div class="product-overlay">
                                 <div class="quick-view">
                                     <i class="fas fa-eye"></i> QUICK VIEW
@@ -321,9 +320,15 @@
                         <span  style="color: grey">{{$item->quantity}} IN STOCK</span>
                     </div>
                     <div class="d-flex justify-content-between align-items-center">
-                        <a href="/addproducttocart/{{ $item->id }}" class="btn btn-cyber btn-sm">
+                        @if (  $item->quantity ==0)
+                        <a  class="btn btn-cyber btn-sm">
+                            <i class="fas " ></i> OUT OF STOCK
+                        </a>
+                         @else
+                         <a href="/addproducttocart/{{ $item->id }}" class="btn btn-cyber btn-sm">
                             <i class="fas fa-shopping-cart"></i> ADD TO CART
                         </a>
+                         @endif
                         @if(Auth::check() && (Auth::user()->role == 'admin' || Auth::user()->role == 'salesman'))
                         <div class="admin-actions">
                             <a href="/editproduct/{{ $item->id }}" class="edit-btn">

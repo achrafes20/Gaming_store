@@ -49,6 +49,20 @@
                     <span>USERS</span>
                     <div class="cyber-btn-hover"></div>
                 </a>
+                <a href="/orders" class="cyber-action-btn add-category">
+                    <i class="fas fa-layer-group"></i>
+                    <span>ORDERS</span>
+                    <div class="cyber-btn-hover"></div>
+                </a>
+            </div>
+
+            <!-- Barre de recherche stylisée -->
+            <div class="cyber-search-container">
+                <div class="cyber-search-box">
+                    <i class="fas fa-search cyber-search-icon"></i>
+                    <input type="text" id="cyberSearchInput" placeholder="SEARCH PRODUCTS..." class="cyber-search-input">
+                    <div class="cyber-search-border"></div>
+                </div>
             </div>
 
             <div class="cyber-table-container">
@@ -318,6 +332,65 @@
 
         .cyber-action-btn:hover {
             transform: translateY(-3px);
+        }
+
+        /* Cyber Search Box */
+        .cyber-search-container {
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .cyber-search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .cyber-search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--cyber-primary);
+            z-index: 2;
+        }
+
+        .cyber-search-input {
+            width: 100%;
+            padding: 12px 20px 12px 45px;
+            background: var(--cyber-table-bg);
+            border: 1px solid var(--cyber-border);
+            border-radius: 5px;
+            color: var(--cyber-light);
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-search-input:focus {
+            outline: none;
+            border-color: var(--cyber-primary);
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .cyber-search-input::placeholder {
+            color: rgba(224, 224, 255, 0.6);
+            letter-spacing: 1px;
+        }
+
+        .cyber-search-border {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cyber-primary);
+            transition: width 0.3s ease;
+        }
+
+        .cyber-search-input:focus ~ .cyber-search-border {
+            width: 100%;
         }
 
         /* Cyber Table */
@@ -633,6 +706,14 @@
                 justify-content: center;
             }
 
+            .cyber-search-container {
+                justify-content: center;
+            }
+
+            .cyber-search-box {
+                width: 100%;
+            }
+
             .cyber-table thead {
                 display: none;
             }
@@ -720,6 +801,11 @@
                         });
                     }, 10000);
                 }
+            });
+
+            // Custom search input functionality
+            $('#cyberSearchInput').keyup(function(){
+                table.search($(this).val()).draw();
             });
 
             // Add data-label attributes for responsive table

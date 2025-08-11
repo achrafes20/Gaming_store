@@ -8,6 +8,7 @@ use App\Http\Controllers\TestController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\DB;
 use App\Models\Product;
+use App\Models\Order;
 use App\Models\Categories;
 use App\Models\Cart;
 use App\Http\Controllers\CouponController;
@@ -75,22 +76,41 @@ Auth::routes(); //pour cacher register car ne sert a rien Auth::routes(['registe
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/ProductsTable', [App\Http\Controllers\ProductController::class, 'ProductsTable']);
 Route::get('/cart', [App\Http\Controllers\CartController::class, 'cart'])->middleware('customauth');
-Route::get('/addproducttocart/{productid}', function($productid){
-    $user_id=auth()->user()->id;
-    $result=Cart::where('user_id',$user_id)->where("product_id",$productid)->first();//first rendre seulement le premier pas de repetition
-    if($result){
-        $result->quantity++;
-        $result->save();
+Route::get('/addproducttocart/{productid}', function($productid) {
+    $user_id = auth()->user()->id;
+
+    // Vérifier que le produit existe et a du stock
+    $product = Product::find($productid);
+    if (!$product) {
+        return redirect()->back()->withErrors(['Produit introuvable.']);
     }
-    else{
-    $newCart=new Cart();
-    $newCart->product_id=$productid;
-    $newCart->user_id=$user_id;
-    $newCart->quantity=1;
-    $newCart->save();
+    if ($product->quantity <= 0) {
+        return redirect()->back()->withErrors(['Ce produit est en rupture de stock.']);
     }
+
+    $result = Cart::where('user_id', $user_id)
+                  ->where('product_id', $productid)
+                  ->first();
+
+    if ($result) {
+        // Vérifier que l'ajout ne dépasse pas le stock disponible
+        if ($result->quantity < $product->quantity) {
+            $result->quantity++;
+            $result->save();
+        } else {
+            return redirect()->back()->withErrors(['Stock maximum atteint pour ce produit.']);
+        }
+    } else {
+        $newCart = new Cart();
+        $newCart->product_id = $productid;
+        $newCart->user_id = $user_id;
+        $newCart->quantity = 1;
+        $newCart->save();
+    }
+
     return redirect("/cart");
 })->middleware('auth');
+
 
 Route::get('/deletecartitem/{cartid}', function($cartid){
 Cart::find($cartid)->delete();
@@ -116,7 +136,7 @@ Route::get('/admin', function(){
     return "admin panel";
 })->middleware('checkRole:admin,salesman');
 
-Route::get('/test',[TestController::class,'test']);
+
 
 Route::get('/categoryadmin', [CategoryController::class, 'categoryadmin']);
 
@@ -133,3 +153,9 @@ Route::get('/Users_client/{userid?}', [UsersController::class, 'users_client']);
 
 Route::get('/cart_increment/{cartid}', [CartController::class, 'cart_increment']);
 Route::get('/cart_decrement/{cartid}', [CartController::class, 'cart_decrement']);
+
+Route::get('/orders', function(){
+    $orders=Order::all();
+    return view('orders',['orders'=>$orders]);
+
+});
