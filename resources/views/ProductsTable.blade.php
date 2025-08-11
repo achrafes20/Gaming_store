@@ -44,6 +44,11 @@
                     <span>COUPON</span>
                     <div class="cyber-btn-hover"></div>
                 </a>
+                <a href="/users" class="cyber-action-btn add-category">
+                    <i class="fas fa-layer-group"></i>
+                    <span>USERS</span>
+                    <div class="cyber-btn-hover"></div>
+                </a>
             </div>
 
             <div class="cyber-table-container">

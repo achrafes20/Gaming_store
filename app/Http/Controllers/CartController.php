@@ -43,6 +43,7 @@ public function StoreOrder(Request $request){
         $newOrderDetail->save();
 }
 Cart::where('user_id', $user_id)->delete();
+session()->forget('discount');
 return Redirect('/');
 }
 

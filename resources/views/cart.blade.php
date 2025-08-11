@@ -67,7 +67,7 @@
 
 
                                         <span class="cyber-qty-value">{{ $item->quantity }}</span>
-                                
+
                                     </div>
                                 </div>
                                 <div class="cyber-cart-item-total">

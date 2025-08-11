@@ -11,6 +11,7 @@ use App\Models\Product;
 use App\Models\Categories;
 use App\Models\Cart;
 use App\Http\Controllers\CouponController;
+use App\Http\Controllers\UsersController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -124,3 +125,7 @@ Route::get('/addcoupon', [CouponController::class, 'addcoupon']);
 Route::post('/storecoupon', [CouponController::class, 'storecoupon']);
 Route::get('/coupons', [CouponController::class, 'coupons']);
 Route::get('/RemoveCoupon/{couponid?}', [CouponController::class, 'RemoveCoupon']);
+
+Route::get('/users', [UsersController::class, 'users']);
+Route::get('/Users_admin/{userid?}', [UsersController::class, 'users_admin']);
+Route::get('/Users_client/{userid?}', [UsersController::class, 'users_client']);

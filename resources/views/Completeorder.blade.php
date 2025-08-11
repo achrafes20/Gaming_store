@@ -174,14 +174,17 @@
                                                         <span class="cyber-free">FREE</span>
                                                     </div>
                                                     <div class="cyber-total-row">
-                                                        <span>TAX</span>
-                                                        <span>$0.00</span>
-                                                    </div>
+                                <span>Discount</span>
+                                <span style="color: red;">- {{ session('discount', 0) }} Dh</span>
+                            </div>
                                                     <div class="cyber-grand-total-row">
                                                         <span>GRAND TOTAL</span>
-                                                        <span class="cyber-grand-total">${{ $cartProducts->sum(function ($item) {
-                                                            return $item->product->price * $item->quantity;
-                                                        }) }}</span>
+                                                        <span class="cyber-grand-total">${{ number_format(
+                                        $cartProducts->sum(function ($item) {
+                                            return $item->product->price * $item->quantity;
+                                        }) - session('discount', 0),
+                                        2,
+                                    ) }}</span>
                                                     </div>
                                                 </div>
                                             </div>

@@ -13,10 +13,11 @@ protected $casts = [
 ];
 
     public function isValid()
-    {
-        return (!$this->expires_at || $this->expires_at->isFuture())
-            && (!$this->usage_limit || $this->usage_limit > 0);
-    }
+{
+    return (!$this->expires_at || $this->expires_at->isFuture())
+        && (is_null($this->usage_limit) || $this->usage_limit > 0);
+}
+
 
     public function apply($total)
     {
