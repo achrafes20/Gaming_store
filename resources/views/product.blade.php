@@ -246,6 +246,13 @@
                 text-transform: uppercase;
                 letter-spacing: 1px;
             }
+            .product-price {
+                font-size: 1.4rem;
+                color: rgb(0, 102, 255);
+                margin-bottom: 15px;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
 
             .product-desc {
                 color: #fff;
@@ -500,6 +507,7 @@
                             </div>
                             <div class="product-info">
                                 <h3 class="product-name">{{ $item->name }}</h3>
+                                <h3 class="product-price">{{ $item->price }}</h3>
 
                                 <div class="product-actions">
 

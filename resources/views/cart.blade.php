@@ -60,7 +60,7 @@
                                     </div>
                                 </div>
                                 <div class="cyber-cart-item-price">
-                                    <div class="cyber-price">${{ number_format($item->product->price, 2) }}</div>
+                                    <div class="cyber-price">{{ number_format($item->product->price, 2) }} Dh</div>
                                 </div>
                                 <div class="cyber-cart-item-quantity">
                            <div class="cyber-quantity-selector">
@@ -92,7 +92,7 @@
                                 </div>
                                 <div class="cyber-cart-item-total">
                                     <div class="cyber-total-price">
-                                        ${{ number_format($item->quantity * $item->product->price, 2) }}</div>
+                                        {{ number_format($item->quantity * $item->product->price, 2) }} Dh</div>
                                 </div>
                             </div>
                         @endforeach
@@ -120,7 +120,7 @@
                         <div class="cyber-summary-details">
                             <div class="cyber-summary-row">
                                 <span>Subtotal ({{ count($cartProducts) }} items)</span>
-                                <span>${{ number_format($cartProducts->sum(function ($item) {return $item->product->price * $item->quantity;}),2) }}</span>
+                                <span>{{ number_format($cartProducts->sum(function ($item) {return $item->product->price * $item->quantity;}),2) }} Dh</span>
                             </div>
                             <div class="cyber-summary-row">
                                 <span>Shipping</span>
@@ -133,12 +133,12 @@
                             <div class="cyber-total-row">
                                 <span>Total</span>
                                 <span
-                                    class="cyber-grand-total">${{ number_format(
+                                    class="cyber-grand-total">{{ number_format(
                                         $cartProducts->sum(function ($item) {
                                             return $item->product->price * $item->quantity;
                                         }) - session('discount', 0),
                                         2,
-                                    ) }}</span>
+                                    ) }} Dh</span>
                             </div>
                         </div>
                         @if (count($cartProducts) > 0)

@@ -146,13 +146,13 @@
                                                                     </a>
                                                                 </td>
                                                                 <td class="cyber-product-price">
-                                                                    ${{ number_format($item->product->price, 2) }}
+                                                                    {{ number_format($item->product->price, 2) }} Dh
                                                                 </td>
                                                                 <td class="cyber-product-quantity">
                                                                     <span class="cyber-quantity-badge">{{ $item->quantity }}</span>
                                                                 </td>
                                                                 <td class="cyber-product-total">
-                                                                    ${{ number_format($item->quantity * $item->product->price, 2) }}
+                                                                    {{ number_format($item->quantity * $item->product->price, 2) }} Dh
                                                                 </td>
                                                             </tr>
                                                         @endforeach
@@ -165,9 +165,9 @@
                                                     <h3 class="cyber-total-title">ORDER TOTAL</h3>
                                                     <div class="cyber-total-row">
                                                         <span>SUBTOTAL</span>
-                                                        <span>${{ $cartProducts->sum(function ($item) {
+                                                        <span>{{ $cartProducts->sum(function ($item) {
                                                             return $item->product->price * $item->quantity;
-                                                        }) }}</span>
+                                                        }) }} Dh</span>
                                                     </div>
                                                     <div class="cyber-total-row">
                                                         <span>SHIPPING</span>
