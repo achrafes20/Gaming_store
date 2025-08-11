@@ -104,13 +104,13 @@
                                                 </a>
                                             </div>
                                             <div class="cyber-table-col">
-                                                ${{ number_format($detail->product->price, 2) }}
+                                                {{ number_format($detail->product->price, 2) }} Dh
                                             </div>
                                             <div class="cyber-table-col">
                                                 {{ $detail->quantity }}
                                             </div>
                                             <div class="cyber-table-col">
-                                                ${{ number_format($detail->quantity * $detail->product->price, 2) }}
+                                                {{ number_format($detail->quantity * $detail->product->price, 2) }} Dh
                                             </div>
                                         </div>
                                         @endforeach
@@ -122,27 +122,24 @@
                                         <h3 class="cyber-section-title">ORDER SUMMARY</h3>
                                         <div class="cyber-summary-row">
                                             <span>Subtotal</span>
-                                            <span>${{ number_format($item->orderdetails->sum(function ($x) {
+                                            <span>{{ number_format($item->orderdetails->sum(function ($x) {
                                                 return $x->product->price * $x->quantity;
-                                            }), 2) }}</span>
+                                            }), 2) }} Dh</span>
                                         </div>
                                         <div class="cyber-summary-row">
                                             <span>Shipping</span>
                                             <span class="cyber-free">FREE</span>
                                         </div>
-                                        <div class="cyber-summary-row">
-                                            <span>Tax</span>
-                                            <span>$0.00</span>
-                                        </div>
+                                        
                                         <div class="cyber-total-row">
                                             <span>TOTAL</span>
-                                            <span class="cyber-total">${{ number_format($item->orderdetails->sum(function ($x) {
+                                            <span class="cyber-total">{{ number_format($item->orderdetails->sum(function ($x) {
                                                 return $x->product->price * $x->quantity;
-                                            }), 2) }}</span>
+                                            }), 2) }} Dh</span>
                                         </div>
                                     </div>
 
-                                    
+
                                 </div>
                             </div>
                         </div>

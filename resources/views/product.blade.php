@@ -507,7 +507,7 @@
                             </div>
                             <div class="product-info">
                                 <h3 class="product-name">{{ $item->name }}</h3>
-                                <h3 class="product-price">{{ $item->price }}</h3>
+                                <h3 class="product-price">{{ $item->price }} Dh</h3>
 
                                 <div class="product-actions">
 
