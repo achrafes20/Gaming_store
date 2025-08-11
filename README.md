@@ -45,3 +45,12 @@ php artisan db:seed
 
 # 7️⃣ Start the local development server
 php artisan serve
+```
+## 👥 Comptes de test
+
+| **Rôle** | **Email**           | **Mot de passe** |
+|----------|---------------------|------------------|
+| Admin    | admin@gmail.com     | `password`       |
+| Client   | akram@gmail.com     | `password`       |
+
+> 💡 Vous pouvez également créer un nouveau compte client via la page **Register**.
