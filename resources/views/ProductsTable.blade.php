@@ -56,17 +56,9 @@
                 </a>
             </div>
 
-            <!-- Barre de recherche stylisée -->
-            <div class="cyber-search-container">
-                <div class="cyber-search-box">
-                    <i class="fas fa-search cyber-search-icon"></i>
-                    <input type="text" id="cyberSearchInput" placeholder="SEARCH PRODUCTS..." class="cyber-search-input">
-                    <div class="cyber-search-border"></div>
-                </div>
-            </div>
-
+            <!-- Table -->
             <div class="cyber-table-container">
-                <table id="cyberTable" class="cyber-table display">
+                <table id="myTable" class="cyber-table display">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -163,28 +155,8 @@
             align-items: center;
             justify-content: center;
         }
-        .product-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-        .quick-view {
-            background: var(--neon-blue);
-            color: var(--dark-bg);
-            padding: 8px 15px;
-            border-radius: 30px;
-            font-weight: bold;
-            text-transform: uppercase;
-            font-size: 0.8rem;
-        }
+        .product-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); display: flex; align-items: center; justify-content: center; opacity: 0; transition: all 0.3s ease; }
+        .quick-view { background: var(--neon-blue); color: var(--dark-bg); padding: 8px 15px; border-radius: 30px; font-weight: bold; text-transform: uppercase; font-size: 0.8rem; }
 
         .cyber-hero-overlay {
             position: absolute;
@@ -196,12 +168,7 @@
             opacity: 0.5;
         }
 
-        .cyber-hero-text {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 20px;
-        }
+        .cyber-hero-text { position: relative; z-index: 2; text-align: center; padding: 20px; }
 
         .cyber-title {
             font-size: 3rem;
@@ -214,604 +181,97 @@
             text-transform: uppercase;
             letter-spacing: 2px;
         }
+        .cyber-title .cyber-accent { background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-secondary)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .cyber-subtitle { color: var(--cyber-primary); font-size: 1.2rem; letter-spacing: 3px; }
 
-        .cyber-title .cyber-accent {
-            background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .cyber-subtitle {
-            color: var(--cyber-primary);
-            font-size: 1.2rem;
-            letter-spacing: 3px;
-        }
-
-        .cyber-pulse-animation {
-            position: relative;
-            height: 100px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .pulse-circle {
-            position: absolute;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background-color: var(--cyber-accent);
-            opacity: 0;
-            animation: pulse 3s infinite;
-        }
-
-        .pulse-circle.delay-1 {
-            animation-delay: 1s;
-        }
-
-        .pulse-circle.delay-2 {
-            animation-delay: 2s;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(0.8);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(10);
-                opacity: 0;
-            }
-        }
+        .cyber-pulse-animation { position: relative; height: 100px; display: flex; justify-content: center; align-items: center; }
+        .pulse-circle { position: absolute; width: 20px; height: 20px; border-radius: 50%; background-color: var(--cyber-accent); opacity: 0; animation: pulse 3s infinite; }
+        .pulse-circle.delay-1 { animation-delay: 1s; }
+        .pulse-circle.delay-2 { animation-delay: 2s; }
+        @keyframes pulse { 0% { transform: scale(0.8); opacity: 0.8; } 100% { transform: scale(10); opacity: 0; } }
 
         /* Dashboard Section */
-        .cyber-dashboard-section {
-            padding: 50px 0 100px;
-            position: relative;
-        }
-
-        .cyber-action-buttons {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
-
-        .cyber-action-btn {
-            position: relative;
-            display: flex;
-            align-items: center;
-            padding: 15px 25px;
-            border-radius: 5px;
-            text-decoration: none;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            z-index: 1;
-        }
-
-        .cyber-action-btn i {
-            margin-right: 10px;
-            font-size: 1.2rem;
-        }
-
-        .cyber-action-btn span {
-            position: relative;
-            z-index: 2;
-            text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 1px;
-        }
-
-        .cyber-btn-hover {
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.5s ease;
-            z-index: 1;
-        }
-
-        .cyber-action-btn:hover .cyber-btn-hover {
-            left: 100%;
-        }
-
-        .add-product {
-            background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-primary));
-            color: var(--cyber-dark);
-            box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3);
-        }
-
-        .add-category {
-            background: linear-gradient(90deg, var(--cyber-primary), var(--cyber-secondary));
-            color: var(--cyber-dark);
-            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
-        }
-
-        .cyber-action-btn:hover {
-            transform: translateY(-3px);
-        }
-
-        /* Cyber Search Box */
-        .cyber-search-container {
-            margin-bottom: 30px;
-            display: flex;
-            justify-content: flex-end;
-        }
-
-        .cyber-search-box {
-            position: relative;
-            width: 300px;
-        }
-
-        .cyber-search-icon {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--cyber-primary);
-            z-index: 2;
-        }
-
-        .cyber-search-input {
-            width: 100%;
-            padding: 12px 20px 12px 45px;
-            background: var(--cyber-table-bg);
-            border: 1px solid var(--cyber-border);
-            border-radius: 5px;
-            color: var(--cyber-light);
-            font-family: 'Orbitron', 'Rajdhani', sans-serif;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            transition: all 0.3s ease;
-        }
-
-        .cyber-search-input:focus {
-            outline: none;
-            border-color: var(--cyber-primary);
-            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
-        }
-
-        .cyber-search-input::placeholder {
-            color: rgba(224, 224, 255, 0.6);
-            letter-spacing: 1px;
-        }
-
-        .cyber-search-border {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--cyber-primary);
-            transition: width 0.3s ease;
-        }
-
-        .cyber-search-input:focus ~ .cyber-search-border {
-            width: 100%;
-        }
+        .cyber-dashboard-section { padding: 50px 0 100px; position: relative; }
+        .cyber-action-buttons { display: flex; gap: 20px; margin-bottom: 30px; flex-wrap: wrap; }
+        .cyber-action-btn { position: relative; display: flex; align-items: center; padding: 15px 25px; border-radius: 5px; text-decoration: none; overflow: hidden; transition: all 0.3s ease; z-index: 1; }
+        .cyber-action-btn i { margin-right: 10px; font-size: 1.2rem; }
+        .cyber-action-btn span { position: relative; z-index: 2; text-transform: uppercase; font-weight: bold; letter-spacing: 1px; }
+        .cyber-btn-hover { position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: all 0.5s ease; z-index: 1; }
+        .cyber-action-btn:hover .cyber-btn-hover { left: 100%; }
+        .add-product { background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-primary)); color: var(--cyber-dark); box-shadow: 0 5px 15px rgba(0, 255, 136, 0.3); }
+        .add-category { background: linear-gradient(90deg, var(--cyber-primary), var(--cyber-secondary)); color: var(--cyber-dark); box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3); }
+        .cyber-action-btn:hover { transform: translateY(-3px); }
 
         /* Cyber Table */
-        .cyber-table-container {
-            background: var(--cyber-table-bg);
-            border: 1px solid var(--cyber-border);
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1);
-            overflow: hidden;
-        }
+        .cyber-table-container { background: var(--cyber-table-bg); border: 1px solid var(--cyber-border); border-radius: 10px; padding: 20px; box-shadow: 0 10px 30px rgba(0, 240, 255, 0.1); overflow: hidden; }
+        .cyber-table { width: 100%; border-collapse: separate; border-spacing: 0 10px; }
+        .cyber-table thead th { background: rgba(0, 240, 255, 0.1); color: var(--cyber-primary); padding: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: bold; border: none; }
+        .cyber-table tbody tr { background: rgba(20, 20, 40, 0.5); transition: all 0.3s ease; }
+        .cyber-table tbody tr:hover { background: rgba(0, 240, 255, 0.05); transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 240, 255, 0.1); }
+        .cyber-table tbody td { padding: 15px; vertical-align: middle; border: none; border-top: 1px solid var(--cyber-border); border-bottom: 1px solid var(--cyber-border); }
+        .cyber-table tbody td:first-child { border-left: 1px solid var(--cyber-border); border-radius: 5px 0 0 5px; }
+        .cyber-table tbody td:last-child { border-right: 1px solid var(--cyber-border); border-radius: 0 5px 5px 0; }
 
-        .cyber-table {
-            width: 100%;
-            border-collapse: separate;
-            border-spacing: 0 10px;
-        }
+        .cyber-quantity { display: inline-block; padding: 5px 10px; border-radius: 20px; background: rgba(0, 240, 255, 0.1); font-weight: bold; }
+        .low-stock { background: rgba(255, 0, 60, 0.2); color: var(--cyber-danger); animation: pulseWarning 1.5s infinite; }
+        @keyframes pulseWarning { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
 
-        .cyber-table thead th {
-            background: rgba(0, 240, 255, 0.1);
-            color: var(--cyber-primary);
-            padding: 15px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: bold;
-            border: none;
-        }
+        .cyber-product-img { width: 80px; height: 80px; border-radius: 5px; overflow: hidden; position: relative; }
+        .cyber-product-img img { width: 100%; height: 100%; object-fit: cover; transition: all 0.3s ease; }
+        .cyber-img-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 240, 255, 0.05); transition: all 0.3s ease; }
+        .cyber-table tbody tr:hover .cyber-product-img img { transform: scale(1.1); }
+        .cyber-table tbody tr:hover .cyber-img-overlay { background: rgba(0, 240, 255, 0.2); }
 
-        .cyber-table tbody tr {
-            background: rgba(20, 20, 40, 0.5);
-            transition: all 0.3s ease;
-        }
-
-        .cyber-table tbody tr:hover {
-            background: rgba(0, 240, 255, 0.05);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.1);
-        }
-
-        .cyber-table tbody td {
-            padding: 15px;
-            vertical-align: middle;
-            border: none;
-            border-top: 1px solid var(--cyber-border);
-            border-bottom: 1px solid var(--cyber-border);
-        }
-
-        .cyber-table tbody td:first-child {
-            border-left: 1px solid var(--cyber-border);
-            border-radius: 5px 0 0 5px;
-        }
-
-        .cyber-table tbody td:last-child {
-            border-right: 1px solid var(--cyber-border);
-            border-radius: 0 5px 5px 0;
-        }
-
-        .cyber-quantity {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            background: rgba(0, 240, 255, 0.1);
-            font-weight: bold;
-        }
-
-        .low-stock {
-            background: rgba(255, 0, 60, 0.2);
-            color: var(--cyber-danger);
-            animation: pulseWarning 1.5s infinite;
-        }
-
-        @keyframes pulseWarning {
-            0%, 100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.7;
-            }
-        }
-
-        .cyber-product-img {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .cyber-product-img img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: all 0.3s ease;
-        }
-
-        .cyber-img-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 240, 255, 0.05);
-            transition: all 0.3s ease;
-        }
-
-        .cyber-table tbody tr:hover .cyber-product-img img {
-            transform: scale(1.1);
-        }
-
-        .cyber-table tbody tr:hover .cyber-img-overlay {
-            background: rgba(0, 240, 255, 0.2);
-        }
-
-        .cyber-action-btns {
-            display: flex;
-            gap: 10px;
-        }
-
-        .cyber-btn {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cyber-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: all 0.5s ease;
-        }
-
-        .cyber-btn:hover::before {
-            left: 100%;
-        }
-
-        .cyber-btn i {
-            position: relative;
-            z-index: 2;
-        }
-
-        .danger {
-            background: var(--cyber-danger);
-            color: white;
-        }
-
-        .success {
-            background: var(--cyber-accent);
-            color: var(--cyber-dark);
-        }
-
-        .dark {
-            background: var(--cyber-dark);
-            color: var(--cyber-light);
-            border: 1px solid var(--cyber-border);
-        }
-
-        .cyber-btn:hover {
-            transform: translateY(-3px) scale(1.1);
-        }
+        .cyber-action-btns { display: flex; gap: 10px; }
+        .cyber-btn { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .cyber-btn::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent); transition: all 0.5s ease; }
+        .cyber-btn:hover::before { left: 100%; }
+        .cyber-btn i { position: relative; z-index: 2; }
+        .danger { background: var(--cyber-danger); color: white; }
+        .success { background: var(--cyber-accent); color: var(--cyber-dark); }
+        .dark { background: var(--cyber-dark); color: var(--cyber-light); border: 1px solid var(--cyber-border); }
+        .cyber-btn:hover { transform: translateY(-3px) scale(1.1); }
 
         /* DataTables Customization */
-        .dataTables_wrapper .dataTables_paginate .paginate_button {
-            color: var(--cyber-light) !important;
-            border: 1px solid var(--cyber-border) !important;
-            background: var(--cyber-table-bg) !important;
-            margin: 0 5px;
-            border-radius: 5px !important;
-            transition: all 0.3s ease !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
-            background: linear-gradient(90deg, var(--cyber-primary), transparent) !important;
-            color: white !important;
-            border: 1px solid var(--cyber-primary) !important;
-        }
-
-        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
-            background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-primary)) !important;
-            color: var(--cyber-dark) !important;
-            border: none !important;
-            font-weight: bold;
-        }
-
-        .dataTables_wrapper .dataTables_filter input {
-            background: var(--cyber-table-bg);
-            border: 1px solid var(--cyber-border);
-            color: var(--cyber-light);
-            padding: 5px 10px;
-            border-radius: 5px;
-        }
-
-        .dataTables_wrapper .dataTables_filter input:focus {
-            outline: none;
-            border-color: var(--cyber-primary);
-            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
-        }
-
-        .dataTables_wrapper .dataTables_length select {
-            background: var(--cyber-table-bg);
-            border: 1px solid var(--cyber-border);
-            color: var(--cyber-light);
-            padding: 5px;
-            border-radius: 5px;
-        }
+        .dataTables_wrapper .dataTables_paginate .paginate_button { color: var(--cyber-light) !important; border: 1px solid var(--cyber-border) !important; background: var(--cyber-table-bg) !important; margin: 0 5px; border-radius: 5px !important; transition: all 0.3s ease !important; }
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover { background: linear-gradient(90deg, var(--cyber-primary), transparent) !important; color: white !important; border: 1px solid var(--cyber-primary) !important; }
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current { background: linear-gradient(90deg, var(--cyber-accent), var(--cyber-primary)) !important; color: var(--cyber-dark) !important; border: none !important; font-weight: bold; }
+        .dataTables_wrapper .dataTables_filter input { background: var(--cyber-table-bg); border: 1px solid var(--cyber-border); color: var(--cyber-light); padding: 5px 10px; border-radius: 5px; }
+        .dataTables_wrapper .dataTables_filter input:focus { outline: none; border-color: var(--cyber-primary); box-shadow: 0 0 10px rgba(0, 240, 255, 0.3); }
+        .dataTables_wrapper .dataTables_length select { background: var(--cyber-table-bg); border: 1px solid var(--cyber-border); color: var(--cyber-light); padding: 5px; border-radius: 5px; }
 
         /* Floating Elements */
-        .cyber-floating-elements {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: -1;
-            overflow: hidden;
-        }
-
-        .cyber-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(40px);
-            opacity: 0.2;
-        }
-
-        .orb-1 {
-            width: 300px;
-            height: 300px;
-            background: var(--cyber-primary);
-            top: -100px;
-            left: -100px;
-            animation: float 15s infinite ease-in-out;
-        }
-
-        .orb-2 {
-            width: 200px;
-            height: 200px;
-            background: var(--cyber-secondary);
-            bottom: -50px;
-            right: -50px;
-            animation: float 12s infinite ease-in-out reverse;
-        }
-
-        .orb-3 {
-            width: 150px;
-            height: 150px;
-            background: var(--cyber-accent);
-            top: 50%;
-            right: 10%;
-            animation: float 10s infinite ease-in-out 2s;
-        }
-
-        .cyber-circuit-line {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(0,240,255,0.03)" stroke-width="1"/></svg>');
-            opacity: 0.1;
-        }
-
-        @keyframes float {
-            0%, 100% {
-                transform: translate(0, 0);
-            }
-            50% {
-                transform: translate(20px, 20px);
-            }
-        }
+        .cyber-floating-elements { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: -1; overflow: hidden; }
+        .cyber-orb { position: absolute; border-radius: 50%; filter: blur(40px); opacity: 0.2; }
+        .orb-1 { width: 300px; height: 300px; background: var(--cyber-primary); top: -100px; left: -100px; animation: float 15s infinite ease-in-out; }
+        .orb-2 { width: 200px; height: 200px; background: var(--cyber-secondary); bottom: -50px; right: -50px; animation: float 12s infinite ease-in-out reverse; }
+        .orb-3 { width: 150px; height: 150px; background: var(--cyber-accent); top: 50%; right: 10%; animation: float 10s infinite ease-in-out 2s; }
+        .cyber-circuit-line { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(0,240,255,0.03)" stroke-width="1"/></svg>'); opacity: 0.1; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(20px, 20px); } }
 
         /* Responsive Adjustments */
-        @media (max-width: 992px) {
-            .cyber-title {
-                font-size: 2.5rem;
-            }
-
-            .cyber-table thead th {
-                padding: 12px;
-                font-size: 0.9rem;
-            }
-
-            .cyber-table tbody td {
-                padding: 12px;
-            }
-        }
-
+        @media (max-width: 992px) { .cyber-title { font-size: 2.5rem; } .cyber-table thead th { padding: 12px; font-size: 0.9rem; } .cyber-table tbody td { padding: 12px; } }
         @media (max-width: 768px) {
-            .cyber-hero-section {
-                height: 250px;
-            }
-
-            .cyber-title {
-                font-size: 2rem;
-            }
-
-            .cyber-action-buttons {
-                flex-direction: column;
-            }
-
-            .cyber-action-btn {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .cyber-search-container {
-                justify-content: center;
-            }
-
-            .cyber-search-box {
-                width: 100%;
-            }
-
-            .cyber-table thead {
-                display: none;
-            }
-
-            .cyber-table tbody tr {
-                display: block;
-                margin-bottom: 15px;
-                border: 1px solid var(--cyber-border);
-                border-radius: 5px;
-            }
-
-            .cyber-table tbody td {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 10px 15px;
-                border: none;
-                border-bottom: 1px solid var(--cyber-border);
-            }
-
-            .cyber-table tbody td:before {
-                content: attr(data-label);
-                font-weight: bold;
-                color: var(--cyber-primary);
-                margin-right: 15px;
-                text-transform: uppercase;
-                font-size: 0.8rem;
-            }
-
-            .cyber-table tbody td:last-child {
-                border-bottom: none;
-            }
-
-            .cyber-action-btns {
-                justify-content: center;
-            }
+            .cyber-hero-section { height: 250px; }
+            .cyber-title { font-size: 2rem; }
+            .cyber-action-buttons { flex-direction: column; }
+            .cyber-action-btn { width: 100%; justify-content: center; }
+            .cyber-table thead { display: none; }
+            .cyber-table tbody tr { display: block; margin-bottom: 15px; border: 1px solid var(--cyber-border); border-radius: 5px; }
+            .cyber-table tbody td { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border: none; border-bottom: 1px solid var(--cyber-border); }
+            .cyber-table tbody td:before { content: attr(data-label); font-weight: bold; color: var(--cyber-primary); margin-right: 15px; text-transform: uppercase; font-size: 0.8rem; }
+            .cyber-table tbody td:last-child { border-bottom: none; }
+            .cyber-action-btns { justify-content: center; }
         }
-
-        @media (max-width: 576px) {
-            .cyber-title {
-                font-size: 1.8rem;
-            }
-
-            .cyber-subtitle {
-                font-size: 1rem;
-            }
-
-            .cyber-table-container {
-                padding: 15px;
-            }
-        }
+        @media (max-width: 576px) { .cyber-title { font-size: 1.8rem; } .cyber-subtitle { font-size: 1rem; } .cyber-table-container { padding: 15px; } }
     </style>
     @endpush
 
     @push('scripts')
     <script>
         $(document).ready(function() {
-            let table = $('#cyberTable').DataTable({
-                responsive: true,
-                language: {
-                    search: "_INPUT_",
-                    searchPlaceholder: "SEARCH PRODUCTS...",
-                    lengthMenu: "SHOW _MENU_ ENTRIES",
-                    info: "DISPLAYING _START_ TO _END_ OF _TOTAL_ PRODUCTS",
-                    infoEmpty: "NO PRODUCTS FOUND",
-                    infoFiltered: "(FILTERED FROM _MAX_ TOTAL PRODUCTS)",
-                    paginate: {
-                        first: "FIRST",
-                        last: "LAST",
-                        next: "NEXT",
-                        previous: "PREV"
-                    }
-                },
-                initComplete: function() {
-                    // Add pulse animation to table rows periodically
-                    setInterval(function() {
-                        $('.cyber-table tbody tr').each(function(index) {
-                            var row = $(this);
-                            setTimeout(function() {
-                                row.css('box-shadow', '0 0 15px rgba(0, 240, 255, 0.3)');
-                                setTimeout(function() {
-                                    row.css('box-shadow', '');
-                                }, 1000);
-                            }, index * 200);
-                        });
-                    }, 10000);
-                }
-            });
-
-            // Custom search input functionality
-            $('#cyberSearchInput').keyup(function(){
-                table.search($(this).val()).draw();
-            });
-
-            // Add data-label attributes for responsive table
-            $('#cyberTable thead th').each(function(i) {
-                $('td:nth-child(' + (i + 1) + ')', '#cyberTable tbody tr').attr('data-label', $(this).text());
-            });
+            // Enable default DataTables UI with built-in search
+            let table = new DataTable('#myTable');
         });
     </script>
     @endpush
