@@ -54,3 +54,7 @@ php artisan serve
 | Client   | akram@gmail.com     | `password`   |
 
 > 💡 You can also create a new client account via the **Register** page.
+# 🎮 Gaming Store
+
+🔗 **Live Demo:** [https://nextlevelgaming.rf.gd/](https://nextlevelgaming.rf.gd/)
+
