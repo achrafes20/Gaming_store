@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Support\Facades\Session;
+
 class SetLocale
 {
     /**
@@ -15,8 +16,8 @@ class SetLocale
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(Session::has('locale')){
-            app()->setLocale(Session::get('locale'));//pour changer local dans config
+        if (Session::has('locale')) {
+            app()->setLocale(Session::get('locale'));
         }
         return $next($request);
     }

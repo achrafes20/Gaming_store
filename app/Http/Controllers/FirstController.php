@@ -1,11 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Categories;
 use App\Models\Review;
+use App\Models\Order;
+use App\Models\Sub;
 
 class FirstController extends Controller
 {
@@ -28,7 +31,7 @@ class FirstController extends Controller
     public function storereview(Request $request)
     {
         $request->validate([
-            'name' => ['required',  'max:100'], //unique:products dans le meme nom dans la DB
+            'name' => ['required',  'max:100'],
             'phone' => 'required',
             'email' => 'required',
             'message' => 'required',
@@ -59,12 +62,33 @@ class FirstController extends Controller
     public function Product_page($catid = null)
     {
         if (!$catid) {
-            $result = Product::all();//::paginate(6);//afficher seulement 6 dans une page
-            //$result=DB::table("products")->get();
+            $result = Product::all();
             return view('product', ["products" => $result]);
         } else {
-            $result = Product::where("category_id", $catid)->get(); //$result=DB::table("products")->where ("category_id",$catid)->get();
+            $result = Product::where("category_id", $catid)->get();
             return view('product', ["products" => $result]);
         }
+    }
+    public function orders()
+    {
+        $orders = Order::all();
+        return view('orders', ['orders' => $orders]);
+    }
+    public function sub(Request $request)
+    {
+        $request->validate([
+            'email' => 'required'
+
+        ]);
+        $newsub = new Sub();
+        $newsub->email = $request->email;
+        $newsub->save();
+        return redirect()->back();
+    }
+
+    public function search(Request $request)
+    {
+        $products = Product::where('name', 'like', '%' . $request->searchkey . '%')->get();
+        return view('product', ['products' => $products]);
     }
 }

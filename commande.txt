@@ -82,3 +82,13 @@ give a page using html css js et bootstrap  products for a ecommerce website usi
 pour meme principe et structure de ca
 
 modifier ca
+--------------------------------------------------------------------------------------------------
+// Insertion en base tu est obligé de faire fillable dans le modèle sinon travaille direct avec save
+        Review_Product::create([
+            'product_id' => $productId,
+            'user_id'    => $user->id,
+            'name'       => $user->name,
+            'email'      => $user->email,
+            'rating'     => $request->rating,
+            'comment'    => $request->comment,
+        ]);

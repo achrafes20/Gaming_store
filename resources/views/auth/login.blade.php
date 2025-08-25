@@ -643,7 +643,7 @@
         }
 
         .cyber-form-input {
-            padding: 12px 12px 12px 40px;
+            padding: 12px 12px 12px 12px;
         }
 
         .cyber-auth-button {

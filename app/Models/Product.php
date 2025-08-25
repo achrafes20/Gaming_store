@@ -6,18 +6,21 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-   /* public function Carts (){
-        return $this->hasMany(Cart::class);//qui a foreign key faire ca
+    public function Category()
+    {
+        return $this->belongsTo(Categories::class, 'category_id');
     }
-    si tu veux le contraire pour cart*/
-
-
-    public function Category(){
-        return $this->belongsTo(Categories::class,'category_id');//qui a foreign key faire ca product qui va appeler categories
+    public function ProductPhotos()
+    {
+        return $this->hasMany(ProductPhoto::class);
     }
-    public function ProductPhotos(){
-        return $this->hasMany(ProductPhoto::class);//le product qui va appeler les autres photos
-    }
+    public function review_products()
+{
+    return $this->hasMany(Review_Product::class);
 }
 
-
+public function favoritedBy()
+{
+    return $this->hasMany(Favorite::class);
+}
+}

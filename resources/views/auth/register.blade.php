@@ -705,7 +705,7 @@
         }
 
         .cyber-form-input {
-            padding: 12px 12px 12px 40px;
+            padding: 12px 12px 12px 12px;
         }
 
         .cyber-register-button {
@@ -731,16 +731,66 @@
 
 <!-- Vos scripts -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // Initialiser AOS
+
+document.addEventListener('DOMContentLoaded', function() {
+        // Initialize AOS animation library
         AOS.init({
             duration: 800,
             easing: 'ease-in-out',
             once: true
         });
 
-        // Votre code JavaScript ici...
-        // (Copiez le reste du code que je vous ai fourni précédemment)
+        // Toggle password visibility
+        const passwordToggle = document.querySelector('.cyber-password-toggle');
+        if (passwordToggle) {
+            passwordToggle.addEventListener('click', function() {
+                const passwordInput = document.getElementById('password');
+                const icon = this.querySelector('i');
+
+                if (passwordInput.type === 'password') {
+                    passwordInput.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    passwordInput.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        }
+
+        // Add floating animation to orbs
+        setInterval(function() {
+            const orbs = document.querySelectorAll('.cyber-auth-orb');
+            orbs.forEach(orb => {
+                const randomX = Math.random() * 20 - 10;
+                const randomY = Math.random() * 20 - 10;
+                orb.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            });
+        }, 3000);
+
+        // Add pulse effect to login button periodically
+        setInterval(function() {
+            const loginBtn = document.querySelector('.cyber-auth-button');
+            if (loginBtn) {
+                loginBtn.style.boxShadow = '0 0 15px rgba(0, 240, 255, 0.5)';
+                setTimeout(() => {
+                    loginBtn.style.boxShadow = '';
+                }, 1000);
+            }
+        }, 5000);
+
+        // Social login buttons animation
+        const socialBtns = document.querySelectorAll('.cyber-social-btn');
+        socialBtns.forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-5px)';
+            });
+
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = '';
+            });
+        });
     });
 </script>
 @endpush

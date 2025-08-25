@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'customauth' => \App\Http\Middleware\Customauth::class,
             'checkRole' => \App\Http\Middleware\checkRole::class,
+            'customauth2' => \App\Http\Middleware\Customauth2::class,
         ]);
 
         // Appliquer le middleware SetLocale globalement

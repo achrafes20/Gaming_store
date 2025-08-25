@@ -1,47 +1,537 @@
-@extends('layouts.app')
+@extends('Layouts.master')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Reset Password') }}</div>
 
-                <div class="card-body">
-                    @if (session('status'))
-                        <div class="alert alert-success" role="alert">
-                            {{ session('status') }}
-                        </div>
-                    @endif
+    <!-- Cyberpunk Reset Password Section -->
+    <div class="cyber-reset-section">
+        <div class="cyber-reset-container">
+            <!-- Floating Tech Elements -->
+            <div class="cyber-reset-orb orb-1"></div>
+            <div class="cyber-reset-orb orb-2"></div>
+            <div class="cyber-circuit-line"></div>
 
-                    <form method="POST" action="{{ route('password.email') }}">
-                        @csrf
-
-                        <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
-
-                                @error('email')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
-                            </div>
-                        </div>
-
-                        <div class="row mb-0">
-                            <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
-                                    {{ __('Send Password Reset Link') }}
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+            <!-- Reset Card -->
+            <div class="cyber-reset-card" data-aos="zoom-in">
+                <!-- Header with animated gradient -->
+                <div class="cyber-reset-header">
+                    <div class="cyber-reset-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h2>PASSWORD RESET</h2>
+                    <p>Enter your email to receive the reset link</p>
+                    <div class="cyber-pulse-animation">
+                        <div class="pulse-circle"></div>
+                        <div class="pulse-circle delay-1"></div>
+                    </div>
                 </div>
+
+                <!-- Status Message -->
+                @if (session('status'))
+                    <div class="cyber-status-message">
+                        <i class="fas fa-check-circle"></i>
+                        {{ session('status') }}
+                    </div>
+                @endif
+
+                <!-- Reset Form -->
+                <form method="POST" action="{{ route('password.email') }}" class="cyber-reset-form">
+                    @csrf
+
+                    <!-- Email Field -->
+                    <div class="cyber-form-group">
+                        <div class="cyber-input-container">
+                            <input id="email" type="email" class="cyber-form-input @error('email') is-invalid @enderror"
+                                   name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                            <label for="email" class="cyber-input-label">
+                                <i class="fas fa-envelope"></i> Email Address
+                            </label>
+                            <div class="cyber-input-highlight"></div>
+                        </div>
+                        @error('email')
+                            <div class="cyber-error-message">
+                                <i class="fas fa-exclamation-triangle"></i> {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" class="cyber-reset-button">
+                        <span class="cyber-button-text">SEND RESET LINK</span>
+                        <span class="cyber-button-icon">
+                            <i class="fas fa-paper-plane"></i>
+                        </span>
+                        <span class="cyber-button-glow"></span>
+                    </button>
+
+                    <!-- Back to Login Link -->
+                    <div class="cyber-reset-footer">
+                        Back to <a href="{{ route('login') }}" class="cyber-login-link">login</a> page
+                    </div>
+                </form>
+            </div>
+
+            <!-- Security Badge -->
+            <div class="cyber-security-badge">
+                <i class="fas fa-shield-alt"></i>
+                <span>256-bit Encryption • Secure Process</span>
             </div>
         </div>
     </div>
-</div>
+
+@push('styles')
+<style>
+        :root {
+            --cyber-primary: #00f0ff;
+            --cyber-secondary: #ff00f0;
+            --cyber-accent: #00ff88;
+            --cyber-dark: #0a0a1a;
+            --cyber-darker: #050510;
+            --cyber-light: #e0e0ff;
+            --cyber-card-bg: rgba(20, 20, 40, 0.8);
+            --cyber-error: #ff003c;
+            --cyber-success: #00ff88;
+            --cyber-weak: #ff3e3e;
+            --cyber-medium: #ffcc00;
+            --cyber-strong: #00ff88;
+        }
+
+        /* Base Styles */
+        body {
+            background-color: var(--cyber-darker);
+            color: var(--cyber-light);
+            font-family: 'Orbitron', 'Rajdhani', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Reset Section */
+        .cyber-reset-section {
+            min-height: 100vh; /* full height */
+            display: flex;
+            align-items: center; /* center vertically */
+            justify-content: center; /* center horizontally */
+            padding: 20px;
+            position: relative;
+            background: radial-gradient(circle at center, var(--cyber-dark), var(--cyber-darker));
+            width: 100%;
+        }
+
+        .cyber-reset-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            z-index: 1;
+        }
+
+        /* Floating Tech Elements */
+        .cyber-reset-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(40px);
+            opacity: 0.2;
+        }
+
+        .orb-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--cyber-primary);
+            top: -100px;
+            left: -100px;
+            animation: float 15s infinite ease-in-out;
+        }
+
+        .orb-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--cyber-secondary);
+            bottom: -50px;
+            right: -50px;
+            animation: float 12s infinite ease-in-out reverse;
+        }
+
+        .cyber-circuit-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,100 M100,0 L0,100" stroke="rgba(0,240,255,0.03)" stroke-width="1"/></svg>');
+            opacity: 0.1;
+            pointer-events: none;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            50% {
+                transform: translate(20px, 20px);
+            }
+        }
+
+        /* Reset Card */
+        .cyber-reset-card {
+            background: var(--cyber-card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+
+        .cyber-reset-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, rgba(255, 0, 240, 0.05) 100%);
+            z-index: -1;
+        }
+
+        /* Reset Header */
+        .cyber-reset-header {
+            padding: 30px;
+            text-align: center;
+            background: linear-gradient(90deg, rgba(0, 240, 255, 0.1), rgba(255, 0, 240, 0.1));
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-reset-icon {
+            width: 60px;
+            height: 60px;
+            margin: 0 auto 15px;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--cyber-primary);
+            border: 2px solid var(--cyber-primary);
+        }
+
+        .cyber-reset-header h2 {
+            margin: 10px 0 5px;
+            font-size: 1.8rem;
+            background: linear-gradient(90deg, var(--cyber-primary), var(--cyber-secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cyber-reset-header p {
+            margin: 0;
+            font-size: 0.9rem;
+            color: rgba(224, 224, 255, 0.7);
+        }
+
+        .cyber-pulse-animation {
+            position: relative;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 15px;
+        }
+
+        .pulse-circle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--cyber-primary);
+            opacity: 0;
+            animation: pulse 3s infinite;
+        }
+
+        .pulse-circle.delay-1 {
+            animation-delay: 1s;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(6);
+                opacity: 0;
+            }
+        }
+
+        /* Status Message */
+        .cyber-status-message {
+            padding: 15px;
+            margin: 20px;
+            border-radius: 8px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--cyber-success);
+            color: var(--cyber-success);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Reset Form */
+        .cyber-reset-form {
+            padding: 30px;
+        }
+
+        .cyber-form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .cyber-input-container {
+            position: relative;
+        }
+
+        .cyber-form-input {
+            width: 100%;
+            padding: 15px 15px 15px 15px;
+            background: rgba(10, 10, 26, 0.7);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 8px;
+            color: var(--cyber-light);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .cyber-form-input:focus {
+            outline: none;
+            border-color: var(--cyber-primary);
+            box-shadow: 0 0 0 2px rgba(0, 240, 255, 0.2);
+        }
+
+        .cyber-form-input:focus + .cyber-input-label {
+            transform: translateY(-25px) translateX(-15px) scale(0.8);
+            color: var(--cyber-primary);
+        }
+
+        .cyber-form-input:not(:placeholder-shown) + .cyber-input-label {
+            transform: translateY(-25px) translateX(-15px) scale(0.8);
+        }
+
+        .cyber-input-label {
+            position: absolute;
+            top: 2px;
+            left: 25px;
+            color: rgba(224, 224, 255, 0.7);
+            pointer-events: none;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .cyber-input-label i {
+            font-size: 1rem;
+            position: absolute;
+            left: -30px;
+        }
+
+        .cyber-input-highlight {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--cyber-primary);
+            transition: all 0.3s ease;
+        }
+
+        .cyber-form-input:focus ~ .cyber-input-highlight {
+            width: 100%;
+        }
+
+        /* Error Message */
+        .cyber-error-message {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--cyber-error);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .cyber-error-message i {
+            font-size: 0.9rem;
+        }
+
+        /* Reset Button */
+        .cyber-reset-button {
+            position: relative;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(90deg, var(--cyber-primary), var(--cyber-accent));
+            color: var(--cyber-dark);
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            z-index: 1;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .cyber-reset-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 240, 255, 0.3);
+        }
+
+        .cyber-reset-button:active {
+            transform: translateY(0);
+        }
+
+        .cyber-button-glow {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+
+        .cyber-reset-button:hover .cyber-button-glow {
+            left: 100%;
+        }
+
+        /* Back to Login Link */
+        .cyber-reset-footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: rgba(224, 224, 255, 0.7);
+            margin-top: 20px;
+        }
+
+        .cyber-login-link {
+            color: var(--cyber-primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .cyber-login-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Security Badge */
+        .cyber-security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: rgba(224, 224, 255, 0.5);
+        }
+
+        .cyber-security-badge i {
+            color: var(--cyber-accent);
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .cyber-reset-header {
+                padding: 20px;
+            }
+
+            .cyber-reset-form {
+                padding: 20px;
+            }
+
+            .cyber-reset-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .cyber-form-input {
+                padding: 12px 12px 12px 12px;
+            }
+
+            .cyber-reset-button {
+                padding: 12px;
+            }
+
+            .cyber-input-label i {
+                left: -25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cyber-reset-card {
+                border-radius: 10px;
+            }
+
+            .cyber-input-label {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+
+@endpush
+
+@push('scripts')
+    <!-- Scripts -->
+     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <style>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize AOS animation library
+            AOS.init({
+                duration: 800,
+                easing: 'ease-in-out',
+                once: true
+            });
+
+            // Add floating animation to orbs
+            setInterval(function() {
+                const orbs = document.querySelectorAll('.cyber-reset-orb');
+                orbs.forEach(orb => {
+                    const randomX = Math.random() * 20 - 10;
+                    const randomY = Math.random() * 20 - 10;
+                    orb.style.transform = `translate(${randomX}px, ${randomY}px)`;
+                });
+            }, 3000);
+
+            // Add pulse effect to reset button periodically
+            setInterval(function() {
+                const resetBtn = document.querySelector('.cyber-reset-button');
+                if (resetBtn) {
+                    resetBtn.style.boxShadow = '0 0 15px rgba(0, 240, 255, 0.5)';
+                    setTimeout(() => {
+                        resetBtn.style.boxShadow = '';
+                    }, 1000);
+                }
+            }, 5000);
+        });
+    </script>
+@endpush
 @endsection

@@ -26,4 +26,4 @@ class CheckRole
         return abort(403,'Unauthorized');
     }
 }
-//si tu veux avoir que user a plusieur role il faut créer un tableau pour route et autre pour user
+
