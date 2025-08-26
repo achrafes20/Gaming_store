@@ -89,7 +89,7 @@
                                             <!-- Address -->
                                             <div class="cyber-form-group">
                                                 <div class="cyber-input-icon"><i class="fas fa-map-marker-alt"></i></div>
-                                                <input type="text" required placeholder="DELIVERY ADDRESS" id="address"
+                                                <input type="text"  placeholder="DELIVERY ADDRESS" id="address"
                                                     name="address" class="cyber-input" value="{{ old('address') }}">
                                                 <span class="cyber-error">@error('address') {{ $message }} @enderror</span>
                                                 <div class="cyber-input-underline"></div>
@@ -129,7 +129,6 @@
                                 <div id="cyberCollapsePayment" class="cyber-accordion-collapse collapse"
                                     aria-labelledby="cyberHeadingPayment" data-parent="#cyberAccordion">
                                     <div class="cyber-accordion-body cyber-payment-section">
-                                        <h3 class="cyber-payment-title">PAYMENT METHOD</h3>
                                         <div class="cyber-form-group">
                                             <label class="cyber-radio">
                                                 <input type="radio" name="payment_method" value="cod" checked>

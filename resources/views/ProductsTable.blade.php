@@ -94,10 +94,16 @@
                                 </td>
                                 <td>
                                     <div class="cyber-action-btns">
-                                        <a href="/removeproduct/{{ $item->id }}" class="cyber-btn danger"
-                                            title="Delete">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+
+                                        <form action="{{ url('/removeproduct/' . $item->id) }}" method="POST"
+                                            style="display:inline;">
+                                            @csrf
+                                            <button type="submit" class="cyber-btn danger" title="Delete" style="cursor: pointer">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+
+
                                         <a href="/editproduct/{{ $item->id }}" class="cyber-btn success" title="Edit">
                                             <i class="fas fa-pen"></i>
                                         </a>
@@ -129,5 +135,18 @@
 
     @push('scripts')
         <script src="{{ asset('assets/js/producttable.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     @endpush
 @endsection

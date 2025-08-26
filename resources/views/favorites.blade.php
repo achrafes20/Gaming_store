@@ -1,5 +1,3 @@
-
-
 @extends('Layouts.master')
 @section('content')
     <!DOCTYPE html>
@@ -24,33 +22,30 @@
 
 
 
-<section class="page-title-section mb-5">
-    <div class="container">
-        <div class="row">
-            <div class="col-12 text-center">
-                <h1 class="cyber-font " >
-                    <span class="neon-text-pink">FAVORITES</span>
-                    <span class="neon-text-blue">COLLECTION</span>
-                </h1>
-                <p class="mt-3 neon-text-blue">Your personally curated tech selection from the future</p>
-                <div class="title-underline">
+        <section class="page-title-section mb-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 class="cyber-font ">
+                            <span class="neon-text-pink">FAVORITES</span>
+                            <span class="neon-text-blue">COLLECTION</span>
+                        </h1>
+                        <p class="mt-3 neon-text-blue">Your personally curated tech selection from the future</p>
+                        <div class="title-underline">
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-</section>
-<br>
+        </section>
+        <br>
 
 
         <div class="container">
-
-
-
             <div class="row" id="productsGrid">
                 @foreach ($favorites as $item)
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 _{{ $item->product->category_id }}">
-                        <div class="product-card p-3" >
-                            <div class="product-image mb-3" >
+                        <div class="product-card p-3" style="height: 470px;">
+                            <div class="product-image mb-1">
                                 <a href="/single-product/{{ $item->product->id }}">
                                     <img style="max-width: 200px;
             max-height: 200px;
@@ -65,7 +60,8 @@
                                     </div>
                                 </a>
                             </div>
-                            <h5 class="neon-text-blue">{{ $item->product->name }}</h5>
+                            <h5 class="neon-text-blue">{{ \Illuminate\Support\Str::limit($item->product->name, 60) }}</h5>
+
                             <div class="d-flex align-items-center mb-3">
                                 <span class="price me-2">{{ number_format($item->product->price, 2) }} Dh</span>
                                 @if ($item->product->old_price && $item->product->price < $item->product->old_price)
@@ -82,37 +78,46 @@
                                         <i class="fas "></i> OUT OF STOCK
                                     </a>
                                 @else
-                                    <a href="/addproducttocart/{{ $item->product->id }}" class="btn btn-cyber btn-sm">
-                                        <i class="fas fa-shopping-cart"></i> ADD TO CART
-                                    </a>
+                                    <form action="{{ url('/addproducttocart/' . $item->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-cyber btn-sm">
+                                            <i class="fas fa-shopping-cart"></i> ADD TO CART
+                                        </button>
+                                    </form>
                                 @endif
-  <form action="{{ route('favorites.toggle', $item->product->id) }}" method="POST">
-    @csrf
-    @auth
-        <button type="submit"
-            class="favorite-btn {{ auth()->user()->favorites()->where('product_id', $item->product->id)->exists() ? 'active' : '' }}">
-            <i class="{{ auth()->user()->favorites()->where('product_id', $item->product->id)->exists() ? 'fas fa-heart' : 'far fa-heart' }}"></i>
-        </button>
-    @else
-        <a href="{{ route('login') }}" class="favorite-btn">
-            <i class="far fa-heart"></i>
-        </a>
-    @endauth
-</form>
+                                <form action="{{ route('favorites.toggle', $item->product->id) }}" method="POST">
+                                    @csrf
+                                    @auth
+                                        <button type="submit"
+                                            class="favorite-btn {{ auth()->user()->favorites()->where('product_id', $item->product->id)->exists() ? 'active' : '' }}">
+                                            <i
+                                                class="{{ auth()->user()->favorites()->where('product_id', $item->product->id)->exists() ? 'fas fa-heart' : 'far fa-heart' }}"></i>
+                                        </button>
+                                    @else
+                                        <a href="{{ route('login') }}" class="favorite-btn">
+                                            <i class="far fa-heart"></i>
+                                        </a>
+                                    @endauth
+                                </form>
 
 
 
 
 
 
-                                @if (Auth::check() && (Auth::user()->role == 'admin' ))
+                                @if (Auth::check() && Auth::user()->role == 'admin')
                                     <div class="admin-actions">
                                         <a href="/editproduct/{{ $item->product->id }}" class="edit-btn">
                                             <i class="fas fa-cog"></i>
                                         </a>
-                                        <a href="/removeproduct/{{ $item->product->id }}" class="delete-btn">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
+                                        <form action="{{ url('/removeproduct/' . $item->product->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="delete-btn">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 @endif
                             </div>
@@ -132,6 +137,19 @@
 
 
         <script src="{{ asset('assets/js/categories.js') }}"></script>
+          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     </body>
 
     </html>

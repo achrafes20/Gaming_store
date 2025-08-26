@@ -102,7 +102,7 @@
                                     <div class="cyber-select-container">
                                         <select name="category_id" id="category_id" class="cyber-select">
                                             @foreach ($allcategories as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                <option value="{{ $item->id }} " {{ old('category_id') == $item->id ? 'selected' : '' }}>{{ $item->name }}</option>
                                             @endforeach
                                         </select>
                                         <div class="cyber-select-border"></div>
@@ -181,10 +181,25 @@
     @endpush
 
     @push('scripts')
-        <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-        <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap"
-            rel="stylesheet">
+    <!-- FontAwesome et polices -->
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
 
-        <script src="{{ asset('assets/js/addproduct.js') }}"></script>
-    @endpush
+    <script src="{{ asset('assets/js/addproduct.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+@endpush
+
 @endsection

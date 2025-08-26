@@ -38,9 +38,15 @@
                                         class="cyber-hover-glow">
                                     <div class="cyber-item-actions">
 
-                                        <a href="/deletecartitem/{{ $item->id }}" class="cyber-delete-btn">
-                                            <i class="fas fa-trash-alt"></i>
-                                        </a>
+                                        <form action="{{ url('/deletecartitem/' . $item->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="cyber-delete-btn">
+
+                                                <i class="fas fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+
 
                                     </div>
                                 </div>
@@ -66,10 +72,14 @@
                                     <div class="cyber-quantity-selector">
                                         {{-- Bouton decrement ou delete --}}
                                         @if ($item->quantity > 1)
-                                            <a href="/cart_decrement/{{ $item->id }}" class="cyber-qty-btn"
-                                                style="text-decoration: none;">
-                                                <i class="fas fa-chevron-down"></i>
-                                            </a>
+                                            <form action="{{ url('/cart_decrement/' . $item->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf
+                                                <button type="submit" class="cyber-qty-btn"
+                                                    style="border:none;background:none;cursor:pointer;">
+                                                    <i class="fas fa-chevron-down"></i>
+                                                </button>
+                                            </form>
                                         @else
                                             <a href="/deletecartitem/{{ $item->id }}" class="cyber-qty-btn"
                                                 style="text-decoration: none;">
@@ -82,10 +92,14 @@
 
                                         {{-- Bouton increment (affiché uniquement si quantité < stock) --}}
                                         @if ($item->quantity < $item->product->quantity)
-                                            <a href="/cart_increment/{{ $item->id }}" class="cyber-qty-btn"
-                                                style="text-decoration: none;">
-                                                <i class="fas fa-chevron-up"></i>
-                                            </a>
+                                            <form action="{{ url('/cart_increment/' . $item->id) }}" method="POST"
+                                                style="display:inline;">
+                                                @csrf
+                                                <button type="submit" class="cyber-qty-btn"
+                                                    style="border:none;background:none;cursor:pointer;">
+                                                    <i class="fas fa-chevron-up"></i>
+                                                </button>
+                                            </form>
                                         @endif
                                     </div>
 
@@ -116,126 +130,124 @@
                     </div>
                 </div>
 
-              <div class="col-lg-4">
-    <div class="col-lg-4">
-    <div class="cyber-cart-summary">
-        <h3 class="cyber-summary-title"><i class="fas fa-receipt"></i> ORDER SUMMARY</h3>
+                <div class="col-lg-4">
+                    <div class="col-lg-4">
+                        <div class="cyber-cart-summary">
+                            <h3 class="cyber-summary-title"><i class="fas fa-receipt"></i> ORDER SUMMARY</h3>
 
-        <div class="cyber-summary-details">
-            <?php
-            $subtotal = $cartProducts->sum(function ($item) {
-                return $item->product->price * $item->quantity;
-            });
-            $discount = session('coupon.discount', 0);
-            $total = $subtotal - $discount;
+                            <div class="cyber-summary-details">
+                                <?php
+                                $subtotal = $cartProducts->sum(function ($item) {
+                                    return $item->product->price * $item->quantity;
+                                });
+                                $discount = session('coupon.discount', 0);
+                                $total = $subtotal - $discount;
 
-            ?>
+                                ?>
 
-            <div class="cyber-summary-row">
-                <span>Subtotal </span>
-                <span>{{ number_format($subtotal, 2) }} Dh</span>
-            </div>
-            <div class="cyber-summary-row">
-                <span>Shipping</span>
-                <span class="cyber-free">FREE</span>
-            </div>
-            @if($discount > 0)
-            <div class="cyber-summary-row">
-                <span>Discount ({{ session('coupon.code') }})</span>
-                <span style="color: red">- {{ number_format($discount, 2) }} Dh</span>
-            </div>
-            @endif
-            <div class="cyber-total-row">
-                <span>Total</span>
-                <span class="cyber-grand-total">{{ number_format($total, 2) }} Dh</span>
-            </div>
-        </div>
+                                <div class="cyber-summary-row">
+                                    <span>Subtotal </span>
+                                    <span>{{ number_format($subtotal, 2) }} Dh</span>
+                                </div>
+                                <div class="cyber-summary-row">
+                                    <span>Shipping</span>
+                                    <span class="cyber-free">FREE</span>
+                                </div>
+                                @if ($discount > 0)
+                                    <div class="cyber-summary-row">
+                                        <span>Discount ({{ session('coupon.code') }})</span>
+                                        <span style="color: red">- {{ number_format($discount, 2) }} Dh</span>
+                                    </div>
+                                @endif
+                                <div class="cyber-total-row">
+                                    <span>Total</span>
+                                    <span class="cyber-grand-total">{{ number_format($total, 2) }} Dh</span>
+                                </div>
+                            </div>
 
-        @if (count($cartProducts) > 0)
-            <div class="cyber-promo-section">
-                <div class="cyber-promo-input">
-    @if (!session('coupon'))
-        {{-- Formulaire d'application d'un coupon --}}
-        <form method="POST" action="{{ route('coupon.apply') }}">
-            @csrf
-            <input
-                type="text"
-                name="code"
-                placeholder="Enter your coupon code"
-                class="cyber-input"
-            >
-            <button type="submit" class="cyber-promo-btn">Apply</button>
-        </form>
-    @else
-        {{-- Coupon déjà appliqué --}}
-        <div class="cyber-coupon-active">
-            <span class="cyber-coupon-code" style="margin-left: 20px">
-                 <strong>{{ session('coupon.code') }}</strong>
-            </span>
-            <form method="POST" action="{{ route('coupon.remove') }}" style="display:inline;">
-                @csrf
-                <button type="submit" class="cyber-promo-btn remove-btn" style="color: red;margin-left: 20px">
-                    Remove
-                </button>
-            </form>
-        </div>
-    @endif
-</div>
+                            @if (count($cartProducts) > 0)
+                                <div class="cyber-promo-section">
+                                    <div class="cyber-promo-input">
+                                        @if (!session('coupon'))
+                                            {{-- Formulaire d'application d'un coupon --}}
+                                            <form method="POST" action="{{ route('coupon.apply') }}">
+                                                @csrf
+                                                <input type="text" name="code" placeholder="Enter your coupon code"
+                                                    class="cyber-input">
+                                                <button type="submit" class="cyber-promo-btn">Apply</button>
+                                            </form>
+                                        @else
+                                            {{-- Coupon déjà appliqué --}}
+                                            <div class="cyber-coupon-active">
+                                                <span class="cyber-coupon-code" style="margin-left: 20px">
+                                                    <strong>{{ session('coupon.code') }}</strong>
+                                                </span>
+                                                <form method="POST" action="{{ route('coupon.remove') }}"
+                                                    style="display:inline;">
+                                                    @csrf
+                                                    <button type="submit" class="cyber-promo-btn remove-btn"
+                                                        style="color: red;margin-left: 20px">
+                                                        Remove
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        @endif
+                                    </div>
 
 
-                @if (session('coupon'))
-                <br>
-                    <p style="color: rgb(92, 253, 6)">
-                        Coupon applied:
-                        @if(session('coupon.type') === 'fixed')
-                            -{{ number_format(session('coupon.value'), 2) }} Dh
-                        @else
-                            -{{ session('coupon.value') }}%
-                        @endif
-                    </p>
-                @endif
-                <br>
-                @error('code')
-    <p style="color: red">{{ $message }}</p>
-@enderror
+                                    @if (session('coupon'))
+                                        <br>
+                                        <p style="color: rgb(92, 253, 6)">
+                                            Coupon applied:
+                                            @if (session('coupon.type') === 'fixed')
+                                                -{{ number_format(session('coupon.value'), 2) }} Dh
+                                            @else
+                                                -{{ session('coupon.value') }}%
+                                            @endif
+                                        </p>
+                                    @endif
+                                    <br>
+                                    @error('code')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
 
-@error('code1')
-    <p style="color: red">{{ $message }}</p>
-@enderror
+                                    @error('code1')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
 
-@error('code2')
-    <p style="color: red">{{ $message }}</p>
-@enderror
+                                    @error('code2')
+                                        <p style="color: red">{{ $message }}</p>
+                                    @enderror
 
-            </div>
-        @endif
+                                </div>
+                            @endif
 
-        <div class="cyber-checkout-btns">
-            @if (count($cartProducts) > 0)
-                <a href="/Completeorder" class="cyber-checkout-btn">
-                    <span>PROCEED TO CHECKOUT</span>
-                    <i class="fas fa-lock"></i>
-                </a>
-            @else
-                <a href="/categories" class="cyber-checkout-btn">
-                    <span>EXPLORE PRODUCTS</span>
-                    <i class="fas fa-shopping-basket"></i>
-                </a>
-            @endif
+                            <div class="cyber-checkout-btns">
+                                @if (count($cartProducts) > 0)
+                                    <a href="/Completeorder" class="cyber-checkout-btn">
+                                        <span>PROCEED TO CHECKOUT</span>
+                                        <i class="fas fa-lock"></i>
+                                    </a>
+                                @else
+                                    <a href="/categories" class="cyber-checkout-btn">
+                                        <span>EXPLORE PRODUCTS</span>
+                                        <i class="fas fa-shopping-basket"></i>
+                                    </a>
+                                @endif
 
-            <a href="/previousorder" class="cyber-previous-orders-btn">
-                <span>VIEW PREVIOUS ORDERS</span>
-                <i class="fas fa-history"></i>
-            </a>
-        </div>
+                                <a href="/previousorder" class="cyber-previous-orders-btn">
+                                    <span>VIEW PREVIOUS ORDERS</span>
+                                    <i class="fas fa-history"></i>
+                                </a>
+                            </div>
 
-        <div class="cyber-security-badge">
-            <i class="fas fa-shield-alt"></i>
-            <span>Secure Checkout • 256-bit SSL Encryption</span>
-        </div>
-    </div>
-</div>
-</div>
+                            <div class="cyber-security-badge">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Secure Checkout • 256-bit SSL Encryption</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
         </div>

@@ -44,8 +44,8 @@
             <div class="row" id="productsGrid">
                 @foreach ($products as $item)
                     <div class="col-lg-3 col-md-4 col-sm-6 mb-4 _{{ $item->category_id }}">
-                        <div class="product-card p-3">
-                            <div class="product-image mb-3">
+                        <div class="product-card p-3" style="height: 470px">
+                            <div class="product-image mb-1">
                                 <a href="/single-product/{{ $item->id }}">
                                     <img style="max-width: 200px;
             max-height: 200px;
@@ -60,7 +60,8 @@
                                     </div>
                                 </a>
                             </div>
-                            <h5 class="neon-text-blue">{{ $item->name }}</h5>
+                           <h5 class="neon-text-blue">{{ \Illuminate\Support\Str::limit($item->name, 60) }}</h5>
+
                             <div class="d-flex align-items-center mb-3">
                                 <span class="price me-2">{{ number_format($item->price, 2) }} Dh</span>
                                 @if ($item->old_price && $item->price < $item->old_price)
@@ -72,15 +73,19 @@
                                 <span style="color: grey">{{ $item->quantity }} IN STOCK</span>
                             </div>
 
-                            <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex justify-content-between align-items-center" >
                                 @if ($item->quantity == 0)
                                     <a class="btn btn-cyber btn-sm">
                                         <i class="fas "></i> OUT OF STOCK
                                     </a>
                                 @else
-                                    <a href="/addproducttocart/{{ $item->id }}" class="btn btn-cyber btn-sm">
-                                        <i class="fas fa-shopping-cart"></i> ADD TO CART
-                                    </a>
+                                    <form action="{{ url('/addproducttocart/' . $item->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="btn btn-cyber btn-sm">
+                                            <i class="fas fa-shopping-cart"></i> ADD TO CART
+                                        </button>
+                                    </form>
                                 @endif
                                 <form action="{{ route('favorites.toggle', $item->id) }}" method="POST">
                                     @csrf
@@ -122,17 +127,22 @@
                 @endforeach
             </div>
         </div>
-
-
-
-
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
-
-
         <script src="{{ asset('assets/js/categories.js') }}"></script>
+          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     </body>
 
     </html>

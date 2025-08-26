@@ -70,10 +70,13 @@
                         <div class="cyber-image-container">
                             <img src="{{ asset($item->imagepath) }}" alt="Product Image" class="cyber-gallery-img">
                             <div class="cyber-image-overlay">
-                                <a href="/removeproductphoto/{{ $item->id }}" class="cyber-delete-btn">
-                                    <i class="fas fa-trash"></i>
-                                    DELETE
-                                </a>
+                                <form action="{{ url('/removeproductphoto/' . $item->id) }}" method="POST" class="d-inline">
+    @csrf
+    <button type="submit" class="cyber-delete-btn" style="cursor: pointer">
+        <i class="fas fa-trash"></i> DELETE
+    </button>
+</form>
+
                             </div>
                             <div class="cyber-image-border"></div>
                         </div>
@@ -103,5 +106,18 @@
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
         <script src="{{ asset('assets/js/addproductimage.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     @endpush
 @endsection

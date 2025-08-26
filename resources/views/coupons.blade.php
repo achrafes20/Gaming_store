@@ -155,13 +155,22 @@
                                                 <span class="cyber-btn-pulse"></span>
                                             </button>
 
-                                            <a href="/RemoveCoupon/{{ $coupon->id }}" class="cyber-btn danger-btn">
-                                                <i class="fas fa-trash"></i>
-                                                <span>DELETE</span>
-                                                <div class="cyber-btn-hover"></div>
-                                            </a>
+
+                                            </form>
+
+                                            <form action="{{ url('/RemoveCoupon/' . $coupon->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                <button type="submit" class="cyber-btn danger-btn">
+
+                                                    <i class="fas fa-trash"></i>
+                                                    <span>DELETE</span>
+                                                    <div class="cyber-btn-hover"></div>
+                                                </button>
+                                            </form>
+
                                         </div>
-                                    </form>
+
                                 </div>
                             </div>
                         </div>
@@ -191,5 +200,18 @@
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
         <script src="{{ asset('assets/js/coupons.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     @endpush
 @endsection

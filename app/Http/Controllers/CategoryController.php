@@ -12,13 +12,12 @@ class CategoryController extends Controller
     {
         return view('addcategory');
     }
-
     public function storecategory(Request $request)
     {
         $request->validate([
             'name' => ['required', 'max:100'],
             'description' => 'required',
-            'photo' => $request->id ? 'nullable|image' : 'required|image',
+            'photo' => $request->id ? 'nullable|image|mimes:jpeg,jpg,png,gif,webp|max:2048' : 'required|image|mimes:jpeg,jpg,png,gif,webp|max:2048',
         ]);
 
         if ($request->id) {
@@ -28,28 +27,22 @@ class CategoryController extends Controller
 
             $category = new Categories();
         }
-
         $category->name = $request->name;
         $category->description = $request->description;
-
         if ($request->hasFile('photo')) {
             $filename = Str::uuid()->toString() . '-' . $request->photo->getClientOriginalName();
             $request->photo->move(public_path('uploads'), $filename);
             $category->imagepath = 'uploads/' . $filename;
         }
-
         $category->save();
-
-        return redirect('/ProductsTable');
+        return redirect('/categoryadmin')->with('success', 'Category saved successfully!');
     }
-
-
     public function RemoveCategory($categoryid = null)
     {
         if ($categoryid != null) {
             $currentcategory = Categories::find($categoryid);
             $currentcategory->delete();
-            return redirect()->back();
+            return redirect()->back()->with('success', 'Category deleted successfully!');
         } else {
             abort(403, "please enter category id in the route");
         }

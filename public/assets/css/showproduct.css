@@ -45,6 +45,17 @@
             background-color: rgba(13, 2, 33, 0.8);
             transition: all 0.3s ease;
             border: 1px solid var(--neon-purple);
+
+
+
+                display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* espace entre haut et bas */
+   
+
+
+
+
         }
 
         .product-card:hover {

@@ -6,62 +6,43 @@ use Illuminate\Http\Request;
 use App\Models\Coupon;
 use App\Models\Coupon_User;
 use App\Models\Cart;
+use Illuminate\Support\Facades\Auth;
 
 class CouponController extends Controller
 {
-
-
     public function remove()
     {
-
         if (session()->has('coupon')) {
             $couponCode = session('coupon.code');
-
-
             $coupon = Coupon::where('code', $couponCode)->first();
             $coupon->usage_limit++;
-
             if ($coupon) {
-
-                Coupon_User::where('user_id', auth()->id())
+                Coupon_User::where('user_id', Auth::id())
                     ->where('coupon_id', $coupon->id)
                     ->delete();
             }
             $coupon->save();
-
             session()->forget('coupon');
         }
 
         return back()->with('success', 'Coupon removed successfully!');
     }
-
-
-
-
     public function apply(Request $request)
     {
         $request->validate([
             'code' => 'required|string'
         ]);
-
         $coupon = Coupon::where('code', $request->code)->first();
-
         if (!$coupon || !$coupon->isValid()) {
             return back()->withErrors(['code' => 'Invalid or expired coupon.']);
         }
-
-        // Vérifier si déjà utilisé par cet utilisateur
-        if ($coupon->users()->where('user_id', auth()->id())->exists()) {
+        if ($coupon->users()->where('user_id', Auth::id())->exists()) {
             return back()->withErrors(['code1' => 'You have already used this coupon.']);
         }
-
-        // Vérifier limite globale
         if ($coupon->usage_limit && $coupon->users()->count() >= $coupon->usage_limit) {
             return back()->withErrors(['code2' => 'This coupon has reached its usage limit.']);
         }
-
-        // Récupérer le total du panier
-        $cartProducts = Cart::where('user_id', auth()->id())->with('product')->get();
+        $cartProducts = Cart::where('user_id', Auth::id())->with('product')->get();
         $total = $cartProducts->sum(fn($item) => $item->product->price * $item->quantity);
 
         $discount = $coupon->calculateDiscount($total);
@@ -69,10 +50,7 @@ class CouponController extends Controller
         if ($coupon->usage_limit) {
             $coupon->decrement('usage_limit');
         }
-        // Marquer comme utilisé par cet utilisateur
-        $coupon->users()->attach(auth()->id());
-
-        // Stocker infos du coupon
+        $coupon->users()->attach(Auth::id());
         session()->put('coupon', [
             'code'     => $coupon->code,
             'discount' => $discount,
@@ -81,19 +59,12 @@ class CouponController extends Controller
             'total'    => $total,
             'newTotal' => $newTotal
         ]);
-
         return back()->with('success', 'Coupon applied successfully!');
     }
-
-
-
-
     public function addcoupon()
     {
         return view('addcoupon');
     }
-
-
     public function storecoupon(Request $request)
     {
         $request->validate([
@@ -103,9 +74,7 @@ class CouponController extends Controller
             'usage_limit' => 'nullable|integer',
             'expires_at' => 'required|date',
         ]);
-
         if ($request->id) {
-
             $currentCoupon = Coupon::findOrFail($request->id);
             $currentCoupon->code = $request->code;
             $currentCoupon->discount = $request->discount;
@@ -113,6 +82,7 @@ class CouponController extends Controller
             $currentCoupon->usage_limit = $request->usage_limit;
             $currentCoupon->expires_at = $request->expires_at;
             $currentCoupon->save();
+            return redirect()->back()->with('success', 'Coupon saved successfully!');
         } else {
 
             $newCoupon = new Coupon();
@@ -122,25 +92,23 @@ class CouponController extends Controller
             $newCoupon->usage_limit = $request->usage_limit;
             $newCoupon->expires_at = $request->expires_at;
             $newCoupon->save();
+            return redirect('/coupons')->with('success', 'Coupon saved successfully!');
         }
 
-        return redirect('/ProductsTable');
     }
-
     public function coupons()
     {
-
-        $result = Coupon::all();
+      $result = Coupon::all();
 
         return view('coupons', ['coupons' => $result]);
     }
-
     public function RemoveCoupon($couponid = null)
     {
         if ($couponid != null) {
             $currentCoupon = Coupon::find($couponid);
             $currentCoupon->delete();
-            return redirect('/product');
+            return redirect()->back()->with('success', 'Coupon deleted successfully!');
+
         } else {
             abort(403, "please enter product id in the route");
         }

@@ -14,20 +14,15 @@ class FirstController extends Controller
 {
     public function MainPage()
     {
-        //Session::put('date','18-08-2004');
         session()->forget('date');
         $result = Categories::all();
         return view('welcome', ["categories" => $result]);
     }
-
-
     public function reviews()
     {
         $result = Review::all();
         return view('reviews', ["reviews" => $result]);
     }
-
-
     public function storereview(Request $request)
     {
         $request->validate([
@@ -44,21 +39,14 @@ class FirstController extends Controller
         $newReview->subject = $request->subject;
         $newReview->message = $request->message;
         $newReview->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Review submitted successfully!');
     }
-
-
-
-
-
     public function Categories_page()
     {
         $result = Categories::all();
         $result2 = Product::all();
         return view('categories', ["categories" => $result], ["products" => $result2]);
     }
-
-
     public function Product_page($catid = null)
     {
         if (!$catid) {
@@ -83,7 +71,7 @@ class FirstController extends Controller
         $newsub = new Sub();
         $newsub->email = $request->email;
         $newsub->save();
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Subscription successful!');
     }
 
     public function search(Request $request)

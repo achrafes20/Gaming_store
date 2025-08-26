@@ -35,8 +35,8 @@
                             @csrf()
                             <div class="cyber-form-grid">
                                 <div class="cyber-input-group">
-                                    <input type="text" name="name" id="name" value="{{ old('name') }}"
-                                        required>
+                                    <input type="text" name="name" id="name" value="{{ Auth::user()->name }}"
+                                      placeholder="{{ Auth::user()->name }}" readonly required>
                                     <label for="name">YOUR NAME</label>
                                     <div class="cyber-input-highlight"></div>
                                     @error('name')
@@ -46,8 +46,8 @@
                                 </div>
 
                                 <div class="cyber-input-group">
-                                    <input type="email" name="email" id="email" value="{{ old('email') }}"
-                                        required>
+                                    <input type="email" name="email" id="email" value="{{ Auth::user()->email }}"
+                                        required readonly placeholder="{{ Auth::user()->email }}">
                                     <label for="email">EMAIL ADDRESS</label>
                                     <div class="cyber-input-highlight"></div>
                                     @error('email')
@@ -150,5 +150,18 @@
     @push('scripts')
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script src="{{ asset('assets/js/reviews.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     @endpush
 @endsection

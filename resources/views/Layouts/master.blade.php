@@ -301,9 +301,6 @@
                 <div class="cyber-payment-methods">
                     <i class="fab fa-cc-visa"></i>
                     <i class="fab fa-cc-mastercard"></i>
-                    <i class="fab fa-cc-paypal"></i>
-                    <i class="fab fa-bitcoin"></i>
-                    <i class="fab fa-ethereum"></i>
                 </div>
             </div>
         </div>

@@ -163,8 +163,7 @@
                             @if (Auth::check() && (Auth::user() && Auth::user()->role == 'admin'))
                                 <form action="{{ url('/removecategory/' . $item->id) }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="cyber-delete-btn mt-2" style="cursor: pointer;margin-top:5px"
-                                        onclick="return confirm('Are you sure you want to delete this category?')">
+                                    <button type="submit" class="cyber-delete-btn mt-2" style="cursor: pointer;margin-top:5px">
                                         <i class="fas fa-trash"></i> DELETE CATEGORY
                                     </button>
                                 </form>
@@ -194,4 +193,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <script src="{{ asset('assets/js/welcome.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if(session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Succès!',
+                text: "{{ session('success') }}",
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
 @endpush

@@ -47,7 +47,13 @@
                 border: 1px solid var(--neon-purple);
                 height: 100%;
 
-                
+                display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* espace entre haut et bas */
+    height: 600px; /* comme tu as mis */
+
+
+
             }
 
             .product-card:hover {
