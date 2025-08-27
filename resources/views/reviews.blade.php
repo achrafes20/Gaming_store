@@ -1,5 +1,6 @@
 @extends('Layouts.master')
 @section('content')
+@if(Auth::check())
     <div class="cyber-breadcrumb-section">
         <div class="cyber-breadcrumb-overlay"></div>
         <div class="container">
@@ -91,6 +92,7 @@
             </div>
         </div>
     </div>
+    @endif
     <div class="cyber-testimonials-section">
         <div class="container">
             <div class="row">

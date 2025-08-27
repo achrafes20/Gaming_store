@@ -235,7 +235,7 @@
             opacity: 0;
         }
 
-        
+
         @media (max-width: 600px) {
             .info-grid {
                 grid-template-columns: 1fr;
@@ -319,9 +319,9 @@
                         @foreach ($order->orderDetails as $detail)
                         <tr>
                             <td>{{ $detail->product->name }}</td>
-                            <td>{{ number_format($detail->product->price, 2) }} Dh</td>
+                            <td>{{ number_format($detail->product->price, 2) }}Dh</td>
                             <td>{{ $detail->quantity }}</td>
-                            <td>{{ number_format($detail->quantity * $detail->product->price, 2) }} Dh</td>
+                            <td>{{ number_format($detail->quantity * $detail->product->price, 2) }}Dh</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -333,7 +333,7 @@
 
                 <div class="summary-row">
                     <div>Subtotal</div>
-                    <div>{{ number_format($order->orderDetails->sum(fn($x) => $x->product->price * $x->quantity), 2) }} Dh</div>
+                    <div style="margin-left: 5px">{{ number_format($order->orderDetails->sum(fn($x) => $x->product->price * $x->quantity), 2) }}Dh</div>
                 </div>
 
                 <div class="summary-row">
@@ -349,13 +349,13 @@
                 @if($order->discount > 0)
                 <div class="summary-row">
                     <div>Discount</div>
-                    <div style="margin-left: 5px">-{{ number_format($order->discount, 2) }} Dh</div>
+                    <div style="margin-left: 5px">-{{ number_format($order->discount, 2) }}Dh</div>
                 </div>
                 @endif
 
                 <div class="summary-row total-row">
                     <div>TOTAL </div>
-                    <div style="margin-left: 5px">{{ number_format($order->orderDetails->sum(fn($x) => $x->product->price * $x->quantity) - $order->discount, 2) }} Dh</div>
+                    <div style="margin-left: 5px">{{ number_format($order->orderDetails->sum(fn($x) => $x->product->price * $x->quantity) - $order->discount, 2) }}Dh</div>
                 </div>
             </div>
 

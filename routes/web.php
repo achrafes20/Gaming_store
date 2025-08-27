@@ -38,17 +38,17 @@ Route::middleware('auth')->group(function () {
     Route::post('/coupon/apply', [CouponController::class, 'apply'])->name('coupon.apply');
     Route::post('/coupon/remove', [CouponController::class, 'remove'])->name('coupon.remove');
     Route::post('/products/{product}/review', [ReviewController::class, 'store'])->name('review_products.store');
+    Route::post('/favorites/toggle/{productId}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
+    Route::post('/favorites/{productId}', [FavoriteController::class, 'store'])->name('favorites.store');
+    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
+    Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
+    Route::get('/Completeorder', [CartController::class, 'Completeorder']);
+     Route::post('/StoreOrder', [CartController::class, 'StoreOrder']);
+     Route::get('/previousorder', [CartController::class, 'previousorder']);
+     Route::get('/addproducttocart/{productid}', [CartController::class, 'addproducttocart']);
 });
 
 Route::middleware('customauth2')->group(function () {
-    Route::get('/favorites', [FavoriteController::class, 'index'])->name('favorites.index');
-    Route::post('/favorites/{productId}', [FavoriteController::class, 'store'])->name('favorites.store');
-    Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
-    Route::post('/favorites/toggle/{productId}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
-    Route::get('/Completeorder', [CartController::class, 'Completeorder']);
-    Route::post('/StoreOrder', [CartController::class, 'StoreOrder']);
-    Route::get('/previousorder', [CartController::class, 'previousorder']);
-    Route::get('/addproducttocart/{productid}', [CartController::class, 'addproducttocart']);
     Route::get('/addproduct', [ProductController::class, 'AddProduct']);
     Route::post('/storeproduct', [ProductController::class, 'storeproduct']);
     Route::post('/removeproduct/{productid?}', [ProductController::class, 'RemoveProducts']);
