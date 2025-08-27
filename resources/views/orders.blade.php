@@ -104,7 +104,6 @@
                                                         Dh
                                                     </div>
                                                 </div>
-<<<<<<< HEAD
                                             @endforeach
                                         </div>
                                     </div>
@@ -153,51 +152,6 @@
                                                         Dh</span>
                                                 @endif
                                             </div>
-=======
-                                            </div>
-                                            <div class="cyber-table-col">
-                                                <a href="/single-product/{{ $detail->product->id }}"
-                                                   class="cyber-product-link">
-                                                    {{ $detail->product->name }}
-                                                </a>
-                                            </div>
-                                            <div class="cyber-table-col">
-                                                ${{ number_format($detail->product->price, 2) }}
-                                            </div>
-                                            <div class="cyber-table-col">
-                                                {{ $detail->quantity }}
-                                            </div>
-                                            <div class="cyber-table-col">
-                                                {{ number_format($detail->quantity * $detail->product->price, 2) }} Dh
-                                            </div>
-                                        </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-
-                                <div class="cyber-order-summary">
-                                    <div class="cyber-summary-card">
-                                        <h3 class="cyber-section-title">ORDER SUMMARY</h3>
-                                        <div class="cyber-summary-row">
-                                            <span>Subtotal</span>
-                                            <span>{{ number_format($item->orderdetails->sum(function ($x) {
-                                                return $x->product->price * $x->quantity;
-                                            }), 2) }} Dh</span>
-                                        </div>
-                                        <div class="cyber-summary-row">
-                                            <span>Shipping</span>
-                                            <span class="cyber-free">FREE</span>
-                                        </div>
-                                        <div class="cyber-summary-row">
-                                            <span>Tax</span>
-                                            <span>$0.00</span>
-                                        </div>
-                                        <div class="cyber-total-row">
-                                            <span>TOTAL</span>
-                                            <span class="cyber-total">{{ number_format($item->orderdetails->sum(function ($x) {
-                                                return $x->product->price * $x->quantity;
-                                            }), 2) }} Dh</span>
->>>>>>> cdb3baa6643f071c4272a3c2f06e49e621824e4f
                                         </div>
                                     </div>
                                 </div>

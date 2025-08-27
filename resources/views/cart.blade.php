@@ -124,7 +124,6 @@
                                 $discount = session('coupon.discount', 0);
                                 $total = $subtotal - $discount;
 
-<<<<<<< HEAD
                                 ?>
                                 <div class="cyber-summary-row">
                                     <span>Subtotal </span>
@@ -145,51 +144,6 @@
                                     <span class="cyber-grand-total">{{ number_format($total, 2) }} Dh</span>
                                 </div>
                             </div>
-=======
-                        <div class="cyber-summary-details">
-                            <div class="cyber-summary-row">
-                                <span>Subtotal ({{ count($cartProducts) }} items)</span>
-                                <span>{{ number_format($cartProducts->sum(function ($item) {return $item->product->price * $item->quantity;}),2) }} Dh</span>
-                            </div>
-                            <div class="cyber-summary-row">
-                                <span>Shipping</span>
-                                <span class="cyber-free">FREE</span>
-                            </div>
-                            <div class="cyber-summary-row">
-                                <span>Discount</span>
-                                <span style="color: red">- {{ session('discount', 0) }} Dh</span>
-                            </div>
-                            <div class="cyber-total-row">
-                                <span>Total</span>
-                                <span
-                                    class="cyber-grand-total">{{ number_format(
-                                        $cartProducts->sum(function ($item) {
-                                            return $item->product->price * $item->quantity;
-                                        }) - session('discount', 0),
-                                        2,
-                                    ) }} Dh</span>
-                            </div>
-                        </div>
-                        @if (count($cartProducts) > 0)
-
-                        <div class="cyber-promo-section">
-                            <div class="cyber-promo-input">
-                                <form method="POST" action="{{ route('coupon.apply') }}">
-                                    @csrf
-                                    <input type="text" name="code" placeholder="Enter your coupon code">
-                                    <button type="submit" class="cyber-promo-btn">Apply</button>
-                                </form>
-
-                            </div>
-                            @if (session('discount'))
-                                <p style="color: rgb(92, 253, 6)">Coupon applied: -{{ session('discount') }} DH</p>
-                            @endif
-                        </div>
-                        @endif
-
-                        <div class="cyber-checkout-btns">
-
->>>>>>> cdb3baa6643f071c4272a3c2f06e49e621824e4f
                             @if (count($cartProducts) > 0)
                                 <div class="cyber-promo-section">
                                     <div class="cyber-promo-input">
