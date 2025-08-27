@@ -117,6 +117,7 @@
                                             <i class="fas fa-envelope"></i> {{ $item->email }}
 
                                         </div>
+                                        @if (Auth::check() && Auth::user()->role == 'admin')
                                         <form action="{{ url('/removereview/' . $item->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
@@ -124,6 +125,7 @@
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
+                                        @endif
                                     </div>
                                 </div>
                                 <div class="cyber-testimonial-glow"></div>
