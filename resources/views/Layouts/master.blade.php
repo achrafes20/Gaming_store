@@ -197,12 +197,19 @@
                 </p>
                 <div class="cyber-footer-social">
                     <a style="text-decoration: none;" href="https://www.facebook.com/profile.php?id=100080119152617"
-                        class="cyber-social-link"><i class="fab fa-facebook-f"></i></a>
+                        class="cyber-social-link" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
                     <a style="text-decoration: none;" href="https://www.instagram.com/achraf_esserrar/"
-                        class="cyber-social-link"><i class="fab fa-instagram"></i></a>
+                        class="cyber-social-link" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-instagram"></i>
+                    </a>
                     <a style="text-decoration: none;" href="https://www.linkedin.com/in/achraf-es-serrar-300bb2279/"
-                        class="cyber-social-link"><i class="fab fa-linkedin-in"></i></a>
+                        class="cyber-social-link" target="_blank" rel="noopener noreferrer">
+                        <i class="fab fa-linkedin-in"></i>
+                    </a>
                 </div>
+
             </div>
             <div class="cyber-footer-column" data-aos="fade-up" data-aos-delay="100">
                 <h3 class="cyber-footer-title">QUICK LINKS</h3>
