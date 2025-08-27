@@ -51,9 +51,8 @@ php artisan serve
 | **Role** | **Email**           | **Password** |
 |----------|---------------------|--------------|
 | Admin    | admin@gmail.com     | `password`   |
-| Client   | akram@gmail.com     | `password`   |
 
-> 💡 You can also create a new client account via the **Register** page.
+> 💡 You can create a new client account via the **Register** page.
 
 
 🔗 **Live Demo:** [https://nextlevelgaming.rf.gd/](https://nextlevelgaming.rf.gd/)
