@@ -17,10 +17,6 @@
             </div>
         </div>
     </div>
-
-
-
-
     <div class="cyber-review-form-section">
         <div class="container">
             <div class="row">
@@ -30,13 +26,12 @@
                             <h2><i class="fas fa-comment-alt"></i> REVIEW FORM</h2>
                             <p>Share your thoughts about our products and service</p>
                         </div>
-
                         <form method="POST" action="/storereview" id="cyber-review-form">
                             @csrf()
                             <div class="cyber-form-grid">
                                 <div class="cyber-input-group">
                                     <input type="text" name="name" id="name" value="{{ Auth::user()->name }}"
-                                      placeholder="{{ Auth::user()->name }}" readonly required>
+                                        placeholder="{{ Auth::user()->name }}" readonly required>
                                     <label for="name">YOUR NAME</label>
                                     <div class="cyber-input-highlight"></div>
                                     @error('name')
@@ -44,7 +39,6 @@
                                             {{ $message }}</div>
                                     @enderror
                                 </div>
-
                                 <div class="cyber-input-group">
                                     <input type="email" name="email" id="email" value="{{ Auth::user()->email }}"
                                         required readonly placeholder="{{ Auth::user()->email }}">
@@ -55,7 +49,6 @@
                                             {{ $message }}</div>
                                     @enderror
                                 </div>
-
                                 <div class="cyber-input-group">
                                     <input type="text" name="phone" id="phone" value="{{ old('phone') }}"
                                         required>
@@ -66,7 +59,6 @@
                                             {{ $message }}</div>
                                     @enderror
                                 </div>
-
                                 <div class="cyber-input-group">
                                     <input type="text" name="subject" id="subject" value="{{ old('subject') }}"
                                         required>
@@ -78,7 +70,6 @@
                                     @enderror
                                 </div>
                             </div>
-
                             <div class="cyber-textarea-group">
                                 <textarea name="message" id="message" required>{{ old('message') }}</textarea>
                                 <label for="message">YOUR REVIEW</label>
@@ -100,9 +91,6 @@
             </div>
         </div>
     </div>
-
-
-
     <div class="cyber-testimonials-section">
         <div class="container">
             <div class="row">
@@ -112,13 +100,10 @@
                         <h2 style="text-align: center">CUSTOMER <span class="cyber-accent">REVIEWS</span></h2>
                         <p style="text-align: center">What our clients say about our products and service</p>
                     </div>
-
                     <div class="cyber-testimonials-slider">
                         @foreach ($reviews as $item)
                             <div class="cyber-testimonial-card" data-aos="fade-up">
                                 <div class="cyber-client-avatar">
-
-
                                 </div>
                                 <div class="cyber-client-meta">
                                     <h3>{{ $item->name }} <span>{{ $item->subject }}</span></h3>
@@ -130,7 +115,13 @@
                                             <i class="fas fa-envelope"></i> {{ $item->email }}
 
                                         </div>
-
+                                        <form action="{{ url('/removereview/' . $item->id) }}" method="POST"
+                                            class="d-inline">
+                                            @csrf
+                                            <button type="submit" class="delete-btn" style="cursor: pointer;">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
                                     </div>
                                 </div>
                                 <div class="cyber-testimonial-glow"></div>
@@ -141,27 +132,24 @@
             </div>
         </div>
     </div>
-
-
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/reviews.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/categories.css') }}">
     @endpush
-
     @push('scripts')
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <script src="{{ asset('assets/js/reviews.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     @endpush
 @endsection

@@ -482,20 +482,9 @@ class DatabaseSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'id' => 1,
-                'name' => 'akram',
-                'email' => 'akram@gmail.com',
-                'email_verified_at' => null,
-                'password' => '$2y$12$XNj3rrZ2c0lT2dDmYbSA0.hnheqZLmxl9EQFm6dPB5QcVOqb9pGRS',
-                'remember_token' => 'eVeAp3t7EmkQrrQaaswScHJSGPv4Lu2gkMxiU0BwWKzbclogIr4zLfVmpYox',
-                'created_at' => '2025-07-28 09:55:26',
-                'updated_at' => '2025-08-10 22:10:58',
-                'role' => '',
-            ],
-            [
-                'id' => 2,
                 'name' => 'admin',
                 'email' => 'admin@gmail.com',
-                'email_verified_at' => null,
+                'email_verified_at' => '2025-08-18 21:40:36',
                 'password' => '$2y$12$XNj3rrZ2c0lT2dDmYbSA0.hnheqZLmxl9EQFm6dPB5QcVOqb9pGRS',
                 'remember_token' => 'lyOFUK8qncgvzKZzOLKNXhEmN4Xf1ZVMNkZjwf36m5HUndGnuyX2vLN0m4TZ',
                 'created_at' => null,

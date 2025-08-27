@@ -1,12 +1,7 @@
 @extends('Layouts.master')
 @section('content')
     <div class="scanline"></div>
-
-
-
-
     <div class="cyber-slider">
-
         <div class="cyber-slide active" style="background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);">
             <div class="cyber-slide-overlay"></div>
             <div class="container">
@@ -32,8 +27,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="cyber-slide" style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);">
             <div class="cyber-slide-overlay"></div>
             <div class="container text-center">
@@ -59,8 +52,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="cyber-slide" style="background: linear-gradient(135deg, #2c3e50 0%, #4ca1af 50%, #2c3e50 100%);">
             <div class="cyber-slide-overlay"></div>
             <div class="container">
@@ -86,9 +77,6 @@
             </div>
         </div>
     </div>
-
-
-
     <div class="cyber-features-section">
         <div class="container">
             <div class="cyber-features-grid">
@@ -102,7 +90,6 @@
                     </div>
                     <div class="cyber-feature-pulse"></div>
                 </div>
-
                 <div class="cyber-feature-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="cyber-feature-icon">
                         <i class="fas fa-shield-alt"></i>
@@ -113,7 +100,6 @@
                     </div>
                     <div class="cyber-feature-pulse"></div>
                 </div>
-
                 <div class="cyber-feature-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="cyber-feature-icon">
                         <i class="fas fa-sync-alt"></i>
@@ -127,9 +113,6 @@
             </div>
         </div>
     </div>
-
-
-
     <div class="cyber-products-section">
         <div class="container">
             <div class="row">
@@ -142,7 +125,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="cyber-products-grid">
                 @foreach ($categories as $item)
                     <div class="cyber-product-card" data-aos="fade-up">
@@ -159,11 +141,11 @@
                             <h3>{{ $item->name }}</h3>
                             <p>{{ Str::limit($item->description, 100) }}</p>
                             <a href="/product/{{ $item->id }}" class="btn-cyber-primary w-100">VIEW PRODUCTS</a>
-
                             @if (Auth::check() && (Auth::user() && Auth::user()->role == 'admin'))
                                 <form action="{{ url('/removecategory/' . $item->id) }}" method="POST" class="d-inline">
                                     @csrf
-                                    <button type="submit" class="cyber-delete-btn mt-2" style="cursor: pointer;margin-top:5px">
+                                    <button type="submit" class="cyber-delete-btn mt-2"
+                                        style="cursor: pointer;margin-top:5px">
                                         <i class="fas fa-trash"></i> DELETE CATEGORY
                                     </button>
                                 </form>
@@ -183,19 +165,13 @@
 
 @push('scripts')
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-
     <link href="https://fonts.cdnfonts.com/css/cyberpunk" rel="stylesheet">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <script src="{{ asset('assets/js/welcome.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
+    @if (session('success'))
         <script>
             Swal.fire({
                 icon: 'success',

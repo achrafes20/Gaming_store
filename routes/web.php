@@ -53,6 +53,7 @@ Route::middleware('customauth2')->group(function () {
     Route::post('/storeproduct', [ProductController::class, 'storeproduct']);
     Route::post('/removeproduct/{productid?}', [ProductController::class, 'RemoveProducts']);
     Route::get('/editproduct/{productid?}', [ProductController::class, 'EditProducts']);
+    Route::post('/removereview/{reviewid?}', [FirstController::class, 'RemoveReview']);
     Route::get('/addcategory', [CategoryController::class, 'Addcategory']);
     Route::post('/storecategory', [CategoryController::class, 'storecategory']);
     Route::post('/removecategory/{categoryid?}', [CategoryController::class, 'Removecategory']);

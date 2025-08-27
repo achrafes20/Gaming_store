@@ -18,10 +18,6 @@
             </div>
         </div>
     </div>
-
-
-
-
     <div class="cyber-form-section">
         <div class="container">
             <div class="row">
@@ -31,13 +27,11 @@
                             <h3 class="cyber-form-title">PRODUCT <span class="cyber-accent">DATABASE</span> ENTRY</h3>
                             <p class="cyber-form-subtitle">Update the product specifications below</p>
                         </div>
-
                         <div class="cyber-form-body">
                             <form method="POST" enctype="multipart/form-data" action="/storeproduct"
                                 id="cyber-product-form">
                                 @csrf()
                                 <input type="hidden" name="id" id="id" value="{{ $product->id }}">
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-input-container">
                                         <input type="text" placeholder="PRODUCT NAME" name="name" id="name"
@@ -53,7 +47,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-row">
                                     <div class="cyber-form-group">
                                         <div class="cyber-input-container">
@@ -70,7 +63,6 @@
                                             @enderror
                                         </span>
                                     </div>
-
                                     <div class="cyber-form-group">
                                         <div class="cyber-input-container">
                                             <input type="number" placeholder="QUANTITY" name="quantity" id="quantity"
@@ -87,7 +79,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-textarea-container">
                                         <textarea name="description" id="description" placeholder="PRODUCT DESCRIPTION" class="cyber-textarea">{{ $product->description }}</textarea>
@@ -102,7 +93,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-select-container">
                                         <select name="category_id" id="category_id" class="cyber-select">
@@ -124,7 +114,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-file-container">
                                         <label for="photo" class="cyber-file-label">
@@ -143,7 +132,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-submit">
                                     <button type="submit" class="cyber-submit-btn">
                                         <span class="cyber-btn-text">UPDATE PRODUCT</span>
@@ -160,40 +148,33 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/editproduct.css') }}">
     @endpush
-
     @push('scripts')
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap"
             rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
         <script src="{{ asset('assets/js/editproduct.js') }}"></script>
-        <!-- SweetAlert2 CDN en premier -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     @endpush
 @endsection

@@ -17,8 +17,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-categories-section">
         <div class="container">
             <div class="cyber-action-btns">
@@ -28,7 +26,6 @@
                     <div class="cyber-btn-hover"></div>
                 </a>
             </div>
-
             <div class="cyber-accordion-wrap">
                 <div class="cyber-accordion" id="cyberAccordion">
                     @foreach ($category as $item)
@@ -42,7 +39,6 @@
                                     <i class="fas fa-chevron-down cyber-accordion-icon"></i>
                                 </button>
                             </div>
-
                             <div id="cyberCollapse{{ $item->id }}" class="cyber-category-collapse show"
                                 aria-labelledby="cyberHeading{{ $item->id }}" data-parent="#cyberAccordion">
                                 <div class="cyber-category-body">
@@ -50,7 +46,6 @@
                                         id="cyber-category-form-{{ $item->id }}">
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $item->id }}">
-
                                         <div class="cyber-form-group">
                                             <div class="cyber-input-container">
                                                 <input type="text" placeholder="CATEGORY NAME" name="name"
@@ -66,7 +61,6 @@
                                                 @enderror
                                             </span>
                                         </div>
-
                                         <div class="cyber-form-group">
                                             <div class="cyber-textarea-container">
                                                 <textarea name="description" placeholder="CATEGORY DESCRIPTION" class="cyber-textarea">{{ $item->description }}</textarea>
@@ -81,7 +75,6 @@
                                                 @enderror
                                             </span>
                                         </div>
-
                                         <div class="cyber-form-group">
                                             <div class="cyber-file-container">
                                                 <label for="photo-{{ $item->id }}" class="cyber-file-label">
@@ -104,7 +97,6 @@
                                                 @enderror
                                             </span>
                                         </div>
-
                                         <div class="cyber-form-actions">
                                             <button type="submit" class="cyber-submit-btn update-btn">
                                                 <span class="cyber-btn-text">UPDATE CATEGORY</span>
@@ -113,34 +105,31 @@
                                                 </span>
                                                 <span class="cyber-btn-pulse"></span>
                                             </button>
-                                        </form>
-                                            <form action="{{ url('/removecategory/' . $item->id) }}" method="POST" style="display:inline;">
-    @csrf
-    <button type="submit" class="cyber-btn danger-btn">
-        <i class="fas fa-trash"></i>
-        <span>DELETE</span>
-        <div class="cyber-btn-hover"></div>
-    </button>
-</form>
-                                        </div>
-
+                                    </form>
+                                    <form action="{{ url('/removecategory/' . $item->id) }}" method="POST"
+                                        style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="cyber-btn danger-btn">
+                                            <i class="fas fa-trash"></i>
+                                            <span>DELETE</span>
+                                            <div class="cyber-btn-hover"></div>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
                 </div>
+                @endforeach
             </div>
         </div>
     </div>
-
-
+    </div>
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/categoryadmin.css') }}">
     @endpush
@@ -151,19 +140,18 @@
             rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
         <script src="{{ asset('assets/js/categoryadmin.js') }}"></script>
-         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-        @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     @endpush
 @endsection

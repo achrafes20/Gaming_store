@@ -1,33 +1,33 @@
-  document.addEventListener('DOMContentLoaded', function() {
-                // File input preview
-                const fileInput = document.getElementById('photo');
-                const filePreview = document.getElementById('cyber-file-preview');
+document.addEventListener('DOMContentLoaded', function () {
 
-                if (fileInput && filePreview) {
-                    fileInput.addEventListener('change', function() {
-                        if (this.files && this.files[0]) {
-                            const reader = new FileReader();
+    const fileInput = document.getElementById('photo');
+    const filePreview = document.getElementById('cyber-file-preview');
 
-                            reader.onload = function(e) {
-                                filePreview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
-                                filePreview.style.display = 'block';
-                            }
+    if (fileInput && filePreview) {
+        fileInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
 
-                            reader.readAsDataURL(this.files[0]);
-                        }
-                    });
+                reader.onload = function (e) {
+                    filePreview.innerHTML = '<img src="' + e.target.result + '" alt="Preview">';
+                    filePreview.style.display = 'block';
                 }
 
-                // Add pulse animation to form inputs periodically
-                setInterval(function() {
-                    const inputs = document.querySelectorAll('.cyber-input, .cyber-textarea');
-                    inputs.forEach((input, index) => {
-                        setTimeout(() => {
-                            input.style.boxShadow = '0 0 10px rgba(0, 240, 255, 0.3)';
-                            setTimeout(() => {
-                                input.style.boxShadow = '';
-                            }, 1000);
-                        }, index * 300);
-                    });
-                }, 8000);
-            });
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+
+
+    setInterval(function () {
+        const inputs = document.querySelectorAll('.cyber-input, .cyber-textarea');
+        inputs.forEach((input, index) => {
+            setTimeout(() => {
+                input.style.boxShadow = '0 0 10px rgba(0, 240, 255, 0.3)';
+                setTimeout(() => {
+                    input.style.boxShadow = '';
+                }, 1000);
+            }, index * 300);
+        });
+    }, 8000);
+});

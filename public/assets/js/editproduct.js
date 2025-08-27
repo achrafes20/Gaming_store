@@ -1,45 +1,45 @@
- document.addEventListener('DOMContentLoaded', function() {
-                // Initialize AOS animation library
-                AOS.init({
-                    duration: 800,
-                    easing: 'ease-in-out',
-                    once: true
-                });
+document.addEventListener('DOMContentLoaded', function () {
 
-                // File input preview
-                const fileInput = document.getElementById('photo');
-                const filePreview = document.querySelector('.cyber-file-preview');
+    AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true
+    });
 
-                if (fileInput && filePreview) {
-                    fileInput.addEventListener('change', function() {
-                        if (this.files && this.files[0]) {
-                            const reader = new FileReader();
 
-                            reader.onload = function(e) {
-                                const img = filePreview.querySelector('img');
-                                if (img) {
-                                    img.src = e.target.result;
-                                } else {
-                                    filePreview.innerHTML = '<img src="' + e.target.result +
-                                        '" alt="Preview" class="cyber-current-img">';
-                                }
-                            }
+    const fileInput = document.getElementById('photo');
+    const filePreview = document.querySelector('.cyber-file-preview');
 
-                            reader.readAsDataURL(this.files[0]);
-                        }
-                    });
+    if (fileInput && filePreview) {
+        fileInput.addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function (e) {
+                    const img = filePreview.querySelector('img');
+                    if (img) {
+                        img.src = e.target.result;
+                    } else {
+                        filePreview.innerHTML = '<img src="' + e.target.result +
+                            '" alt="Preview" class="cyber-current-img">';
+                    }
                 }
 
-                // Add pulse animation to form inputs periodically
-                setInterval(function() {
-                    const inputs = document.querySelectorAll('.cyber-input, .cyber-textarea, .cyber-select');
-                    inputs.forEach((input, index) => {
-                        setTimeout(() => {
-                            input.style.boxShadow = '0 0 10px rgba(0, 240, 255, 0.3)';
-                            setTimeout(() => {
-                                input.style.boxShadow = '';
-                            }, 1000);
-                        }, index * 300);
-                    });
-                }, 8000);
-            });
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    }
+
+
+    setInterval(function () {
+        const inputs = document.querySelectorAll('.cyber-input, .cyber-textarea, .cyber-select');
+        inputs.forEach((input, index) => {
+            setTimeout(() => {
+                input.style.boxShadow = '0 0 10px rgba(0, 240, 255, 0.3)';
+                setTimeout(() => {
+                    input.style.boxShadow = '';
+                }, 1000);
+            }, index * 300);
+        });
+    }, 8000);
+});

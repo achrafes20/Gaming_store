@@ -17,8 +17,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-form-section">
         <div class="container">
             <div class="row">
@@ -28,7 +26,6 @@
                             <h3 class="cyber-form-title">PRODUCT <span class="cyber-accent">DATABASE</span> ENTRY</h3>
                             <p class="cyber-form-subtitle">Fill in the product specifications below</p>
                         </div>
-
                         <div class="cyber-form-body">
                             <form method="POST" enctype="multipart/form-data" action="/storeproduct"
                                 id="cyber-product-form">
@@ -48,7 +45,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-row">
                                     <div class="cyber-form-group">
                                         <div class="cyber-input-container">
@@ -65,7 +61,6 @@
                                             @enderror
                                         </span>
                                     </div>
-
                                     <div class="cyber-form-group">
                                         <div class="cyber-input-container">
                                             <input type="number" placeholder="QUANTITY" name="quantity" id="quantity"
@@ -82,7 +77,6 @@
                                         </span>
                                     </div>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-textarea-container">
                                         <textarea name="description" id="description" placeholder="PRODUCT DESCRIPTION" class="cyber-textarea">{{ old('description') }}</textarea>
@@ -97,7 +91,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-select-container">
                                         <select name="category_id" id="category_id" class="cyber-select">
@@ -116,7 +109,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-file-container">
                                         <label for="photo" class="cyber-file-label">
@@ -132,8 +124,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-file-container">
                                         <label for="photos" class="cyber-file-label">
@@ -150,7 +140,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-submit">
                                     <button type="submit" class="cyber-submit-btn">
                                         <span class="cyber-btn-text">UPLOAD TO DATABASE</span>
@@ -167,28 +156,20 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/addproduct.css') }}">
     @endpush
-
     @push('scripts')
-    <!-- FontAwesome et polices -->
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-
     <script src="{{ asset('assets/js/addproduct.js') }}"></script>
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
     @if(session('success'))
         <script>
             Swal.fire({
@@ -201,5 +182,4 @@
         </script>
     @endif
 @endpush
-
 @endsection

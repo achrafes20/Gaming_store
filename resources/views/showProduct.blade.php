@@ -7,21 +7,15 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>{{ $product->name }} - NeonTech</title>
-
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
         <link href="https://fonts.cdnfonts.com/css/cyberpunk" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('assets/css/showproduct.css') }}">
     </head>
 
     <body>
-
         <div class="scanline"></div>
-
-
         <div class="container">
             <div class="row">
-
                 <div class="col-lg-6">
                     @if ($product->ProductPhotos->count() > 0)
                         <div id="productCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
@@ -52,7 +46,6 @@
                                 <span class="visually-hidden">Next</span>
                             </button>
                         </div>
-
                         <div class="thumb-container">
                             <div class="thumb">
                                 <img src="{{ asset($product->imagepath) }}" class="thumb-img active"
@@ -73,8 +66,6 @@
                         </div>
                     @endif
                 </div>
-
-
                 <div class="col-lg-6">
                     <h2 class="cyber-font neon-text-pink mb-3">{{ $product->name }}</h2>
 
@@ -91,26 +82,19 @@
                                 class="badge bg-danger">-{{ round((($product->old_price - $product->price) / $product->old_price) * 100) }}%</span>
                         @endif
                     </div>
-
                     <div class="mb-4">
                         <div class="progress neon-border-blue" style="height: 5px;">
                             <div class="progress-bar bg-info" role="progressbar" style="width: {{ rand(80, 100) }}%"></div>
                         </div>
                     </div>
-
                     <p class="mb-4">{{ $product->description }}</p>
-
                     <div class="row mb-4">
                         <div class="col-md-6">
                             <small style="color: grey">{{ $product->quantity }} available</small>
                         </div>
                     </div>
-
-
-
                     <div class="mb-4">
                         <h5 class="neon-text-blue mb-3">CUSTOMER RATINGS</h5>
-
                         @if ($product->review_products->count() > 0)
                             @foreach ($product->review_products as $review)
                                 <div class="product-rating">
@@ -148,7 +132,6 @@
 
                         </div>
                     @endif
-
                     <div class="cyber-tech-specs mt-4 product-card p-3">
                         <h5 class="neon-text-blue mb-3"><i class="fas fa-info-circle"></i> TECHNICAL SPECIFICATIONS</h5>
                         <ul class="list-unstyled">
@@ -160,19 +143,10 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
             <div class="scanline"></div>
-
             <div class="container">
-                <!-- Reviews Section -->
                 <div class="review-section">
                     <h3 class="section-title neon-text-pink"><i class="fas fa-comment-alt me-2"></i>CUSTOMER REVIEWS</h3>
-
-                    {{-- Liste des reviews --}}
                     @if ($product->review_products->count() > 0)
                         @foreach ($product->review_products as $review)
                             <div class="review-card">
@@ -200,15 +174,12 @@
                             <p>No reviews yet. Be the first to review this product!</p>
                         </div>
                     @endif
-
-                    {{-- Formulaire pour poster un review --}}
                     @if ($canReview)
                         <div class="cyber-review-form">
                             <h4 class="neon-text-blue mb-4"><i class="fas fa-pen me-2"></i>WRITE YOUR REVIEW</h4>
                             <form action="{{ route('review_products.store', $product->id) }}" method="POST"
                                 enctype="multipart/form-data">
                                 @csrf
-
                                 <div class="row mb-4">
                                     <div class="col-md-6">
                                         <label for="rating" class="form-label">RATING</label>
@@ -222,7 +193,6 @@
                                         </select>
                                     </div>
                                 </div>
-
                                 <div class="mb-4">
                                     <label for="comment" class="form-label">YOUR REVIEW</label>
                                     <textarea name="comment" id="comment" rows="4" class="form-control"
@@ -245,20 +215,7 @@
                     @endif
                 </div>
             </div>
-
-
-
-
-
-
-
-
-
-
-
-
             <br>
-
             <h3 class="cyber-font neon-text-pink mb-4">YOU MAY ALSO LIKE</h3>
             <div class="row" id="productsGrid">
                 @foreach ($relatedProducts as $item)
@@ -321,30 +278,22 @@
                     </div>
                 @endforeach
             </div>
-
-
         </div>
-
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-
-
         <script src="{{ asset('assets/js/showproduct.js') }}"></script>
-          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     </body>
 
     </html>

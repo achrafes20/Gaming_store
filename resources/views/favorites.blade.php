@@ -7,21 +7,14 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>NeonGrid - Cyberpunk Tech Store</title>
-
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
         <link href="https://fonts.cdnfonts.com/css/cyberpunk" rel="stylesheet">
-
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('assets/css/categories.css') }}">
     </head>
 
     <body>
-
         <div class="scanline"></div>
-
-
-
         <section class="page-title-section mb-5">
             <div class="container">
                 <div class="row">
@@ -38,8 +31,6 @@
             </div>
         </section>
         <br>
-
-
         <div class="container">
             <div class="row" id="productsGrid">
                 @foreach ($favorites as $item)
@@ -100,12 +91,6 @@
                                         </a>
                                     @endauth
                                 </form>
-
-
-
-
-
-
                                 @if (Auth::check() && Auth::user()->role == 'admin')
                                     <div class="admin-actions">
                                         <a href="/editproduct/{{ $item->product->id }}" class="edit-btn">
@@ -126,30 +111,21 @@
                 @endforeach
             </div>
         </div>
-
-
-
-
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/3.0.6/isotope.pkgd.min.js"></script>
-
-
         <script src="{{ asset('assets/js/categories.js') }}"></script>
-          <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     </body>
 
     </html>

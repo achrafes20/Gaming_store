@@ -41,6 +41,16 @@ class FirstController extends Controller
         $newReview->save();
         return redirect()->back()->with('success', 'Review submitted successfully!');
     }
+    public function RemoveReview($reviewid = null)
+    {
+        if ($reviewid != null) {
+            $currentProduct = Review::find($reviewid);
+            $currentProduct->delete();
+            return redirect()->back()->with('success', 'Review deleted successfully!');
+        } else {
+            abort(403, "please enter review id in the route");
+        }
+    }
     public function Categories_page()
     {
         $result = Categories::all();

@@ -26,7 +26,6 @@
                             <h3 class="cyber-form-title">CATEGORY <span class="cyber-accent">DATABASE</span> ENTRY</h3>
                             <p class="cyber-form-subtitle">Fill in the category specifications below</p>
                         </div>
-
                         <div class="cyber-form-body">
                             <form method="POST" enctype="multipart/form-data" action="/storecategory"
                                 id="cyber-category-form">
@@ -46,7 +45,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-textarea-container">
                                         <textarea name="description" id="description" placeholder="CATEGORY DESCRIPTION" class="cyber-textarea">{{ old('description') }}</textarea>
@@ -61,7 +59,6 @@
                                         @enderror
                                     </span>
                                 </div>
-
                                 <div class="cyber-form-group">
                                     <div class="cyber-file-container">
                                         <label for="photo" class="cyber-file-label">
@@ -94,36 +91,31 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
     @push('styles')
-         <link rel="stylesheet" href="{{ asset('assets/css/addcategory.css') }}">
+        <link rel="stylesheet" href="{{ asset('assets/css/addcategory.css') }}">
     @endpush
-
     @push('scripts')
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap"
             rel="stylesheet">
         <script src="{{ asset('assets/js/addcategory.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     @endpush
 @endsection

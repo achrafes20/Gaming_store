@@ -1,6 +1,5 @@
 @extends('Layouts.master')
 @section('content')
-
     <div class="cyber-hero-section">
         <div class="cyber-hero-overlay"></div>
         <div class="container">
@@ -19,8 +18,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-cart-section">
         <div class="container">
             <div class="row">
@@ -29,7 +26,6 @@
                         <h2><i class="fas fa-shopping-basket"></i> Your Selected Tech</h2>
                         <div class="cyber-cart-count">{{ count($cartProducts) }} ITEMS</div>
                     </div>
-
                     <div class="cyber-cart-items">
                         @foreach ($cartProducts as $item)
                             <div class="cyber-cart-item" data-aos="fade-up">
@@ -37,7 +33,6 @@
                                     <img src="{{ asset($item->product->imagepath) }}" alt="{{ $item->product->name }}"
                                         class="cyber-hover-glow">
                                     <div class="cyber-item-actions">
-
                                         <form action="{{ url('/deletecartitem/' . $item->id) }}" method="POST"
                                             class="d-inline">
                                             @csrf
@@ -46,8 +41,6 @@
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
-
-
                                     </div>
                                 </div>
                                 <div class="cyber-cart-item-details">
@@ -70,7 +63,6 @@
                                 </div>
                                 <div class="cyber-cart-item-quantity">
                                     <div class="cyber-quantity-selector">
-                                        {{-- Bouton decrement ou delete --}}
                                         @if ($item->quantity > 1)
                                             <form action="{{ url('/cart_decrement/' . $item->id) }}" method="POST"
                                                 style="display:inline;">
@@ -86,11 +78,7 @@
                                                 <i class="fas fa-chevron-down"></i>
                                             </a>
                                         @endif
-
-                                        {{-- Valeur --}}
                                         <span class="cyber-qty-value">{{ $item->quantity }}</span>
-
-                                        {{-- Bouton increment (affiché uniquement si quantité < stock) --}}
                                         @if ($item->quantity < $item->product->quantity)
                                             <form action="{{ url('/cart_increment/' . $item->id) }}" method="POST"
                                                 style="display:inline;">
@@ -102,10 +90,6 @@
                                             </form>
                                         @endif
                                     </div>
-
-
-
-
                                 </div>
                                 <div class="cyber-cart-item-total">
                                     <div class="cyber-total-price">
@@ -113,7 +97,6 @@
                                 </div>
                             </div>
                         @endforeach
-
                         @if (count($cartProducts) == 0)
                             <div class="cyber-empty-cart">
                                 <div class="cyber-empty-icon">
@@ -129,12 +112,10 @@
                         @endif
                     </div>
                 </div>
-
                 <div class="col-lg-4">
                     <div class="col-lg-4">
                         <div class="cyber-cart-summary">
                             <h3 class="cyber-summary-title"><i class="fas fa-receipt"></i> ORDER SUMMARY</h3>
-
                             <div class="cyber-summary-details">
                                 <?php
                                 $subtotal = $cartProducts->sum(function ($item) {
@@ -144,7 +125,6 @@
                                 $total = $subtotal - $discount;
 
                                 ?>
-
                                 <div class="cyber-summary-row">
                                     <span>Subtotal </span>
                                     <span>{{ number_format($subtotal, 2) }} Dh</span>
@@ -164,12 +144,10 @@
                                     <span class="cyber-grand-total">{{ number_format($total, 2) }} Dh</span>
                                 </div>
                             </div>
-
                             @if (count($cartProducts) > 0)
                                 <div class="cyber-promo-section">
                                     <div class="cyber-promo-input">
                                         @if (!session('coupon'))
-                                            {{-- Formulaire d'application d'un coupon --}}
                                             <form method="POST" action="{{ route('coupon.apply') }}">
                                                 @csrf
                                                 <input type="text" name="code" placeholder="Enter your coupon code"
@@ -177,7 +155,6 @@
                                                 <button type="submit" class="cyber-promo-btn">Apply</button>
                                             </form>
                                         @else
-                                            {{-- Coupon déjà appliqué --}}
                                             <div class="cyber-coupon-active">
                                                 <span class="cyber-coupon-code" style="margin-left: 20px">
                                                     <strong>{{ session('coupon.code') }}</strong>
@@ -193,8 +170,6 @@
                                             </div>
                                         @endif
                                     </div>
-
-
                                     @if (session('coupon'))
                                         <br>
                                         <p style="color: rgb(92, 253, 6)">
@@ -218,10 +193,8 @@
                                     @error('code2')
                                         <p style="color: red">{{ $message }}</p>
                                     @enderror
-
                                 </div>
                             @endif
-
                             <div class="cyber-checkout-btns">
                                 @if (count($cartProducts) > 0)
                                     <a href="/Completeorder" class="cyber-checkout-btn">
@@ -248,20 +221,15 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
-
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
-
     <div class="cyber-mini-cart">
         <div class="cyber-mini-cart-icon">
             <i class="fas fa-shopping-basket"></i>
@@ -270,7 +238,6 @@
         <div class="cyber-mini-cart-total">
             ${{ number_format($cartProducts->sum(function ($item) {return $item->product->price * $item->quantity;}),2) }}
         </div>
-
         @if (count($cartProducts) == 0)
             <a href="/categories" class="cyber-explore-btn">
                 <span>Explore Products</span>
@@ -291,7 +258,6 @@
             rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
         <script src="{{ asset('assets/js/cart.js') }}"></script>
     @endpush
 @endsection

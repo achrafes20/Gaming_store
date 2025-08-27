@@ -2,7 +2,6 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 <script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
 @extends('Layouts.master')
 @section('content')
     <div class="cyber-hero-section">
@@ -23,8 +22,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-dashboard-section">
         <div class="container">
             <div class="cyber-action-buttons">
@@ -54,8 +51,6 @@
                     <div class="cyber-btn-hover"></div>
                 </a>
             </div>
-
-
             <div class="cyber-table-container">
                 <table id="myTable" class="cyber-table display">
                     <thead>
@@ -94,16 +89,14 @@
                                 </td>
                                 <td>
                                     <div class="cyber-action-btns">
-
                                         <form action="{{ url('/removeproduct/' . $item->id) }}" method="POST"
                                             style="display:inline;">
                                             @csrf
-                                            <button type="submit" class="cyber-btn danger" title="Delete" style="cursor: pointer">
+                                            <button type="submit" class="cyber-btn danger" title="Delete"
+                                                style="cursor: pointer">
                                                 <i class="fas fa-trash"></i>
                                             </button>
                                         </form>
-
-
                                         <a href="/editproduct/{{ $item->id }}" class="cyber-btn success" title="Edit">
                                             <i class="fas fa-pen"></i>
                                         </a>
@@ -120,33 +113,28 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/producttable.css') }}">
     @endpush
-
     @push('scripts')
         <script src="{{ asset('assets/js/producttable.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     @endpush
 @endsection

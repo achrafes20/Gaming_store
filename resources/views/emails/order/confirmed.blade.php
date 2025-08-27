@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order Confirmation</title>
     <style>
-        /* Base */
+
         body,
         body *:not(html):not(style):not(br):not(tr):not(code) {
             box-sizing: border-box;
@@ -29,7 +29,7 @@
             margin: 0 auto;
         }
 
-        /* Header */
+
         .header {
             text-align: center;
             padding: 20px 0;
@@ -56,7 +56,7 @@
             opacity: 0.9;
         }
 
-        /* Content */
+
         .content {
             background-color: #ffffff;
             border-radius: 0 0 10px 10px;
@@ -98,7 +98,7 @@
             border-radius: 20px;
         }
 
-        /* Sections */
+
         .section {
             margin-bottom: 25px;
             padding: 20px;
@@ -136,7 +136,7 @@
             color: #2d3748;
         }
 
-        /* Table */
+
         .order-table {
             width: 100%;
             border-collapse: collapse;
@@ -167,7 +167,7 @@
             background-color: #edf2f7;
         }
 
-        /* Summary */
+
         .summary {
             background: #f8f9fa;
             border-radius: 8px;
@@ -195,7 +195,7 @@
             border-top: 2px solid #e2e8f0;
         }
 
-        /* Footer */
+
         .footer {
             text-align: center;
             padding: 20px 0;
@@ -221,7 +221,7 @@
             font-size: 20px;
         }
 
-        /* Animations */
+
         @keyframes confetti {
             0% { transform: translateY(0) rotate(0); opacity: 1; }
             100% { transform: translateY(100px) rotate(360deg); opacity: 0; }
@@ -235,7 +235,7 @@
             opacity: 0;
         }
 
-        /* Responsive */
+        
         @media (max-width: 600px) {
             .info-grid {
                 grid-template-columns: 1fr;

@@ -1,36 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head >
+<head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="TechSphere - Futuristic Electronics eCommerce Platform">
-
-
     <title>NextLevelGaming | Next-Gen Electronics</title>
-
-
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
-
-
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap" rel="stylesheet">
-
-
+    <link
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
-
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
-
     <link rel="stylesheet" href="{{ asset('assets/css/cyber-main.css') }}">
-
-
     @stack('styles')
 </head>
 
 <body class="cyber-body">
-
     <div class="cyber-loader">
         <div class="cyber-loader-inner">
             <div class="cyber-loader-circle"></div>
@@ -56,7 +43,6 @@
             </div>
         </div>
     </div>
-
     <header class="cyber-header" id="cyberHeader">
         <div class="cyber-header-container">
             <div class="cyber-logo">
@@ -68,7 +54,6 @@
                     </div>
                 </a>
             </div>
-
             <nav class="cyber-nav">
                 <ul class="cyber-nav-list">
                     <li class="cyber-nav-item">
@@ -83,13 +68,13 @@
                             <span class="cyber-nav-text">PRODUCTS</span>
                         </a>
                     </li>
-                    @if(Auth::check() && (Auth::user() && (Auth::user()->role == 'admin' || Auth::user()->role == 'salesman')))
-                    <li class="cyber-nav-item">
-                        <a href="/ProductsTable" class="cyber-nav-link">
-                            <span class="cyber-nav-icon" style="color: red"><i class="fas fa-gear"></i></span>
-                            <span class="cyber-nav-text" style="color: red">Admin Page</span>
-                        </a>
-                    </li>
+                    @if (Auth::check() && (Auth::user() && (Auth::user()->role == 'admin' || Auth::user()->role == 'salesman')))
+                        <li class="cyber-nav-item">
+                            <a href="/ProductsTable" class="cyber-nav-link">
+                                <span class="cyber-nav-icon" style="color: red"><i class="fas fa-gear"></i></span>
+                                <span class="cyber-nav-text" style="color: red">Admin Page</span>
+                            </a>
+                        </li>
                     @endif
                     <li class="cyber-nav-item">
                         <a href="/reviews" class="cyber-nav-link">
@@ -97,7 +82,6 @@
                             <span class="cyber-nav-text">REVIEWS</span>
                         </a>
                     </li>
-
                     @guest
                         @if (Route::has('login'))
                             <li class="cyber-nav-item">
@@ -107,7 +91,6 @@
                                 </a>
                             </li>
                         @endif
-
                         @if (Route::has('register'))
                             <li class="cyber-nav-item">
                                 <a href="{{ route('register') }}" class="cyber-nav-link">
@@ -124,18 +107,15 @@
                                 <span class="cyber-nav-icon"><i class="fas fa-chevron-down"></i></span>
                             </a>
                             <ul class="cyber-dropdown-menu">
-
-
-
-                                <li >
-                        <a href="/favorites" >
-                            <span ><i class="fas fa-heart"></i></span>
-                            <span >FAVOURITES</span>
-                        </a>
-                    </li>
+                                <li>
+                                    <a href="/favorites">
+                                        <span><i class="fas fa-heart"></i></span>
+                                        <span>FAVOURITES</span>
+                                    </a>
+                                </li>
                                 <li>
                                     <a href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
+                                        onclick="event.preventDefault();
                                                  document.getElementById('logout-form').submit();">
                                         <i class="fas fa-sign-out-alt"></i> <span>LOGOUT</span>
                                     </a>
@@ -147,9 +127,6 @@
                             </ul>
                         </li>
                     @endguest
-
-
-
                     <li class="cyber-nav-item cyber-nav-cart">
                         <a href="/cart" class="cyber-nav-link">
                             <span class="cyber-nav-icon">
@@ -163,7 +140,6 @@
                     </li>
                 </ul>
             </nav>
-
             <div class="cyber-search">
                 <button class="cyber-search-btn">
                     <i class="fas fa-search"></i>
@@ -171,7 +147,8 @@
                 <div class="cyber-search-container">
                     <form action="/search" method="post">
                         @csrf
-                        <input type="text" name="searchkey" placeholder="SEARCH TECH..." class="cyber-search-input">
+                        <input type="text" name="searchkey" placeholder="SEARCH TECH..."
+                            class="cyber-search-input">
                         <button type="submit" class="cyber-search-submit">
                             <i class="fas fa-arrow-right"></i>
                         </button>
@@ -181,7 +158,6 @@
                     </button>
                 </div>
             </div>
-
             <button class="cyber-mobile-toggle">
                 <span class="cyber-toggle-line"></span>
                 <span class="cyber-toggle-line"></span>
@@ -189,30 +165,27 @@
             </button>
         </div>
     </header>
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
-    @if(Auth::check() && !Auth::user()->hasVerifiedEmail())
-    <div style="background: #ff0033; color: white; padding: 10px; text-align: center; font-weight: bold;">
-        ⚠️ Please verify your email address to activate all features.
-        <form method="POST" action="{{ route('verification.resend') }}" style="display: inline;">
-            @csrf
-            <button type="submit" style="background: transparent; border: none; color: yellow; text-decoration: underline; cursor: pointer;">
-                Resend Verification Email
-            </button>
-        </form>
-    </div>
+    @if (Auth::check() && !Auth::user()->hasVerifiedEmail())
+        <div style="background: #ff0033; color: white; padding: 10px; text-align: center; font-weight: bold;">
+            ⚠️ Please verify your email address to activate all features.
+            <form method="POST" action="{{ route('verification.resend') }}" style="display: inline;">
+                @csrf
+                <button type="submit"
+                    style="background: transparent; border: none; color: yellow; text-decoration: underline; cursor: pointer;">
+                    Resend Verification Email
+                </button>
+            </form>
+        </div>
     @endif
-
     <main class="cyber-main">
         @yield('content')
     </main>
-
     <footer class="cyber-footer">
         <div class="cyber-footer-grid">
             <div class="cyber-footer-column" data-aos="fade-up">
@@ -223,12 +196,14 @@
                     and professionals pushing the boundaries of innovation.
                 </p>
                 <div class="cyber-footer-social">
-                    <a style="text-decoration: none;" href="https://www.facebook.com/profile.php?id=100080119152617" class="cyber-social-link"><i class="fab fa-facebook-f"></i></a>
-                    <a style="text-decoration: none;" href="https://www.instagram.com/achraf_esserrar/" class="cyber-social-link"><i class="fab fa-instagram"></i></a>
-                    <a style="text-decoration: none;" href="https://www.linkedin.com/in/achraf-es-serrar-300bb2279/" class="cyber-social-link"><i class="fab fa-linkedin-in"></i></a>
+                    <a style="text-decoration: none;" href="https://www.facebook.com/profile.php?id=100080119152617"
+                        class="cyber-social-link"><i class="fab fa-facebook-f"></i></a>
+                    <a style="text-decoration: none;" href="https://www.instagram.com/achraf_esserrar/"
+                        class="cyber-social-link"><i class="fab fa-instagram"></i></a>
+                    <a style="text-decoration: none;" href="https://www.linkedin.com/in/achraf-es-serrar-300bb2279/"
+                        class="cyber-social-link"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-
             <div class="cyber-footer-column" data-aos="fade-up" data-aos-delay="100">
                 <h3 class="cyber-footer-title">QUICK LINKS</h3>
                 <ul class="cyber-footer-links">
@@ -247,8 +222,8 @@
                     @else
                         <li>
                             <a href="{{ route('logout') }}"
-                               onclick="event.preventDefault(); document.getElementById('logout-form-footer').submit();">
-                               <i class="fas fa-sign-out-alt"></i> Logout
+                                onclick="event.preventDefault(); document.getElementById('logout-form-footer').submit();">
+                                <i class="fas fa-sign-out-alt"></i> Logout
                             </a>
                             <form id="logout-form-footer" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
@@ -257,7 +232,6 @@
                     @endguest
                 </ul>
             </div>
-
             <div class="cyber-footer-column" data-aos="fade-up" data-aos-delay="200">
                 <h3 class="cyber-footer-title">CONTACT US</h3>
                 <ul class="cyber-footer-contact">
@@ -279,7 +253,6 @@
                     </li>
                 </ul>
             </div>
-
             <div class="cyber-footer-column" data-aos="fade-up" data-aos-delay="300">
                 <h3 class="cyber-footer-title">NEWSLETTER</h3>
                 <p class="cyber-footer-text">
@@ -287,14 +260,14 @@
                 </p>
                 <form class="cyber-newsletter-form" method="POST" enctype="multipart/form-data" action="/sub">
                     @csrf
-                    <input type="email" name="email" id="email" placeholder="Your Email" class="cyber-newsletter-input">
+                    <input type="email" name="email" id="email" placeholder="Your Email"
+                        class="cyber-newsletter-input">
                     <button type="submit" class="cyber-newsletter-btn">
                         <i class="fas fa-paper-plane"></i>
                     </button>
                 </form>
             </div>
         </div>
-
         <div class="cyber-copyright">
             <div class="cyber-copyright-container">
                 <p>&copy; 2025 NEXTLEVELGAMING. ALL RIGHTS RESERVED.</p>
@@ -305,16 +278,13 @@
             </div>
         </div>
     </footer>
-
     <button class="cyber-back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
-
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ asset('assets/js/cyber-main.js') }}"></script>
-
     @stack('scripts')
 </body>
+
 </html>

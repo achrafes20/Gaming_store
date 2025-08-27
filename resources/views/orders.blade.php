@@ -17,8 +17,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-orders-section">
         <div class="container">
             <div class="cyber-accordion-wrap">
@@ -34,7 +32,6 @@
                                     <i class="fas fa-chevron-down cyber-accordion-icon"></i>
                                 </button>
                             </div>
-
                             <div id="cyberCollapse{{ $item->id }}" class="cyber-order-collapse show"
                                 aria-labelledby="cyberHeading{{ $item->id }}" data-parent="#cyberAccordion">
                                 <div class="cyber-order-body">
@@ -45,28 +42,24 @@
                                             </div>
                                             <input type="text" value="{{ $item->name }}" readonly>
                                         </div>
-
                                         <div class="cyber-detail-field">
                                             <div class="cyber-detail-icon">
                                                 <i class="fas fa-envelope"></i>
                                             </div>
                                             <input type="text" value="{{ $item->email }}" readonly>
                                         </div>
-
                                         <div class="cyber-detail-field">
                                             <div class="cyber-detail-icon">
                                                 <i class="fas fa-map-marker-alt"></i>
                                             </div>
                                             <input type="text" value="{{ $item->address }}" readonly>
                                         </div>
-
                                         <div class="cyber-detail-field">
                                             <div class="cyber-detail-icon">
                                                 <i class="fas fa-phone"></i>
                                             </div>
                                             <input type="text" value="{{ $item->phone }}" readonly>
                                         </div>
-
                                         <div class="cyber-detail-field full-width">
                                             <div class="cyber-detail-icon">
                                                 <i class="fas fa-comment-alt"></i>
@@ -74,7 +67,6 @@
                                             <textarea readonly>{{ $item->note ?: 'No special instructions' }}</textarea>
                                         </div>
                                     </div>
-
                                     <div class="cyber-products-table">
                                         <div class="cyber-table-header">
                                             <div class="cyber-table-row">
@@ -108,13 +100,13 @@
                                                         {{ $detail->quantity }}
                                                     </div>
                                                     <div class="cyber-table-col">
-                                                        {{ number_format($detail->quantity * $detail->product->price, 2) }} Dh
+                                                        {{ number_format($detail->quantity * $detail->product->price, 2) }}
+                                                        Dh
                                                     </div>
                                                 </div>
                                             @endforeach
                                         </div>
                                     </div>
-
                                     <div class="cyber-order-summary">
                                         <div class="cyber-summary-card">
                                             <h3 class="cyber-section-title">ORDER SUMMARY</h3>
@@ -125,7 +117,8 @@
                                                         return $x->product->price * $x->quantity;
                                                     }),
                                                     2,
-                                                ) }} Dh</span>
+                                                ) }}
+                                                    Dh</span>
                                             </div>
                                             <div class="cyber-summary-row">
                                                 <span>Shipping</span>
@@ -160,8 +153,6 @@
                                                 @endif
                                             </div>
                                         </div>
-
-
                                     </div>
                                 </div>
                             </div>
@@ -171,30 +162,21 @@
             </div>
         </div>
     </div>
-
-
-
-
-
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/orders.css') }}">
     @endpush
-
     @push('scripts')
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap"
             rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
         <script src="{{ asset('assets/js/orders.js') }}"></script>
     @endpush
 @endsection

@@ -17,8 +17,6 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-users-section">
         <div class="container">
             <div class="cyber-accordion-wrap">
@@ -34,10 +32,8 @@
                                         class="cyber-user-role {{ $user->role === 'admin' ? 'admin-role' : 'client-role' }}">
                                         {{ $user->role === 'admin' ? 'admin' : 'client' }}
                                     </span>
-
                                 </button>
                             </div>
-
                             <div id="cyberCollapse{{ $user->id }}" class="cyber-user-collapse show"
                                 aria-labelledby="cyberHeading{{ $user->id }}" data-parent="#cyberAccordion">
                                 <div class="cyber-user-body">
@@ -53,7 +49,6 @@
                                                     </div>
                                                 </div>
                                             </div>
-
                                             <div class="cyber-form-group">
                                                 <div class="cyber-input-container">
                                                     <input type="text" value="{{ $user->email }}" class="cyber-input"
@@ -65,7 +60,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="cyber-form-actions">
                                             @if ($user->role == 'admin')
                                                 <form action="/Users_client/{{ $user->id }}" method="POST"
@@ -98,39 +92,33 @@
             </div>
         </div>
     </div>
-
-
     <div class="cyber-floating-elements">
         <div class="cyber-orb orb-1"></div>
         <div class="cyber-orb orb-2"></div>
         <div class="cyber-orb orb-3"></div>
         <div class="cyber-circuit-line"></div>
     </div>
-
     @push('styles')
         <link rel="stylesheet" href="{{ asset('assets/css/users.css') }}">
     @endpush
-
     @push('scripts')
         <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
         <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap"
             rel="stylesheet">
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
         <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
-
         <script src="{{ asset('assets/js/users.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    @if(session('success'))
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Succès!',
-                text: "{{ session('success') }}",
-                timer: 2000,
-                showConfirmButton: false
-            });
-        </script>
-    @endif
+        @if (session('success'))
+            <script>
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Succès!',
+                    text: "{{ session('success') }}",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+            </script>
+        @endif
     @endpush
 @endsection
