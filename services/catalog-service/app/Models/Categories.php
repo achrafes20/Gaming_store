@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/** A product category — owned by catalog-service, referenced by product_id elsewhere. */
 class Categories extends Model
 {
     use HasFactory;
