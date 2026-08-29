@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ReviewProduct;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ReviewController extends Controller
 {
@@ -49,13 +48,12 @@ class ReviewController extends Controller
     private function hasPurchased(int $userId, int $productId): bool
     {
         try {
-            $client = new Client(['base_uri' => config('services.orders_service_url'), 'timeout' => 3]);
-            $response = $client->get('/api/internal/has-purchased', [
-                'query' => ['user_id' => $userId, 'product_id' => $productId],
-            ]);
+            $response = Http::baseUrl(config('services.orders_service_url'))
+                ->timeout(3)
+                ->get('/api/internal/has-purchased', ['user_id' => $userId, 'product_id' => $productId]);
 
-            return json_decode($response->getBody()->getContents(), true)['has_purchased'] ?? false;
-        } catch (GuzzleException) {
+            return $response->json('has_purchased', false);
+        } catch (\Throwable) {
             // orders-service unreachable: fail closed, review refused rather than trusting blindly.
             return false;
         }

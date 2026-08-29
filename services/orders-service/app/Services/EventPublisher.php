@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
-use Illuminate\Support\Facades\Log;
 
 /**
  * Publishes domain events to RabbitMQ (exchange "gaming_store_events").

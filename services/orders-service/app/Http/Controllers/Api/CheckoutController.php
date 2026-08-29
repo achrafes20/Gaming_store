@@ -69,35 +69,41 @@ class CheckoutController extends Controller
             return response()->json(['message' => 'Your cart is empty.'], 422);
         }
 
-        // Prix/stock relus depuis catalog-service (source de vérité), jamais depuis le panier local.
-        $lines = $cartItems->map(function (Cart $item) {
-            $product = $this->catalog->findProduct($item->product_id);
-
-            if (! $product || $product['quantity'] < $item->quantity) {
-                throw new RuntimeException("Product {$item->product_id} unavailable or insufficient stock.");
-            }
-
-            return [
-                'product_id' => $item->product_id,
-                'name' => $product['name'],
-                'price' => $product['price'],
-                'quantity' => $item->quantity,
-            ];
-        });
-
-        $total = $lines->sum(fn ($l) => $l['price'] * $l['quantity']);
-
-        $discount = 0;
-        $coupon = null;
-        if (! empty($data['coupon_code'])) {
-            $coupon = Coupon::where('code', $data['coupon_code'])->first();
-            if ($coupon && $coupon->isValid() && ! $coupon->usedBy($user['id'])) {
-                $discount = $coupon->calculateDiscount($total);
-            }
-        }
-
         try {
-            $order = DB::transaction(function () use ($data, $user, $lines, $total, $discount, $coupon) {
+            // Prix/stock relus depuis catalog-service (source de vérité), jamais depuis le panier local.
+            // Doit rester DANS le try : une exception levée ici sortait auparavant du
+            // bloc catch ci-dessous et remontait en 500 au lieu d'un 409 propre.
+            $lines = $cartItems->map(function (Cart $item) {
+                $product = $this->catalog->findProduct($item->product_id);
+
+                if (! $product || $product['quantity'] < $item->quantity) {
+                    throw new RuntimeException("Product {$item->product_id} unavailable or insufficient stock.");
+                }
+
+                return [
+                    'product_id' => $item->product_id,
+                    'name' => $product['name'],
+                    'price' => $product['price'],
+                    'quantity' => $item->quantity,
+                ];
+            });
+
+            $total = $lines->sum(fn ($l) => $l['price'] * $l['quantity']);
+
+            $discount = 0;
+            $couponToMark = null; // only set once we know it's actually being applied
+            if (! empty($data['coupon_code'])) {
+                $coupon = Coupon::where('code', $data['coupon_code'])->first();
+                if ($coupon && $coupon->isValid() && ! $coupon->usedBy($user['id'])) {
+                    $discount = $coupon->calculateDiscount($total);
+                    $couponToMark = $coupon;
+                }
+                // An unknown/expired/already-used code is silently ignored rather than
+                // rejecting the whole checkout — web-bff already warned the user via
+                // the /coupons/preview endpoint before they got this far.
+            }
+
+            $order = DB::transaction(function () use ($data, $user, $lines, $total, $discount, $couponToMark) {
                 $order = Order::create([
                     'name' => $data['name'],
                     'email' => $data['email'],
@@ -128,8 +134,8 @@ class CheckoutController extends Controller
                     ]);
                 }
 
-                if ($coupon) {
-                    $coupon->markUsedBy($user['id']);
+                if ($couponToMark) {
+                    $couponToMark->markUsedBy($user['id']);
                 }
 
                 Cart::where('user_id', $user['id'])->delete();

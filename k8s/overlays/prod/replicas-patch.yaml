@@ -1,0 +1,36 @@
+# web-bff is deliberately NOT bumped here — it still uses SESSION_DRIVER=file
+# on a ReadWriteOnce PVC (see web-bff/sessions-pvc.yaml), so more than one
+# replica would mean different visitors landing on pods with different,
+# inconsistent session state. Scale it once sessions move to a shared
+# backend (SESSION_DRIVER=database or redis).
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: catalog-service
+  namespace: gaming-store
+spec:
+  replicas: 2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: orders-service
+  namespace: gaming-store
+spec:
+  replicas: 2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: users-service
+  namespace: gaming-store
+spec:
+  replicas: 2
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway
+  namespace: gaming-store
+spec:
+  replicas: 2

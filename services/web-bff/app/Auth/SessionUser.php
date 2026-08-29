@@ -25,7 +25,7 @@ class SessionUser implements Authenticatable
 
     public function favorites(): FavoritesQuery
     {
-        return new FavoritesQuery();
+        return new FavoritesQuery;
     }
 
     public function getAuthIdentifierName()

@@ -78,7 +78,7 @@
                                             </div>
                                         </div>
                                         <div class="cyber-table-body">
-                                            @foreach ($item->orderdetails as $detail)
+                                            @foreach ($item->order_details as $detail)
                                                 <div class="cyber-table-row">
                                                     <div class="cyber-table-col image-col">
                                                         <div class="cyber-product-img">
@@ -113,7 +113,7 @@
                                             <div class="cyber-summary-row">
                                                 <span>Subtotal</span>
                                                 <span>{{ number_format(
-                                                    $item->orderdetails->sum(function ($x) {
+                                                    $item->order_details->sum(function ($x) {
                                                         return $x->product->price * $x->quantity;
                                                     }),
                                                     2,
@@ -144,7 +144,7 @@
                                                 @else
                                                     <span
                                                         class="cyber-total">{{ number_format(
-                                                            $item->orderdetails->sum(function ($x) {
+                                                            $item->order_details->sum(function ($x) {
                                                                 return $x->product->price * $x->quantity;
                                                             }),
                                                             2,

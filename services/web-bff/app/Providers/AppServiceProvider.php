@@ -15,6 +15,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        Auth::extend('session-jwt', fn () => new SessionJwtGuard());
+        Auth::extend('session-jwt', fn () => new SessionJwtGuard);
     }
 }

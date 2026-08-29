@@ -1,0 +1,13 @@
+# Demonstrates the dev/prod overlay pattern: same base manifests, patched for
+# a real deployment target — more replicas on the stateless services, higher
+# resource ceilings. NOT deployed by scripts/k8s-deploy.sh (there is no real
+# prod cluster for this project) — validate the rendered output with:
+#   kubectl kustomize k8s/overlays/prod
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - ../../base
+
+patches:
+  - path: replicas-patch.yaml

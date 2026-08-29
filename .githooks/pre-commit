@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Blocks a commit whose staged PHP files aren't Pint-formatted — fast,
+# local mirror of the "Lint (Pint)" step in .github/workflows/ci.yml.
+# Only checks the services touched by THIS commit, and only the staged
+# files within them, so it stays fast regardless of repo size.
+#
+# Enable once per clone with: bash scripts/install-git-hooks.sh
+# Bypass in a pinch with: git commit --no-verify (CI still catches it there).
+set -euo pipefail
+cd "$(dirname "$0")/.."
+
+staged_php=$(git diff --cached --name-only --diff-filter=ACM -- '*.php' || true)
+[ -z "$staged_php" ] && exit 0
+
+failed=0
+for service_dir in $(echo "$staged_php" | grep -oE '^services/[^/]+' | sort -u); do
+    service=$(basename "$service_dir")
+
+    if [ ! -x "$service_dir/vendor/bin/pint" ]; then
+        echo "⚠ pint not installed in $service — run 'composer install' there; skipping this check for now."
+        continue
+    fi
+
+    files=$(echo "$staged_php" | grep "^$service_dir/" | sed "s|^$service_dir/||")
+    # shellcheck disable=SC2086
+    if ! (cd "$service_dir" && vendor/bin/pint --test $files); then
+        echo "✗ $service: some staged files aren't Pint-formatted."
+        echo "  Fix with: (cd $service_dir && vendor/bin/pint $files)"
+        failed=1
+    fi
+done
+
+exit $failed

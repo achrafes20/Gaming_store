@@ -1,0 +1,12 @@
+# Persists product/category image uploads across pod restarts — mirrors the
+# `catalog_uploads` named volume in docker-compose.yml.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: catalog-uploads
+  namespace: gaming-store
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi

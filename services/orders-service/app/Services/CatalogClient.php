@@ -2,8 +2,7 @@
 
 namespace App\Services;
 
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
 /**
@@ -12,24 +11,16 @@ use RuntimeException;
  */
 class CatalogClient
 {
-    private Client $client;
-
-    public function __construct()
-    {
-        $this->client = new Client([
-            'base_uri' => config('services.catalog_service_url'),
-            'timeout' => 5,
-        ]);
-    }
-
     /** @return array{id:int,name:string,price:float,quantity:int}|null */
     public function findProduct(int $productId): ?array
     {
         try {
-            $response = $this->client->get("/api/products/{$productId}");
+            $response = Http::baseUrl(config('services.catalog_service_url'))
+                ->timeout(5)
+                ->get("/api/products/{$productId}");
 
-            return json_decode($response->getBody()->getContents(), true);
-        } catch (GuzzleException) {
+            return $response->successful() ? $response->json() : null;
+        } catch (\Throwable) {
             return null;
         }
     }
@@ -37,14 +28,14 @@ class CatalogClient
     public function decrementStock(int $productId, int $quantity): void
     {
         try {
-            $response = $this->client->patch("/api/internal/products/{$productId}/decrement-stock", [
-                'form_params' => ['quantity' => $quantity],
-            ]);
-        } catch (GuzzleException $e) {
+            $response = Http::baseUrl(config('services.catalog_service_url'))
+                ->timeout(5)
+                ->patch("/api/internal/products/{$productId}/decrement-stock", ['quantity' => $quantity]);
+        } catch (\Throwable $e) {
             throw new RuntimeException("catalog-service unreachable while decrementing stock for product {$productId}: {$e->getMessage()}");
         }
 
-        if ($response->getStatusCode() !== 200) {
+        if ($response->status() !== 200) {
             throw new RuntimeException("catalog-service refused to decrement stock for product {$productId} (insufficient stock).");
         }
     }

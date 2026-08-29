@@ -1,0 +1,194 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Least-privilege default; the image-push step below elevates just what it needs.
+permissions:
+  contents: read
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_PREFIX: ghcr.io/${{ github.repository_owner }}/gaming-store
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Detects which of the 5 services actually changed, so the matrix job below
+  # only lints/tests/builds those — a push touching only orders-service must
+  # not rebuild catalog-service, users-service, web-bff and notifications-service
+  # too. `services` is a JSON array consumed via fromJSON() in the matrix.
+  # ---------------------------------------------------------------------------
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.filter.outputs.changes }}
+      k8s: ${{ steps.filter.outputs.k8s }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            catalog-service:
+              - 'services/catalog-service/**'
+              - 'docker/**'
+            orders-service:
+              - 'services/orders-service/**'
+              - 'docker/**'
+            users-service:
+              - 'services/users-service/**'
+              - 'docker/**'
+            web-bff:
+              - 'services/web-bff/**'
+              - 'docker/**'
+            notifications-service:
+              - 'services/notifications-service/**'
+              - 'docker/**'
+            k8s:
+              - 'k8s/**'
+
+  # ---------------------------------------------------------------------------
+  # One matrix leg per changed service: lint → test → dependency audit →
+  # build image → scan image. A failure at any step stops that service's
+  # leg without blocking the others (fail-fast: false).
+  # ---------------------------------------------------------------------------
+  service-ci:
+    needs: changes
+    if: needs.changes.outputs.services != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: ${{ fromJSON(needs.changes.outputs.services) }}
+    permissions:
+      contents: read
+      packages: write # only used by the push step below, and only on main
+    defaults:
+      run:
+        working-directory: services/${{ matrix.service }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: mbstring, pdo_sqlite, gd, zip, bcmath, sockets
+          coverage: none
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: services/${{ matrix.service }}/vendor
+          key: composer-${{ matrix.service }}-${{ hashFiles(format('services/{0}/composer.lock', matrix.service)) }}
+          restore-keys: composer-${{ matrix.service }}-
+
+      - name: Install PHP dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Lint (Pint)
+        run: vendor/bin/pint --test
+
+      - name: Prepare test environment
+        run: |
+          if [ ! -f .env ]; then cp .env.example .env; fi
+          php artisan key:generate --ansi
+
+      - name: Run tests (SQLite in-memory — see phpunit.xml)
+        run: php artisan test
+
+      - name: Composer dependency audit
+        run: composer audit --no-interaction
+
+      - name: npm dependency audit
+        run: npm audit --audit-level=high
+        continue-on-error: true # advisory for now — see SECURITY.md for the triage policy
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v6
+        with:
+          context: . # repo root — Dockerfiles COPY docker/nginx/*.conf from here
+          file: services/${{ matrix.service }}/Dockerfile
+          tags: ${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${{ github.sha }}
+          load: true
+          push: false
+          cache-from: type=gha,scope=${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.service }}
+
+      - name: Scan image for vulnerabilities (Trivy)
+        uses: aquasecurity/trivy-action@0.28.0
+        with:
+          image-ref: ${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${{ github.sha }}
+          severity: CRITICAL,HIGH
+          exit-code: '0' # report-only for now — see SECURITY.md for the triage policy
+          format: table
+
+      - name: Log in to GHCR
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: services/${{ matrix.service }}/Dockerfile
+          tags: |
+            ${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:${{ github.sha }}
+            ${{ env.IMAGE_PREFIX }}-${{ matrix.service }}:latest
+          push: true
+          cache-from: type=gha,scope=${{ matrix.service }}
+
+  # ---------------------------------------------------------------------------
+  # Whole-repo checks that don't belong to any single service — secret
+  # scanning and SAST scan every file regardless of what changed (a leaked
+  # key or an injection flaw doesn't stop mattering just because this push
+  # didn't touch that particular file), so these are not part of the matrix.
+  # ---------------------------------------------------------------------------
+  secrets-scan:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # gitleaks needs history to scan past commits too
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  sast:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: semgrep/semgrep-action@v1
+        with:
+          config: p/php p/owasp-top-ten p/secrets p/security-audit
+
+  # ---------------------------------------------------------------------------
+  # Validates every Kustomize overlay actually renders — catches a typo'd
+  # resource path or a broken patch before it reaches a real cluster.
+  # ---------------------------------------------------------------------------
+  validate-k8s:
+    needs: changes
+    if: needs.changes.outputs.k8s == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: kubectl kustomize (dev)
+        run: kubectl kustomize k8s/overlays/dev > /dev/null
+      - name: kubectl kustomize (prod)
+        run: kubectl kustomize k8s/overlays/prod > /dev/null

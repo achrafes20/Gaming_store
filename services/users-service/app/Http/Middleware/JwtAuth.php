@@ -12,7 +12,7 @@ use UnexpectedValueException;
 
 class JwtAuth
 {
-    public function handle(Request $request, Closure $next, string $requiredRole = null): Response
+    public function handle(Request $request, Closure $next, ?string $requiredRole = null): Response
     {
         $header = $request->header('Authorization', '');
 

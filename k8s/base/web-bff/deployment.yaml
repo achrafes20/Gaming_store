@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-bff
+  namespace: gaming-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web-bff
+  template:
+    metadata:
+      labels:
+        app: web-bff
+    spec:
+      containers:
+        - name: web-bff
+          image: gaming-store-web-bff:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          envFrom:
+            - configMapRef:
+                name: web-bff-config
+          env:
+            - name: APP_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: web-bff-secret
+                  key: APP_KEY
+          volumeMounts:
+            - name: sessions
+              mountPath: /var/www/html/storage/framework/sessions
+          readinessProbe:
+            httpGet:
+              path: /up
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /up
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 15
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+      volumes:
+        - name: sessions
+          persistentVolumeClaim:
+            claimName: web-bff-sessions

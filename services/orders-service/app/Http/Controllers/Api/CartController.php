@@ -58,6 +58,8 @@ class CartController extends Controller
 
     public function increment(Request $request, Cart $cart)
     {
+        $this->authorizeOwner($request, $cart);
+
         $product = $this->catalog->findProduct($cart->product_id);
 
         if ($product && $cart->quantity < $product['quantity']) {
@@ -67,8 +69,10 @@ class CartController extends Controller
         return $cart;
     }
 
-    public function decrement(Cart $cart)
+    public function decrement(Request $request, Cart $cart)
     {
+        $this->authorizeOwner($request, $cart);
+
         if ($cart->quantity <= 1) {
             $cart->delete();
 
@@ -80,10 +84,21 @@ class CartController extends Controller
         return $cart;
     }
 
-    public function destroy(Cart $cart)
+    public function destroy(Request $request, Cart $cart)
     {
+        $this->authorizeOwner($request, $cart);
+
         $cart->delete();
 
         return response()->noContent();
+    }
+
+    /** Cart items are looked up by ID alone (route model binding) — without this,
+     *  any authenticated user could manipulate another user's cart by guessing IDs. */
+    private function authorizeOwner(Request $request, Cart $cart): void
+    {
+        if ($cart->user_id !== $request->attributes->get('auth_user')['id']) {
+            abort(404);
+        }
     }
 }

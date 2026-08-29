@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\CatalogClient;
 use App\Services\OrdersClient;
+use App\Support\ApiObject;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
@@ -65,9 +67,32 @@ class CartController extends Controller
         ]);
     }
 
-    public function previousorder(OrdersClient $orders)
+    public function previousorder(OrdersClient $orders, CatalogClient $catalog)
     {
         $result = collect($orders->orders()['body']);
+
+        // orders-service only knows product_id (it doesn't own product data) — the
+        // BFF's job is exactly this kind of cross-service enrichment for display.
+        $productIds = $result
+            ->flatMap(fn ($order) => collect($order->order_details ?? [])->pluck('product_id'))
+            ->unique();
+
+        $products = $productIds->mapWithKeys(function ($id) use ($catalog) {
+            $response = $catalog->product((int) $id);
+
+            return [$id => $response['status'] === 200 ? ApiObject::wrap($response['body']) : null];
+        });
+
+        $result->each(function ($order) use ($products) {
+            // ApiObject::__get re-wraps the raw array into a fresh Collection on every
+            // access (no memoization) — mutate a local copy, then write it back so the
+            // enrichment isn't silently thrown away before the view ever sees it.
+            $details = $order->order_details ?? collect();
+            foreach ($details as $detail) {
+                $detail->product = $products->get($detail->product_id);
+            }
+            $order->order_details = $details;
+        });
 
         return view('previousorder', ['orders' => $result]);
     }

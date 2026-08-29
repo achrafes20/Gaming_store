@@ -1,0 +1,15 @@
+# Mirrors the `web_bff_sessions` named volume in docker-compose.yml — without
+# it, every pod restart/rollout wipes storage/framework/sessions and silently
+# logs every visitor out (SESSION_DRIVER=file). Note: this ties web-bff to a
+# single replica for now (ReadWriteOnce) — scaling it out would need moving
+# sessions to SESSION_DRIVER=database or redis first.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: web-bff-sessions
+  namespace: gaming-store
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 256Mi

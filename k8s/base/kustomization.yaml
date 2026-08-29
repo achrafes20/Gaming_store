@@ -1,0 +1,42 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - namespace.yaml
+  - mysql-credentials-secret.yaml
+  - rabbitmq-credentials-secret.yaml
+
+  - catalog-db/statefulset.yaml
+  - catalog-db/service.yaml
+  - orders-db/statefulset.yaml
+  - orders-db/service.yaml
+  - users-db/statefulset.yaml
+  - users-db/service.yaml
+  - rabbitmq/statefulset.yaml
+  - rabbitmq/service.yaml
+
+  - catalog-service/configmap.yaml
+  - catalog-service/uploads-pvc.yaml
+  - catalog-service/deployment.yaml
+  - catalog-service/service.yaml
+
+  - orders-service/configmap.yaml
+  - orders-service/deployment.yaml
+  - orders-service/service.yaml
+
+  - users-service/configmap.yaml
+  - users-service/deployment.yaml
+  - users-service/service.yaml
+
+  - notifications-service/configmap.yaml
+  - notifications-service/deployment.yaml
+
+  - web-bff/configmap.yaml
+  - web-bff/sessions-pvc.yaml
+  - web-bff/deployment.yaml
+  - web-bff/service.yaml
+
+  - api-gateway/configmap.yaml
+  - api-gateway/deployment.yaml
+  - api-gateway/service.yaml
+  - api-gateway/ingress.yaml

@@ -17,7 +17,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-6">
-                    @if ($product->ProductPhotos->count() > 0)
+                    @if ($product->product_photos->count() > 0)
                         <div id="productCarousel" class="carousel slide carousel-container" data-bs-ride="carousel">
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
@@ -26,7 +26,7 @@
                                             alt="{{ $product->name }}">
                                     </div>
                                 </div>
-                                @foreach ($product->ProductPhotos as $index => $item)
+                                @foreach ($product->product_photos as $index => $item)
                                     <div class="carousel-item">
                                         <div class="product-image mb-4 neon-border-pink p-2" style="height: 400px;">
                                             <img src="{{ asset($item->imagepath) }}" class="d-block w-100"
@@ -51,7 +51,7 @@
                                 <img src="{{ asset($product->imagepath) }}" class="thumb-img active"
                                     alt="{{ $product->name }}" data-bs-target="#productCarousel" data-bs-slide-to="0">
                             </div>
-                            @foreach ($product->ProductPhotos as $index => $item)
+                            @foreach ($product->product_photos as $index => $item)
                                 <div class="thumb">
                                     <img src="{{ asset($item->imagepath) }}" class="thumb-img"
                                         alt="{{ $product->name }} variation {{ $index + 1 }}"
@@ -136,7 +136,7 @@
                         <h5 class="neon-text-blue mb-3"><i class="fas fa-info-circle"></i> TECHNICAL SPECIFICATIONS</h5>
                         <ul class="list-unstyled">
                             <li class="mb-2"><span class="neon-text-pink">Model:</span> {{ $product->name }}</li>
-                            <li class="mb-2"><span class="neon-text-pink">Category:</span> {{ $product->Category->name }}
+                            <li class="mb-2"><span class="neon-text-pink">Category:</span> {{ $product->category->name }}
                             </li>
                             <li class="mb-2"><span class="neon-text-pink">Warranty:</span> 2 Years</li>
                         </ul>

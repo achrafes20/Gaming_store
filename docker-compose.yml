@@ -126,6 +126,11 @@ services:
       CATALOG_SERVICE_URL: http://catalog-service
       ORDERS_SERVICE_URL: http://orders-service
       USERS_SERVICE_URL: http://users-service
+    volumes:
+      # SESSION_DRIVER=file writes here — without a persistent volume, every
+      # rebuild/recreate of this container wipes storage/framework/sessions
+      # and silently logs every visitor out (learned the hard way).
+      - web_bff_sessions:/var/www/html/storage/framework/sessions
     depends_on:
       - catalog-service
       - orders-service
@@ -150,3 +155,4 @@ volumes:
   orders_db_data:
   users_db_data:
   catalog_uploads:
+  web_bff_sessions:
