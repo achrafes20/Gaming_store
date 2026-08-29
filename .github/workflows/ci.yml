@@ -5,7 +5,8 @@ on:
     branches: [main]
   pull_request:
 
-# Least-privilege default; the image-push step below elevates just what it needs.
+# Least-privilege default. `service-publish` below is the only job that
+# elevates to packages: write, and only for itself — see its own comment.
 permissions:
   contents: read
 
@@ -19,16 +20,23 @@ jobs:
   # only lints/tests/builds those — a push touching only orders-service must
   # not rebuild catalog-service, users-service, web-bff and notifications-service
   # too. `services` is a JSON array consumed via fromJSON() in the matrix.
+  #
+  # k8s/** is filtered in a SEPARATE paths-filter step, not folded into the
+  # same filter map as the 5 services: dorny/paths-filter's `changes` output
+  # is the JSON array of every filter key that matched in that step — a k8s
+  # filter living alongside the service ones would land inside that same
+  # array and get scheduled as a bogus 6th matrix leg ("service-ci (k8s)",
+  # no such directory) the first time k8s/** changed alongside a service.
   # ---------------------------------------------------------------------------
   changes:
     runs-on: ubuntu-latest
     outputs:
-      services: ${{ steps.filter.outputs.changes }}
-      k8s: ${{ steps.filter.outputs.k8s }}
+      services: ${{ steps.services.outputs.changes }}
+      k8s: ${{ steps.k8s.outputs.k8s }}
     steps:
       - uses: actions/checkout@v4
       - uses: dorny/paths-filter@v3
-        id: filter
+        id: services
         with:
           filters: |
             catalog-service:
@@ -46,13 +54,18 @@ jobs:
             notifications-service:
               - 'services/notifications-service/**'
               - 'docker/**'
+      - uses: dorny/paths-filter@v3
+        id: k8s
+        with:
+          filters: |
             k8s:
               - 'k8s/**'
 
   # ---------------------------------------------------------------------------
   # One matrix leg per changed service: lint → test → dependency audit →
   # build image → scan image. A failure at any step stops that service's
-  # leg without blocking the others (fail-fast: false).
+  # leg without blocking the others (fail-fast: false). Read-only — building
+  # and scanning an image doesn't require pushing it anywhere.
   # ---------------------------------------------------------------------------
   service-ci:
     needs: changes
@@ -64,7 +77,6 @@ jobs:
         service: ${{ fromJSON(needs.changes.outputs.services) }}
     permissions:
       contents: read
-      packages: write # only used by the push step below, and only on main
     defaults:
       run:
         working-directory: services/${{ matrix.service }}
@@ -128,17 +140,36 @@ jobs:
           exit-code: '0' # report-only for now — see SECURITY.md for the triage policy
           format: table
 
-      - name: Log in to GHCR
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: docker/login-action@v3
+  # ---------------------------------------------------------------------------
+  # Separate from service-ci on purpose: this is the only job in the whole
+  # workflow that needs packages: write, and only it requests that — keeps
+  # lint/test/build/scan running (and green) on repos whose default
+  # workflow permissions are read-only, where a job-level `packages: write`
+  # makes the ENTIRE job refuse to schedule ("Set up job" fails before any
+  # step runs) rather than failing just the push step. Learned this the
+  # hard way: the first real run on this repo failed every single matrix
+  # leg this way, lint and tests included, before this split existed.
+  # ---------------------------------------------------------------------------
+  service-publish:
+    needs: [changes, service-ci]
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: ${{ fromJSON(needs.changes.outputs.services) }}
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push image
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: docker/build-push-action@v6
+      - uses: docker/build-push-action@v6
         with:
           context: .
           file: services/${{ matrix.service }}/Dockerfile
