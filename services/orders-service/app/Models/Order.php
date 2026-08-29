@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/** A customer order — owned by orders-service; product_id in order_details references catalog-service. */
 class Order extends Model
 {
     protected $fillable = [
