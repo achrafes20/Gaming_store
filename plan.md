@@ -241,10 +241,28 @@ Le repo a été poussé vers `https://github.com/achrafes20/Gaming_store` (dép�
 
 ## Phase 5 — Sécurité applicative
 
-- Middleware `SecurityHeaders` répliqué sur chaque service API + `web-bff`
-- Rate limiting sur les endpoints sensibles (`/login`, `/register`, `/StoreOrder`) de chaque service concerné
-- Validation JWT centralisée dans un middleware partagé (package interne ou trait dupliqué documenté)
-- `SECURITY.md` mappant chaque contrôle à l'OWASP Top 10
+**Statut : ✅ Terminé — déployé et vérifié en conditions réelles (Docker Compose puis le vrai cluster K8s via le flux GitOps de la Phase 4), pas seulement écrit.**
+
+**Livré** :
+- `SecurityHeaders` (nouveau middleware, un par service, enregistré globalement dans `bootstrap/app.php`) : `X-Content-Type-Options`, `X-Frame-Options`, `Referrer-Policy`, `Permissions-Policy`, `Content-Security-Policy`. CSP maximale (`default-src 'none'`) sur les 3 services API (JSON uniquement) ; `web-bff` garde `'unsafe-inline'` sur `script-src`/`style-src` — compromis documenté et assumé (ses vues Blade reprises du monolithe utilisent des gestionnaires inline partout ; les corriger toutes serait un chantier à part, hors périmètre ici).
+- Rate limiting (`RateLimiter::for` dans `AppServiceProvider::boot()`, appliqué via `throttle:<nom>`) : limiteur `auth` (5/min/IP) sur `/login`+`/register` (`users-service`, `web-bff`) ; limiteur `checkout` (10/min/IP) sur la création de commande (`orders-service`, `web-bff`).
+- Validation JWT centralisée : déjà en place depuis la Phase 0 (`JwtAuth`, identique sur les 3 services) — documentée ici comme satisfaisant cet item du plan, plutôt que refaite.
+- `SECURITY.md` : mapping complet OWASP Top 10 (2021), section dédiée par contrôle.
+
+**Bug de sécurité réel trouvé et corrigé pendant cette phase (pas une simple case à cocher)** : audit des endpoints `/api/internal/*` (`catalog-service` decrement-stock, `orders-service` has-purchased, censés être appelés uniquement service-à-service) a révélé qu'ils n'avaient **aucune authentification** — accessibles par n'importe qui via la gateway publique (`GET /api/orders/internal/has-purchased?user_id=1&product_id=1` aurait fuité l'historique d'achat de n'importe quel utilisateur ; l'endpoint de décrément de stock aurait pu être appelé directement pour corrompre les stocks). OWASP A01 (Broken Access Control). Corrigé en défense en profondeur :
+1. **Blocage au niveau gateway** (défense primaire) : `gateway/nginx.conf` et le ConfigMap K8s équivalent renvoient `403` sur `/api/catalog/internal/` et `/api/orders/internal/` avant même d'atteindre un service.
+2. **Secret partagé au niveau applicatif** (repli, pour un appel qui atteindrait le service directement) : nouveau middleware `VerifyInternalSecret`, header `X-Internal-Secret`, secret `INTERNAL_SERVICE_SECRET` généré par `scripts/setup-env.sh`/`scripts/k8s-secrets.sh` (jamais committé), partagé uniquement entre `catalog-service` et `orders-service`.
+
+**Bug supplémentaire trouvé en testant contre de vrais conteneurs Docker (invisible en `phpunit`, qui utilise déjà `CACHE_STORE=array`)** : `web-bff` avait `CACHE_STORE=database` copié des autres services, mais `web-bff` n'a pas de vraie base de données (`DB_CONNECTION=sqlite` inutilisé/non migré — c'est un BFF sans état par conception). Le rate limiter, en essayant de lire le store `database`, provoquait une erreur SQL (table `cache` inexistante) → 500 sur **toute** route soumise au throttle. Corrigé en passant `web-bff` à `CACHE_STORE=file` (cohérent avec son `SESSION_DRIVER=file` déjà en place), dans `.env.example` et le ConfigMap K8s.
+
+**Testé en conditions réelles, deux fois (Docker Compose puis le vrai cluster K8s après un déploiement GitOps complet)** :
+- En-têtes de sécurité présents (`curl -sI`) sur un endpoint JSON et sur la page d'accueil rendue — page toujours fonctionnelle (CSS/logo/images) malgré la CSP.
+- Endpoints internes : `403` via la gateway, `403` en appel direct au service sans le secret (ou avec un mauvais secret), fonctionnent normalement avec le bon secret (checkout → décrément de stock re-testé de bout en bout, toujours correct).
+- Rate limiting : 7 tentatives de connexion rapides → les 5 premières traitées, `429` sur la 6e et la 7e — **reproduit à l'identique sur le cluster K8s réel** après déploiement.
+- Parcours complet à froid via la gateway/l'Ingress : inscription → session → navigation catalogue → ajout panier → page panier → page checkout — **rejoué avec succès sur Docker Compose ET sur le cluster K8s réel** (via Argo CD : nouveau tag `684d5f8` construit par `scripts/gitops-release.sh`, commit poussé, synchro forcée, `Synced`/`Healthy` confirmé, 5 pods applicatifs vérifiés sur la nouvelle image par `kubectl get pods -o jsonpath`).
+- 98/98 tests verts (96 existants + 2 nouveaux `test_internal_endpoint_rejects_requests_without_the_shared_secret`), `pint --test` propre sur les 4 services testés.
+
+**Non fait à ce stade** : CSP nonce-based sur `web-bff` (nécessiterait de retoucher toutes les vues à gestionnaires inline) ; `APP_DEBUG=true` toujours actif dans les ConfigMaps K8s (pratique pour le debug local, signalé comme limite connue dans `SECURITY.md` plutôt que masqué — à désactiver pour un vrai déploiement au-delà de cette démo) ; pas de journalisation/alerting centralisés (OWASP A09, tracké pour la Phase 6).
 
 ## Phase 6 — Monitoring & Observabilité (le plus pertinent une fois multi-services)
 
