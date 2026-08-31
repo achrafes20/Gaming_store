@@ -115,3 +115,18 @@ compared against the `images:` tag in git; drift (a stale pod, an accidental
 manual edit, a half-finished imperative rollout) gets corrected within
 Argo CD's next reconcile loop instead of silently persisting until someone
 notices.
+
+This was verified for real, not just configured: with `syncPolicy.automated.selfHeal: true`
+already applied, running
+
+```bash
+kubectl set image deployment/catalog-service \
+  catalog-service=gaming-store-catalog-service:latest -n gaming-store
+```
+
+(a manual edit that bypasses git entirely) took effect on the cluster for a
+few seconds — a new ReplicaSet on `:latest` scaled up — and was then
+reverted automatically, with no further `kubectl`/`argocd` command run: Argo
+CD scaled the drifted ReplicaSet back to 0 and restored the one running the
+tag actually declared in `k8s/base/kustomization.yaml`, in under 10 seconds,
+confirmed via `kubectl get events` and the final pod's image.
