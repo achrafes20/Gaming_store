@@ -53,12 +53,12 @@ resources:
 # no more silent staleness, and nothing to remember to work around.
 images:
   - name: gaming-store-catalog-service
-    newTag: 8eaad20
+    newTag: 684d5f8
   - name: gaming-store-orders-service
-    newTag: 8eaad20
+    newTag: 684d5f8
   - name: gaming-store-users-service
-    newTag: 8eaad20
+    newTag: 684d5f8
   - name: gaming-store-web-bff
-    newTag: 8eaad20
+    newTag: 684d5f8
   - name: gaming-store-notifications-service
-    newTag: 8eaad20
+    newTag: 684d5f8
