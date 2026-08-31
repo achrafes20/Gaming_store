@@ -1,0 +1,48 @@
+# Argo CD Application for the whole gaming-store stack.
+#
+# One Application, not five (or an ApplicationSet generating five) — a
+# deliberate deviation from the plan's original phrasing. Reasoning: the 5
+# services aren't independently releasable here (scripts/gitops-release.sh
+# always builds and tags all of them together, same as every phase before
+# this one), and k8s/base/kustomization.yaml already models them as a single
+# Kustomize unit with one shared `images:` block (see that file's comment).
+# Five Applications would just mean five sync operations firing off the same
+# commit for no operational benefit — more UI noise, not more independence.
+# If the services ever gain independent release cadences, this is the file
+# to split into an ApplicationSet keyed on services/*/.
+#
+# Points at k8s/overlays/dev: that's the overlay actually running on this
+# project's cluster (Docker Desktop Kubernetes) and the one every phase so
+# far has verified against. k8s/overlays/prod (2 replicas on the stateless
+# API services) is the production-target pattern, documented but not
+# deployed here for lack of a real second cluster — switching this
+# Application to it later is a one-line `path:` change.
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: gaming-store
+  namespace: argocd
+spec:
+  project: default
+
+  source:
+    repoURL: https://github.com/achrafes20/Gaming_store.git
+    targetRevision: main
+    path: k8s/overlays/dev
+
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: gaming-store
+
+  syncPolicy:
+    automated:
+      prune: true # remove resources deleted from git
+      selfHeal: true # revert manual kubectl drift back to what git says
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 5
+      backoff:
+        duration: 5s
+        factor: 2
+        maxDuration: 3m

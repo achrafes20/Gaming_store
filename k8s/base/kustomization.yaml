@@ -40,3 +40,25 @@ resources:
   - api-gateway/deployment.yaml
   - api-gateway/service.yaml
   - api-gateway/ingress.yaml
+
+# GitOps release tag — the ONE place that changes on every release. Kept as
+# a single shared tag across all 5 (scripts/gitops-release.sh always builds
+# them together) rather than scattered `newTag:` edits per Deployment file,
+# so a release is exactly one line-scoped diff for Argo CD to sync.
+#
+# This is also what actually fixes the "stale image" bug from Phase 2:
+# Docker Desktop Kubernetes doesn't reliably notice a same-tag (`:latest`)
+# rebuild, so a pod kept running the old code after `docker compose build`.
+# A tag that changes on every release forces a real pull every time —
+# no more silent staleness, and nothing to remember to work around.
+images:
+  - name: gaming-store-catalog-service
+    newTag: latest
+  - name: gaming-store-orders-service
+    newTag: latest
+  - name: gaming-store-users-service
+    newTag: latest
+  - name: gaming-store-web-bff
+    newTag: latest
+  - name: gaming-store-notifications-service
+    newTag: latest

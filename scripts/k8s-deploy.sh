@@ -23,6 +23,15 @@ SERVICES="catalog-service orders-service users-service web-bff notifications-ser
 # A fresh tag forces a real (fast, local) pull every time. Learned this the
 # hard way: two real bug fixes rebuilt under :latest never actually made it
 # into the running cluster until this was added.
+#
+# Now that Argo CD (Phase 4) treats k8s/base/kustomization.yaml's `images:`
+# block as the single source of truth for what's running, this script writes
+# its throwaway dev tag into that same file — same mechanism `kubectl apply
+# -k` already reads, instead of a separate `kubectl set image` step that
+# could fight Argo CD's selfHeal. The edit is reverted at the end of this
+# script (git checkout) so a local test run never leaves a dirty diff or a
+# junk tag behind for a real release to pick up — only scripts/gitops-release.sh
+# is allowed to permanently move that pointer, via a real commit.
 BUILD_TAG=$(date +%Y%m%d%H%M%S)
 
 echo "==> Building service images (tag: ${BUILD_TAG})"
@@ -60,13 +69,12 @@ fi
 echo "==> Applying secrets (APP_KEY, JWT_SECRET, SMTP — from services/*/.env)"
 ./scripts/k8s-secrets.sh
 
+echo "==> Pointing k8s/base at the freshly built images (tag: ${BUILD_TAG}, local-only)"
+sed -i "s/newTag: .*/newTag: ${BUILD_TAG}/" k8s/base/kustomization.yaml
+trap 'git checkout -- k8s/base/kustomization.yaml' EXIT
+
 echo "==> Applying k8s/overlays/${OVERLAY}"
 kubectl apply -k "k8s/overlays/${OVERLAY}"
-
-echo "==> Pointing deployments at the freshly built images (tag: ${BUILD_TAG})"
-for service in $SERVICES; do
-    kubectl set image "deployment/${service}" "${service}=gaming-store-${service}:${BUILD_TAG}" -n "$NAMESPACE"
-done
 
 echo "==> Waiting for rollouts"
 for deploy in catalog-service orders-service users-service web-bff notifications-service api-gateway; do
