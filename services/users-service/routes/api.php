@@ -7,8 +7,8 @@ use App\Http\Controllers\Api\SubController;
 use App\Http\Controllers\Api\UserAdminController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:auth');
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth');
 
 Route::post('/sub', [SubController::class, 'store']);
 Route::get('/reviews', [ReviewController::class, 'index']);

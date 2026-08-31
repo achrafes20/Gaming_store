@@ -33,6 +33,11 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: JWT_SECRET
+            - name: INTERNAL_SERVICE_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: INTERNAL_SERVICE_SECRET
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:

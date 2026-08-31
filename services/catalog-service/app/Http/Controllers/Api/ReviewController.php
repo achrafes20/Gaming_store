@@ -50,6 +50,7 @@ class ReviewController extends Controller
         try {
             $response = Http::baseUrl(config('services.orders_service_url'))
                 ->timeout(3)
+                ->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
                 ->get('/api/internal/has-purchased', ['user_id' => $userId, 'product_id' => $productId]);
 
             return $response->json('has_purchased', false);

@@ -39,4 +39,8 @@ return [
 
     'orders_service_url' => env('ORDERS_SERVICE_URL', 'http://orders-service'),
 
+    // Shared with orders-service only — authenticates the /api/internal/*
+    // service-to-service calls in both directions. See SECURITY.md.
+    'internal_service_secret' => env('INTERNAL_SERVICE_SECRET'),
+
 ];

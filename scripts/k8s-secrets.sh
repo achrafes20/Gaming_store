@@ -20,7 +20,13 @@ apply_secret() {
 
 # Shared across catalog/orders/users-service — they all verify JWTs minted by
 # users-service, so this MUST be identical everywhere (see docs/architecture).
-apply_secret jwt-secret --from-literal=JWT_SECRET="$(env_value catalog-service JWT_SECRET)"
+# INTERNAL_SERVICE_SECRET rides along in the same Secret object: it's only
+# shared between catalog-service and orders-service (not users-service), but
+# reusing this Secret avoids introducing a second K8s object just for one
+# more key — see SECURITY.md for what it protects.
+apply_secret jwt-secret \
+    --from-literal=JWT_SECRET="$(env_value catalog-service JWT_SECRET)" \
+    --from-literal=INTERNAL_SERVICE_SECRET="$(env_value catalog-service INTERNAL_SERVICE_SECRET)"
 
 for service in catalog-service orders-service users-service web-bff; do
     apply_secret "${service}-secret" --from-literal=APP_KEY="$(env_value "$service" APP_KEY)"

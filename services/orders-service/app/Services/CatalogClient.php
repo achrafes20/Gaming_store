@@ -30,6 +30,7 @@ class CatalogClient
         try {
             $response = Http::baseUrl(config('services.catalog_service_url'))
                 ->timeout(5)
+                ->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
                 ->patch("/api/internal/products/{$productId}/decrement-stock", ['quantity' => $quantity]);
         } catch (\Throwable $e) {
             throw new RuntimeException("catalog-service unreachable while decrementing stock for product {$productId}: {$e->getMessage()}");

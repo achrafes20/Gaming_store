@@ -4,11 +4,23 @@ namespace Tests\Feature;
 
 use App\Services\OrdersClient;
 use App\Services\UsersClient;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Session;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        // /login and /register share a per-IP throttle (SECURITY.md) — the
+        // array cache store persists across test methods in the same
+        // process, so without this a later test could get 429'd by an
+        // earlier one hitting the same limiter key.
+        Cache::flush();
+    }
+
     private function usersClientReturning(int $status, array $body): void
     {
         $this->mock(UsersClient::class, function ($mock) use ($status, $body) {

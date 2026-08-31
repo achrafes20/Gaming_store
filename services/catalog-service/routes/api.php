@@ -27,4 +27,6 @@ Route::middleware(['jwt.auth:admin'])->group(function () {
 });
 
 // Internal, service-to-service only (called by orders-service during checkout) — see docs/architecture.md.
-Route::patch('/internal/products/{product}/decrement-stock', [ProductController::class, 'decrementStock']);
+Route::middleware('internal.secret')->group(function () {
+    Route::patch('/internal/products/{product}/decrement-stock', [ProductController::class, 'decrementStock']);
+});

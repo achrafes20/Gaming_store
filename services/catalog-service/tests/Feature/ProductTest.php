@@ -148,7 +148,8 @@ class ProductTest extends TestCase
     {
         $product = $this->product(['quantity' => 10]);
 
-        $this->patchJson("/api/internal/products/{$product->id}/decrement-stock", ['quantity' => 3])
+        $this->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
+            ->patchJson("/api/internal/products/{$product->id}/decrement-stock", ['quantity' => 3])
             ->assertOk()
             ->assertJsonPath('quantity', 7);
 
@@ -159,9 +160,25 @@ class ProductTest extends TestCase
     {
         $product = $this->product(['quantity' => 2]);
 
-        $this->patchJson("/api/internal/products/{$product->id}/decrement-stock", ['quantity' => 5])
+        $this->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
+            ->patchJson("/api/internal/products/{$product->id}/decrement-stock", ['quantity' => 5])
             ->assertStatus(409);
 
         $this->assertDatabaseHas('products', ['id' => $product->id, 'quantity' => 2]);
+    }
+
+    /** SECURITY.md, OWASP A01 — this endpoint used to have no authentication at all. */
+    public function test_internal_endpoint_rejects_requests_without_the_shared_secret(): void
+    {
+        $product = $this->product(['quantity' => 10]);
+
+        $this->patchJson("/api/internal/products/{$product->id}/decrement-stock", ['quantity' => 3])
+            ->assertStatus(403);
+
+        $this->withHeaders(['X-Internal-Secret' => 'wrong'])
+            ->patchJson("/api/internal/products/{$product->id}/decrement-stock", ['quantity' => 3])
+            ->assertStatus(403);
+
+        $this->assertDatabaseHas('products', ['id' => $product->id, 'quantity' => 10]);
     }
 }

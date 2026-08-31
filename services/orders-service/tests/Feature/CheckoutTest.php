@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Services\CatalogClient;
 use App\Services\EventPublisher;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Tests\Concerns\ActsWithJwt;
 use Tests\TestCase;
 
@@ -20,6 +21,12 @@ class CheckoutTest extends TestCase
         parent::setUp();
         // Never let a real checkout test try to reach RabbitMQ.
         $this->mock(EventPublisher::class, fn ($mock) => $mock->shouldReceive('publish')->zeroOrMoreTimes());
+
+        // POST /orders is throttled per-IP (SECURITY.md) — the array cache
+        // store persists across test methods in the same process, so
+        // without this a later test could get 429'd by an earlier one
+        // hitting the same limiter key.
+        Cache::flush();
     }
 
     private function fakeCatalog(int $productId = 1, float $price = 800, int $quantity = 10): void
@@ -177,12 +184,24 @@ class CheckoutTest extends TestCase
         $order = Order::create(['name' => 'A', 'email' => 'a@t.com', 'address' => 'x', 'region' => 'r', 'city' => 'c', 'phone' => '1', 'user_id' => 7, 'total' => 100]);
         $order->orderDetails()->create(['product_id' => 42, 'price' => 100, 'quantity' => 1]);
 
-        $this->getJson('/api/internal/has-purchased?user_id=7&product_id=42')
+        $this->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
+            ->getJson('/api/internal/has-purchased?user_id=7&product_id=42')
             ->assertOk()
             ->assertJsonPath('has_purchased', true);
 
-        $this->getJson('/api/internal/has-purchased?user_id=7&product_id=999')
+        $this->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
+            ->getJson('/api/internal/has-purchased?user_id=7&product_id=999')
             ->assertOk()
             ->assertJsonPath('has_purchased', false);
+    }
+
+    /** SECURITY.md, OWASP A01 — this endpoint used to have no authentication at all. */
+    public function test_internal_has_purchased_endpoint_rejects_requests_without_the_shared_secret(): void
+    {
+        $this->getJson('/api/internal/has-purchased?user_id=7&product_id=42')->assertStatus(403);
+
+        $this->withHeaders(['X-Internal-Secret' => 'wrong'])
+            ->getJson('/api/internal/has-purchased?user_id=7&product_id=42')
+            ->assertStatus(403);
     }
 }

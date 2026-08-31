@@ -6,6 +6,7 @@ cd "$(dirname "$0")/.."
 
 SERVICES=(catalog-service orders-service users-service notifications-service web-bff)
 JWT_SECRET=$(php -r 'echo bin2hex(random_bytes(32));')
+INTERNAL_SERVICE_SECRET=$(php -r 'echo bin2hex(random_bytes(32));')
 
 for service in "${SERVICES[@]}"; do
     dir="services/$service"
@@ -28,6 +29,15 @@ for service in catalog-service orders-service users-service; do
     dir="services/$service"
     if grep -q '^JWT_SECRET=$' "$dir/.env" 2>/dev/null; then
         sed -i "s/^JWT_SECRET=$/JWT_SECRET=$JWT_SECRET/" "$dir/.env"
+    fi
+done
+
+# Internal-service secret: only catalog-service and orders-service call each
+# other's /api/internal/* endpoints, so only those two need to match.
+for service in catalog-service orders-service; do
+    dir="services/$service"
+    if grep -q '^INTERNAL_SERVICE_SECRET=$' "$dir/.env" 2>/dev/null; then
+        sed -i "s/^INTERNAL_SERVICE_SECRET=$/INTERNAL_SERVICE_SECRET=$INTERNAL_SERVICE_SECRET/" "$dir/.env"
     fi
 done
 

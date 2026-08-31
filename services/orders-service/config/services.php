@@ -39,6 +39,10 @@ return [
 
     'catalog_service_url' => env('CATALOG_SERVICE_URL', 'http://catalog-service'),
 
+    // Shared with catalog-service only — authenticates the /api/internal/*
+    // service-to-service calls in both directions. See SECURITY.md.
+    'internal_service_secret' => env('INTERNAL_SERVICE_SECRET'),
+
     'rabbitmq' => [
         'host' => env('RABBITMQ_HOST', 'rabbitmq'),
         'port' => env('RABBITMQ_PORT', 5672),

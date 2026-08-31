@@ -15,6 +15,18 @@ data:
         listen 80;
         client_max_body_size 20M;
 
+        # /api/internal/* is service-to-service only (see docs/architecture.md
+        # and SECURITY.md, OWASP A01) — blocked here as the primary defense;
+        # nginx matches the longest plain prefix regardless of file order, so
+        # these take priority over /api/catalog/ and /api/orders/ below.
+        location /api/catalog/internal/ {
+            return 403;
+        }
+
+        location /api/orders/internal/ {
+            return 403;
+        }
+
         location /api/catalog/ {
             rewrite ^/api/catalog/(.*)$ /api/$1 break;
             proxy_pass http://catalog-service:80/;

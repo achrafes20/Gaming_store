@@ -20,9 +20,9 @@ Route::get('/single-product/{productid}', [ProductController::class, 'showProduc
 Route::post('/sub', [FirstController::class, 'sub']);
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:auth');
 Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:auth');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::middleware('auth')->group(function () {
@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/favorites/{productId}', [FavoriteController::class, 'destroy'])->name('favorites.destroy');
     Route::post('/favorites/toggle/{productId}', [FavoriteController::class, 'toggle'])->name('favorites.toggle');
     Route::get('/Completeorder', [CartController::class, 'Completeorder']);
-    Route::post('/StoreOrder', [CartController::class, 'StoreOrder']);
+    Route::post('/StoreOrder', [CartController::class, 'StoreOrder'])->middleware('throttle:checkout');
     Route::get('/previousorder', [CartController::class, 'previousorder']);
     Route::post('/addproducttocart/{productid}', [CartController::class, 'addproducttocart']);
     Route::get('/cart', [CartController::class, 'cart']);

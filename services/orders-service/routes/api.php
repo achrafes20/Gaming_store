@@ -6,7 +6,9 @@ use App\Http\Controllers\Api\CouponController;
 use Illuminate\Support\Facades\Route;
 
 // Internal, service-to-service only (called by catalog-service) — see docs/architecture.md.
-Route::get('/internal/has-purchased', [CheckoutController::class, 'hasPurchased']);
+Route::middleware('internal.secret')->group(function () {
+    Route::get('/internal/has-purchased', [CheckoutController::class, 'hasPurchased']);
+});
 
 Route::middleware('jwt.auth')->group(function () {
     Route::get('/cart', [CartController::class, 'index']);
@@ -16,7 +18,7 @@ Route::middleware('jwt.auth')->group(function () {
     Route::delete('/cart/{cart}', [CartController::class, 'destroy']);
 
     Route::get('/orders', [CheckoutController::class, 'index']);
-    Route::post('/orders', [CheckoutController::class, 'store']);
+    Route::post('/orders', [CheckoutController::class, 'store'])->middleware('throttle:checkout');
 
     Route::post('/coupons/preview', [CouponController::class, 'preview']);
 });

@@ -7,6 +7,7 @@ use App\Services\EventPublisher;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Tests\Concerns\ActsWithJwt;
 use Tests\TestCase;
@@ -19,6 +20,12 @@ class AuthTest extends TestCase
     {
         parent::setUp();
         $this->mock(EventPublisher::class, fn ($mock) => $mock->shouldReceive('publish')->zeroOrMoreTimes());
+
+        // /login and /register share a per-IP throttle (SECURITY.md) — the
+        // array cache store persists across test methods in the same
+        // process, so without this a later test could get 429'd by an
+        // earlier one hitting the same limiter key.
+        Cache::flush();
     }
 
     public function test_a_user_can_register(): void
