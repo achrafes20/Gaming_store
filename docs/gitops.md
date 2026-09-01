@@ -12,7 +12,7 @@ comment — it still exists for quick local iteration, but its own tag edit is
 `git checkout`-ed away at the end of the script so it can never linger as
 real cluster state).
 
-## Architecture decision: one Application, not five
+## Architecture decision: one Application, not one per service
 
 The plan's original phrasing suggested a per-service Argo CD `Application`
 (or an `ApplicationSet` generating one per service). This repo ships **one**
@@ -20,9 +20,9 @@ The plan's original phrasing suggested a per-service Argo CD `Application`
 documented here as a deliberate deviation, same as the kind→Docker Desktop
 Kubernetes swap in Phase 2.
 
-Why: `k8s/base/kustomization.yaml` already models the 5 services as a single
+Why: `k8s/base/kustomization.yaml` already models all 6 services as a single
 Kustomize unit sharing one `images:` block, and every release
-(`scripts/gitops-release.sh`) builds and tags all 5 together — there's no
+(`scripts/gitops-release.sh`) builds and tags all of them together — there's no
 independent release cadence per service to reflect in git yet. Five
 Applications syncing the same commit at the same time would be UI noise, not
 real independence. If that ever changes (a service gets its own release
@@ -92,7 +92,7 @@ kubectl get application gaming-store -n argocd
 ./scripts/gitops-release.sh
 ```
 
-Builds the 5 images tagged with the current commit's short SHA, writes that
+Builds the 6 images tagged with the current commit's short SHA, writes that
 tag into `k8s/base/kustomization.yaml`, commits, and pushes to `main`. Argo
 CD picks the new commit up on its next poll (3 minutes by default) and
 rolls it out — or force it immediately:
@@ -102,6 +102,27 @@ argocd app sync gaming-store
 # or, without the CLI:
 kubectl patch application gaming-store -n argocd --type merge \
   -p '{"operation":{"sync":{}}}'
+```
+
+### Known gap: a `gateway/nginx.conf` change needs a manual gateway restart
+
+`api-gateway` runs the stock `nginx:1.27-alpine` image with
+`k8s/base/api-gateway/configmap.yaml` mounted in as its config — there's no
+custom image for it to rebuild, so a sync that only changes that ConfigMap
+(exactly what adding a new route, like Phase 8's `/api/chat` and `/chat`
+blocks, does) updates the mounted file on disk but **doesn't make nginx
+reload it**. Argo CD reports `Synced`/`Healthy` regardless, since the
+ConfigMap and the Deployment spec genuinely do match git — nothing is
+actually out of sync, nginx just hasn't picked up the new file yet. Found
+by a real `404` on a route that had just been added and synced
+successfully. Until this gets the idiomatic Kustomize fix (a
+`configMapGenerator` with a content hash suffix, so the Deployment's own
+spec changes and a rollout happens automatically — a larger refactor
+touching every service's ConfigMap, not done yet), restart the gateway by
+hand after any release that touches `gateway/nginx.conf`:
+
+```bash
+kubectl rollout restart deployment/api-gateway -n gaming-store
 ```
 
 ## What `selfHeal` actually buys here
