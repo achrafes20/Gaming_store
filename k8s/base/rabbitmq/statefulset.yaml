@@ -41,25 +41,37 @@ spec:
           # an initialDelaySeconds kills it mid-boot, which is worse than a
           # slow start: it corrupts the Mnesia data directory, and every
           # subsequent restart then crash-loops on the same broken volume.
+          # timeoutSeconds bumped from 5 to 15 after a real, observed
+          # regression: on this same machine, days later, with the K8s
+          # cluster and the (separate) docker-compose observability stack
+          # both left running, `rabbitmq-diagnostics -q ping` — itself a
+          # full Erlang/BEAM CLI invocation, not a cheap syscall — started
+          # missing a 5s timeout under that combined load, tipping the pod
+          # into the same liveness-kill / restart loop the Phase 2 fix
+          # above was written to prevent in the first place. 5s was never
+          # wrong on an otherwise-idle machine; it just wasn't enough
+          # margin for a dev box doing double duty. The CPU limit is raised
+          # alongside it so the diagnostics command itself isn't the thing
+          # getting throttled.
           readinessProbe:
             exec:
               command: ["rabbitmq-diagnostics", "-q", "ping"]
             initialDelaySeconds: 20
             periodSeconds: 10
-            timeoutSeconds: 5
+            timeoutSeconds: 15
           livenessProbe:
             exec:
               command: ["rabbitmq-diagnostics", "-q", "ping"]
             initialDelaySeconds: 60
             periodSeconds: 20
-            timeoutSeconds: 5
+            timeoutSeconds: 15
             failureThreshold: 5
           resources:
             requests:
               cpu: 100m
               memory: 256Mi
             limits:
-              cpu: 500m
+              cpu: 1000m
               memory: 512Mi
   volumeClaimTemplates:
     - metadata:
