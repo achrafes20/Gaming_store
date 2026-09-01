@@ -298,8 +298,23 @@ Le repo a été poussé vers `https://github.com/achrafes20/Gaming_store` (dép�
 
 ## Phase 7 — Documentation "vitrine CV"
 
-- `README.md` : schéma d'architecture (Mermaid, celui ci-dessus formalisé), badges CI par service, section "DevOps & microservices practices applied"
-- `ARCHITECTURE.md` détaillé : découpage des domaines, choix techniques (pourquoi JWT plutôt qu'appel synchrone, pourquoi RabbitMQ, pourquoi DB par service)
+**Statut : ✅ Terminé — `README.md` entièrement réécrit, `docs/architecture.md` créé, tous les liens et instructions vérifiés réellement (pas juste rédigés).**
+
+**Livré** :
+- **`README.md` réécrit intégralement** : l'ancien contenu décrivait encore le monolithe (un seul `.env`, `composer install` à la racine, lien vers le déploiement InfinityFree — supprimé depuis la Phase 0). Nouveau contenu : badge CI réel (pointant vers `.github/workflows/ci.yml`), badges technologiques (Laravel, PHP, Docker, Kubernetes, Argo CD, Prometheus), schéma d'architecture Mermaid (gateway = façade client uniquement vs appels inter-services directs, cohérent avec `docs/architecture.md`), tableau des 5 services, section "DevOps practices applied" résumant les 6 phases précédentes avec liens vers chaque document, quickstart Docker Compose et Kubernetes, section tests, liens vers toute la documentation.
+- **`docs/architecture.md` créé** (référencé par 11 fichiers de code existants — `// see docs/architecture.md` — sans jamais avoir existé jusqu'ici, corrigé) : découpage des 5 domaines, schéma Mermaid formalisant explicitement la distinction gateway=façade-client vs appels inter-services directs (`docs/architecture.md`), justification de chaque choix technique majeur — JWT stateless plutôt qu'un appel de validation synchrone à chaque requête (et son vrai compromis : pas de révocation immédiate), RabbitMQ plutôt qu'un appel synchrone pour la confirmation de commande (isolation de panne : le SMTP est cassé en environnement de test, le checkout ne casse jamais pour autant), coût concret d'une base de données par service (pas de transaction distribuée au checkout, enrichissement cross-service assuré par `web-bff` en tant que BFF), et le modèle d'authentification des 2 endpoints internes.
+- **`LICENSE` (MIT) ajouté** — le badge "License: MIT" du `README.md` original n'avait jamais été soutenu par un vrai fichier de licence ; incohérence corrigée plutôt qu'ignorée.
+
+**Trouvé en vérifiant plutôt qu'en écrivant, documenté honnêtement plutôt que masqué** :
+- `catalog-service`, `orders-service` et `notifications-service` embarquent chacun un `App\Models\User` par défaut (scaffolding Laravel de la Phase 0, jamais branché nulle part — `grep` ne trouve aucune référence dans aucun des trois). Pas un bug fonctionnel, mais dans un projet explicitement construit pour être lu de près, méritait d'être nommé plutôt que laissé sans explication — section dédiée dans `docs/architecture.md` ("A known, undone cleanup"), volontairement non supprimé pendant cette phase pour éviter de toucher la config `auth.php` par défaut pour un changement à effet comportemental nul.
+- Le seeder `DatabaseSeeder.php` de `users-service` ne crée aucun compte admin (contrairement à l'ancien monolithe qui en seedait un) — chaque compte créé via `/register` démarre avec `role=client`. Documenté honnêtement dans le README (au lieu de prétendre qu'un admin existe par défaut), avec la commande `tinker` exacte pour promouvoir un compte — **testée réellement** contre le conteneur `users-service` vivant (création d'un compte `client` → promotion via la commande documentée → vérification que `role` vaut bien `admin`).
+
+**Vérifié réellement, pas juste écrit** :
+- Tous les chemins référencés dans `README.md` et `docs/architecture.md` (les 4 autres docs, `k8s/`, les 5 dossiers `services/*`, les scripts) confirmés existants sur disque.
+- Les deux diagrammes Mermaid rendus via un Artifact de test dédié pour repérer toute erreur de syntaxe avant publication (labels d'arêtes avec `\n` remplacés — non fiable dans le rendu Mermaid de GitHub — par du texte simple).
+- La commande de promotion admin du README exécutée pour de vrai contre le conteneur `users-service` en cours d'exécution : compte créé en `client`, promu en `admin` via exactement la commande documentée, rôle final vérifié.
+
+**Non fait à ce stade** : suppression des `User.php`/migration `users` orphelins des 3 services (documenté comme décision de périmètre, pas oublié — voir `docs/architecture.md`).
 
 ## Ordre d'exécution
 
