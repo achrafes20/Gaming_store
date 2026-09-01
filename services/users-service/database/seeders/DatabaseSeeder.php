@@ -2,24 +2,36 @@
 
 namespace Database\Seeders;
 
+use App\Models\Favorite;
+use App\Models\Review;
+use App\Models\Sub;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Schema;
 
 class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
     /**
-     * Seed the application's database.
+     * Truncates first so this is safe to re-run — see
+     * catalog-service's DatabaseSeeder for the same reasoning.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        Schema::disableForeignKeyConstraints();
+        Favorite::truncate();
+        Review::truncate();
+        Sub::truncate();
+        User::truncate();
+        Schema::enableForeignKeyConstraints();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        $this->call([
+            UserSeeder::class,
+            FavoriteSeeder::class,
+            SubSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }

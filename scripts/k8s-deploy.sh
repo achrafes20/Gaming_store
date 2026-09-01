@@ -90,6 +90,12 @@ kubectl exec -n "$NAMESPACE" deploy/orders-service -- php artisan migrate --forc
 kubectl exec -n "$NAMESPACE" deploy/users-service -- php artisan migrate --force
 
 echo
-echo "Done. Reach the site with:"
+echo "Done. Optionally seed realistic demo data (categories/products/orders/"
+echo "an admin account — see README.md) — safe to re-run any time:"
+echo "  for s in catalog-service orders-service users-service; do"
+echo "    kubectl exec -n $NAMESPACE deploy/\$s -- php artisan db:seed --force"
+echo "  done"
+echo
+echo "Reach the site with:"
 echo "  kubectl port-forward -n ingress-nginx svc/ingress-nginx-controller 8080:80"
 echo "then open http://localhost:8080"

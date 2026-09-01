@@ -96,6 +96,17 @@ The chatbot needs a free Google AI Studio key
 `services/chatbot-service/.env` — `setup-env.sh` reminds you if it's still
 missing. Everything else works without it.
 
+Seed each service with realistic demo data (8 categories with real photos,
+~26 products, reviews, coupons, order history, an admin account) — safe to
+re-run any time:
+
+```bash
+for s in catalog-service orders-service users-service; do
+  docker compose exec "$s" php artisan migrate --force
+  docker compose exec "$s" php artisan db:seed --force
+done
+```
+
 Then:
 
 - Site: <http://localhost:8080>
@@ -104,8 +115,15 @@ Then:
 - Prometheus: <http://localhost:9090>
 - Jaeger: <http://localhost:16686>
 
-Register an account via the site, then promote it to admin (there's no
-seeded admin — every account starts as `client`):
+Log in with a seeded account (password for all of them: `password`):
+
+| Role | Email |
+|---|---|
+| Admin | `admin@nextlevelgaming.com` |
+| Client | `sarah.chen@example.com` (has favorites + order history) |
+
+Or register your own — every new account starts as `client`; promote one
+by hand if needed:
 
 ```bash
 docker compose exec users-service php artisan tinker \
