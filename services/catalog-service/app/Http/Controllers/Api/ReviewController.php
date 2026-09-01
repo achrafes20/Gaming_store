@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use App\Models\ReviewProduct;
+use App\Support\Tracing;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -50,7 +51,10 @@ class ReviewController extends Controller
         try {
             $response = Http::baseUrl(config('services.orders_service_url'))
                 ->timeout(3)
-                ->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
+                ->withHeaders(array_merge(
+                    ['X-Internal-Secret' => config('services.internal_service_secret')],
+                    ($header = Tracing::outgoingHeader()) ? ['traceparent' => $header] : [],
+                ))
                 ->get('/api/internal/has-purchased', ['user_id' => $userId, 'product_id' => $productId]);
 
             return $response->json('has_purchased', false);

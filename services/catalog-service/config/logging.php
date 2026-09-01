@@ -1,5 +1,7 @@
 <?php
 
+use App\Logging\AddTraceId;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -63,6 +65,23 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            // JSON + AddTraceId (Phase 6) — logging structured JSON straight
+            // to stderr (LOG_CHANNEL=stderr) was the first approach tried
+            // here, and it silently swallowed every application log line:
+            // php-fpm's `catch_workers_output` (docker.conf) never actually
+            // forwarded worker stderr into the container's captured output
+            // in this image — even a deliberate Log::error() vanished with
+            // no error of its own. nginx's access log showed up fine
+            // (nginx writes to its own configured destination directly,
+            // nothing to do with php-fpm workers), which is what made this
+            // one non-obvious: SOME output worked, so the container looked
+            // healthy. Switched to the standard, reliable workaround for
+            // this well-known php-fpm limitation instead: log to this file
+            // as JSON, and a `tail -F` process (docker/supervisord.conf,
+            // program:log-forwarder) streams it to the container's real
+            // stdout, which docker/Promtail do reliably capture.
+            'formatter' => JsonFormatter::class,
+            'processors' => [PsrLogMessageProcessor::class, AddTraceId::class],
         ],
 
         'daily' => [
@@ -102,6 +121,13 @@ return [
                 'stream' => 'php://stderr',
             ],
             'formatter' => env('LOG_STDERR_FORMATTER'),
+            // NOT what Phase 6 actually uses (see the 'single' channel
+            // above for why: php-fpm workers' stderr silently never reaches
+            // the container's real stdout in this image). Left as
+            // vanilla Laravel default, available if a future deployment
+            // runs this service under a SAPI where stderr capture actually
+            // works (e.g. `php artisan serve`, or a php-fpm build with
+            // working catch_workers_output).
             'processors' => [PsrLogMessageProcessor::class],
         ],
 

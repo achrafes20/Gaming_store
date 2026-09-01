@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Support\ApiObject;
+use App\Support\Tracing;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use Illuminate\Support\Facades\Session;
@@ -31,7 +32,11 @@ abstract class ApiClient
     /** @return array{status:int, body:mixed} */
     protected function request(string $method, string $uri, array $options = []): array
     {
-        $options['headers'] = array_merge($this->authHeaders(), $options['headers'] ?? []);
+        // Propagate the W3C traceparent (Phase 6) so every downstream call
+        // made while handling this request is part of the same distributed
+        // trace — see App\Support\Tracing / docs/observability.md.
+        $tracingHeaders = ($header = Tracing::outgoingHeader()) ? ['traceparent' => $header] : [];
+        $options['headers'] = array_merge($this->authHeaders(), $tracingHeaders, $options['headers'] ?? []);
 
         try {
             $response = $this->http->request($method, $uri, $options);

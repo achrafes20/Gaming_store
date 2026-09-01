@@ -4,6 +4,8 @@ namespace App\Console\Commands;
 
 use App\Mail\OrderConfirmedMail;
 use App\Mail\WelcomeMail;
+use App\Support\Metrics;
+use App\Support\Tracing;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
@@ -63,21 +65,38 @@ class ConsumeEvents extends Command
         $body = json_decode($message->getBody(), true);
         $event = $body['event'] ?? null;
         $payload = $body['payload'] ?? [];
+        $traceparent = $body['traceparent'] ?? null;
 
-        try {
-            match ($event) {
-                'order.created' => Mail::to($payload['email'])->send(new OrderConfirmedMail($payload)),
-                'user.registered' => Mail::to($payload['email'])->send(new WelcomeMail($payload)),
-                default => Log::warning("Unknown event received: {$event}"),
-            };
+        Tracing::span("process {$event}", $traceparent, function () use ($event, $payload, $message) {
+            $start = microtime(true);
+            $registry = Metrics::registry();
+            $status = 'success';
 
-            $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
-            $this->info("Processed event: {$event}");
-        } catch (\Throwable $e) {
-            Log::error("Failed to process event {$event}", ['error' => $e->getMessage()]);
-            // Requeue once (assume transient failure e.g. SMTP hiccup); a real deployment
-            // would route repeated failures to a dead-letter queue instead of looping forever.
-            $message->delivery_info['channel']->basic_nack($message->delivery_info['delivery_tag'], false, false);
-        }
+            try {
+                match ($event) {
+                    'order.created' => Mail::to($payload['email'])->send(new OrderConfirmedMail($payload)),
+                    'user.registered' => Mail::to($payload['email'])->send(new WelcomeMail($payload)),
+                    default => Log::warning("Unknown event received: {$event}"),
+                };
+
+                $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
+                $this->info("Processed event: {$event}");
+            } catch (\Throwable $e) {
+                $status = 'error';
+                Log::error("Failed to process event {$event}", ['error' => $e->getMessage()]);
+                // Requeue once (assume transient failure e.g. SMTP hiccup); a real deployment
+                // would route repeated failures to a dead-letter queue instead of looping forever.
+                $message->delivery_info['channel']->basic_nack($message->delivery_info['delivery_tag'], false, false);
+            } finally {
+                // Golden Signals for this worker: traffic + errors (counter),
+                // latency (histogram) — same shape as PrometheusMetrics on
+                // the HTTP services, pushed instead of scraped (see Metrics).
+                $registry->getOrRegisterCounter('app', 'events_processed_total', 'Total events consumed (traffic)', ['event', 'status'])
+                    ->inc([(string) $event, $status]);
+                $registry->getOrRegisterHistogram('app', 'event_processing_duration_seconds', 'Event processing duration in seconds (latency)', ['event'], [0.01, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5])
+                    ->observe(microtime(true) - $start, [(string) $event]);
+                Metrics::push();
+            }
+        });
     }
 }

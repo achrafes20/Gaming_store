@@ -44,8 +44,14 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management-alpine
+    volumes:
+      # Enables rabbitmq_prometheus (Phase 6) on top of the management
+      # plugin already implied by the image tag — see
+      # docker/rabbitmq/enabled_plugins.
+      - ./docker/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins:ro
     ports:
       - "15672:15672" # management UI (guest/guest)
+      - "15692:15692" # Prometheus metrics (rabbitmq_prometheus)
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 5s
@@ -150,9 +156,90 @@ services:
       - users-service
       - web-bff
 
+  # ---- Observability (Phase 6) -----------------------------------------------
+  # Metrics: each HTTP service exposes /metrics (Prometheus scrapes it
+  # directly, container-to-container — never through the gateway, which
+  # returns 403 on it, see gateway/nginx.conf). notifications-service has no
+  # HTTP server to scrape (it's a CLI worker), so it pushes to `pushgateway`
+  # instead — the standard Prometheus pattern for batch/worker jobs.
+  # Tracing: services export spans straight to Jaeger's OTLP/HTTP receiver
+  # (see App\Support\Tracing in each service — no OTel SDK, just an HTTP
+  # POST, consistent with how every other inter-service call in this
+  # codebase is made).
+  # Logs: every service writes structured JSON to stderr (LOG_CHANNEL=stderr,
+  # see config/logging.php); `promtail` tails every container's stdout via
+  # the Docker Engine API and ships it to `loki`.
+
+  prometheus:
+    image: prom/prometheus:v2.55.1
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    ports:
+      - "9090:9090"
+
+  pushgateway:
+    image: prom/pushgateway:v1.9.0
+    ports:
+      - "9091:9091" # UI — browse what notifications-service has pushed
+
+  grafana:
+    image: grafana/grafana:11.3.1
+    environment:
+      GF_SECURITY_ADMIN_PASSWORD: admin
+      GF_AUTH_ANONYMOUS_ENABLED: "true" # read-only anonymous viewing — convenient for a portfolio demo, not a real deployment
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+    volumes:
+      # One mount for the whole provisioning tree (datasources + dashboard
+      # provider config + the dashboard JSON itself, all under
+      # monitoring/grafana/provisioning/) — a second, nested mount just for
+      # the dashboards/json/ subdirectory fails: you can't create a new
+      # mountpoint inside a directory that's already itself a read-only bind
+      # mount (learned the hard way — real Docker Desktop error, not a
+      # theoretical one).
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - grafana_data:/var/lib/grafana
+    ports:
+      - "3000:3000"
+    depends_on:
+      - prometheus
+      - loki
+      - jaeger
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.63.0
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686" # UI + query API (also what Grafana's Jaeger datasource talks to)
+      - "4318:4318" # OTLP/HTTP receiver — what App\Support\Tracing posts spans to
+
+  loki:
+    image: grafana/loki:3.2.1
+    command: -config.file=/etc/loki/loki-config.yml
+    volumes:
+      - ./monitoring/loki/loki-config.yml:/etc/loki/loki-config.yml:ro
+      - loki_data:/loki
+    ports:
+      - "3100:3100" # not needed for Grafana (talks to it over the docker network) — for querying/debugging directly
+
+  promtail:
+    image: grafana/promtail:3.2.1
+    command: -config.file=/etc/promtail/promtail-config.yml
+    volumes:
+      - ./monitoring/promtail/promtail-config.yml:/etc/promtail/promtail-config.yml:ro
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    ports:
+      - "9080:9080" # its own status/targets page, for debugging discovery
+    depends_on:
+      - loki
+
 volumes:
   catalog_db_data:
   orders_db_data:
   users_db_data:
   catalog_uploads:
   web_bff_sessions:
+  prometheus_data:
+  grafana_data:
+  loki_data:

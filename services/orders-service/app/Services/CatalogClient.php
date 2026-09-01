@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Support\Tracing;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
 
@@ -17,6 +18,7 @@ class CatalogClient
         try {
             $response = Http::baseUrl(config('services.catalog_service_url'))
                 ->timeout(5)
+                ->withHeaders($this->traceHeaders())
                 ->get("/api/products/{$productId}");
 
             return $response->successful() ? $response->json() : null;
@@ -30,7 +32,10 @@ class CatalogClient
         try {
             $response = Http::baseUrl(config('services.catalog_service_url'))
                 ->timeout(5)
-                ->withHeaders(['X-Internal-Secret' => config('services.internal_service_secret')])
+                ->withHeaders(array_merge(
+                    ['X-Internal-Secret' => config('services.internal_service_secret')],
+                    $this->traceHeaders(),
+                ))
                 ->patch("/api/internal/products/{$productId}/decrement-stock", ['quantity' => $quantity]);
         } catch (\Throwable $e) {
             throw new RuntimeException("catalog-service unreachable while decrementing stock for product {$productId}: {$e->getMessage()}");
@@ -39,5 +44,11 @@ class CatalogClient
         if ($response->status() !== 200) {
             throw new RuntimeException("catalog-service refused to decrement stock for product {$productId} (insufficient stock).");
         }
+    }
+
+    /** Propagates the current request's W3C traceparent (Phase 6) — see App\Support\Tracing. */
+    private function traceHeaders(): array
+    {
+        return ($header = Tracing::outgoingHeader()) ? ['traceparent' => $header] : [];
     }
 }

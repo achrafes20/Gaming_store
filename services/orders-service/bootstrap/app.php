@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Middleware\JwtAuth;
+use App\Http\Middleware\PrometheusMetrics;
+use App\Http\Middleware\RequestTracing;
 use App\Http\Middleware\SecurityHeaders;
 use App\Http\Middleware\VerifyInternalSecret;
 use Illuminate\Foundation\Application;
@@ -15,6 +17,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->append(RequestTracing::class);
+        $middleware->append(PrometheusMetrics::class);
         $middleware->append(SecurityHeaders::class);
 
         $middleware->alias([

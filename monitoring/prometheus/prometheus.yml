@@ -1,0 +1,36 @@
+# Scrapes the 4 HTTP services' /metrics directly (container-to-container,
+# same network — never through the gateway, see gateway/nginx.conf's 403 on
+# /metrics), the RabbitMQ Prometheus plugin (docker/rabbitmq/enabled_plugins),
+# and the Pushgateway (where notifications-service, a CLI worker with no
+# HTTP server of its own to scrape, pushes its metrics instead — see
+# services/notifications-service/app/Support/Metrics.php).
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: catalog-service
+    static_configs:
+      - targets: ['catalog-service:80']
+
+  - job_name: orders-service
+    static_configs:
+      - targets: ['orders-service:80']
+
+  - job_name: users-service
+    static_configs:
+      - targets: ['users-service:80']
+
+  - job_name: web-bff
+    static_configs:
+      - targets: ['web-bff:80']
+
+  - job_name: rabbitmq
+    metrics_path: /metrics
+    static_configs:
+      - targets: ['rabbitmq:15692']
+
+  - job_name: pushgateway
+    honor_labels: true # keep the job/instance labels the pusher set, not the scrape target's
+    static_configs:
+      - targets: ['pushgateway:9091']

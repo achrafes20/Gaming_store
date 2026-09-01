@@ -11,7 +11,8 @@
         "guzzlehttp/guzzle": "*",
         "laravel/framework": "^12.0",
         "laravel/tinker": "^2.10.1",
-        "php-amqplib/php-amqplib": "*"
+        "php-amqplib/php-amqplib": "*",
+        "promphp/prometheus_client_php": "^2.15"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

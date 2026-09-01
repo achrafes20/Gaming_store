@@ -1,5 +1,7 @@
 <?php
 
+use App\Logging\AddTraceId;
+use Monolog\Formatter\JsonFormatter;
 use Monolog\Handler\NullHandler;
 use Monolog\Handler\StreamHandler;
 use Monolog\Handler\SyslogUdpHandler;
@@ -63,6 +65,12 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'replace_placeholders' => true,
+            // JSON + AddTraceId (Phase 6) — see catalog-service's
+            // config/logging.php for why this file (not LOG_CHANNEL=stderr)
+            // plus docker/supervisord.conf's program:log-forwarder is what
+            // actually gets structured logs out of the container.
+            'formatter' => JsonFormatter::class,
+            'processors' => [PsrLogMessageProcessor::class, AddTraceId::class],
         ],
 
         'daily' => [
@@ -102,6 +110,8 @@ return [
                 'stream' => 'php://stderr',
             ],
             'formatter' => env('LOG_STDERR_FORMATTER'),
+            // NOT what Phase 6 actually uses — see catalog-service's
+            // config/logging.php (the 'single' channel above) for why.
             'processors' => [PsrLogMessageProcessor::class],
         ],
 

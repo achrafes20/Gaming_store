@@ -60,6 +60,12 @@ data:
             add_header Content-Type text/plain;
         }
 
+        # web-bff's /metrics (Phase 6) is Prometheus-scrape-only, never
+        # public — same reasoning as the /internal/ blocks above.
+        location = /metrics {
+            return 403;
+        }
+
         location / {
             proxy_pass http://web-bff:80;
             proxy_set_header Host $http_host;

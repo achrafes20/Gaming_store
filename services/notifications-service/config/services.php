@@ -42,4 +42,8 @@ return [
         'password' => env('RABBITMQ_PASSWORD', 'guest'),
     ],
 
+    'jaeger_otlp_url' => env('JAEGER_OTLP_URL', 'http://jaeger:4318'),
+
+    'pushgateway_url' => env('PUSHGATEWAY_URL', 'http://pushgateway:9091'),
+
 ];

@@ -1,0 +1,28 @@
+# Discovers every container via the Docker Engine API (no docker CLI needed
+# inside this container, just /var/run/docker.sock mounted read-only — see
+# docker-compose.yml) and ships their stdout/stderr to Loki. Every service
+# here logs structured JSON straight to stderr (Phase 6 — LOG_CHANNEL=stderr,
+# see config/logging.php in each service), so what lands in Loki is already
+# parseable JSON, not raw text — a Loki query can filter on `.level` or
+# `.extra.trace_id` directly.
+server:
+  http_listen_port: 9080
+  grpc_listen_port: 0
+
+positions:
+  filename: /tmp/positions.yaml
+
+clients:
+  - url: http://loki:3100/loki/api/v1/push
+
+scrape_configs:
+  - job_name: docker
+    docker_sd_configs:
+      - host: unix:///var/run/docker.sock
+        refresh_interval: 5s
+    relabel_configs:
+      - source_labels: ['__meta_docker_container_name']
+        regex: '/(.*)'
+        target_label: 'container'
+      - source_labels: ['__meta_docker_container_label_com_docker_compose_service']
+        target_label: 'service'

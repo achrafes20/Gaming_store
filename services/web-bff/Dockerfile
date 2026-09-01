@@ -17,8 +17,13 @@ RUN composer dump-autoload --optimize --no-dev
 
 FROM php:8.2-fpm-alpine
 
-RUN apk add --no-cache nginx supervisor libpng-dev libzip-dev icu-dev linux-headers \
-    && docker-php-ext-install pdo_mysql gd zip bcmath opcache sockets
+# apcu: shared-memory storage for the Prometheus client (Phase 6) — metrics
+# recorded by one php-fpm worker must be visible to whichever worker nginx
+# routes the /metrics scrape to; APCu is per-container shared memory,
+# exactly the scope a single scraped Pod/container needs.
+RUN apk add --no-cache nginx supervisor libpng-dev libzip-dev icu-dev linux-headers $PHPIZE_DEPS \
+    && docker-php-ext-install pdo_mysql gd zip bcmath opcache sockets \
+    && pecl install apcu && docker-php-ext-enable apcu
 
 WORKDIR /var/www/html
 COPY --from=vendor /app /var/www/html

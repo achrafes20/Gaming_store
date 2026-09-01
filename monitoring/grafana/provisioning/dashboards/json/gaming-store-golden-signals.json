@@ -1,0 +1,98 @@
+{
+  "title": "Gaming Store — Golden Signals",
+  "uid": "gaming-store-golden-signals",
+  "schemaVersion": 39,
+  "version": 1,
+  "editable": true,
+  "timezone": "browser",
+  "time": { "from": "now-1h", "to": "now" },
+  "refresh": "10s",
+  "templating": {
+    "list": [
+      {
+        "name": "service",
+        "type": "query",
+        "datasource": { "type": "prometheus", "uid": "Prometheus" },
+        "query": "label_values(http_requests_total, job)",
+        "refresh": 2,
+        "includeAll": false,
+        "multi": false,
+        "current": { "text": "web-bff", "value": "web-bff" }
+      }
+    ]
+  },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Traffic — requests/sec, all services",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "sum by (job) (rate(http_requests_total[1m]))", "legendFormat": "{{job}}" },
+        { "expr": "sum by (event) (rate(events_processed_total[1m]))", "legendFormat": "notifications-service: {{event}}" }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Errors — 5xx/sec, all services",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "red" } }, "overrides": [] },
+      "targets": [
+        { "expr": "sum by (job) (rate(http_errors_total[5m]))", "legendFormat": "{{job}}" }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Latency (p95) — $service",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum by (le, route) (rate(http_request_duration_seconds_bucket{job=\"$service\"}[5m])))", "legendFormat": "{{route}}" }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Saturation — open DB connections, $service",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "db_connections_open{job=\"$service\"}", "legendFormat": "{{instance}}" }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "RabbitMQ — ready messages per queue",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "rabbitmq_queue_messages_ready", "legendFormat": "{{queue}}" }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "notifications-service — event processing p95 latency",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "histogram_quantile(0.95, sum by (le, event) (rate(event_processing_duration_seconds_bucket[5m])))", "legendFormat": "{{event}}" }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "HTTP requests by status — $service",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 24, "x": 0, "y": 24 },
+      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "targets": [
+        { "expr": "sum by (status) (rate(http_requests_total{job=\"$service\"}[1m]))", "legendFormat": "{{status}}" }
+      ]
+    }
+  ]
+}

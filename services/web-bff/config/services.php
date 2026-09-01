@@ -39,4 +39,6 @@ return [
     'orders_service_url' => env('ORDERS_SERVICE_URL', 'http://orders-service'),
     'users_service_url' => env('USERS_SERVICE_URL', 'http://users-service'),
 
+    'jaeger_otlp_url' => env('JAEGER_OTLP_URL', 'http://jaeger:4318'),
+
 ];

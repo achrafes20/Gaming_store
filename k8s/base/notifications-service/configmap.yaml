@@ -7,7 +7,8 @@ data:
   APP_NAME: notifications-service
   APP_ENV: local
   APP_DEBUG: "true"
-  LOG_CHANNEL: stack
+  LOG_CHANNEL: stderr
+  LOG_STDERR_FORMATTER: 'Monolog\Formatter\JsonFormatter'
   LOG_LEVEL: debug
   DB_CONNECTION: sqlite
   RABBITMQ_HOST: rabbitmq
@@ -16,3 +17,5 @@ data:
   MAIL_HOST: smtp.gmail.com
   MAIL_PORT: "587"
   MAIL_FROM_NAME: NextLevelGaming
+  JAEGER_OTLP_URL: http://jaeger:4318
+  PUSHGATEWAY_URL: http://pushgateway:9091

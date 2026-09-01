@@ -9,7 +9,14 @@ use App\Http\Controllers\FirstController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\UsersController;
+use App\Support\Metrics;
 use Illuminate\Support\Facades\Route;
+use Prometheus\RenderTextFormat;
+
+// Unlike the API services, web-bff sits behind the gateway's catch-all `/`
+// (see gateway/nginx.conf) — this route WOULD be reachable from outside if
+// the gateway didn't explicitly block /metrics before it ever reaches here.
+Route::get('/metrics', fn () => response(Metrics::render())->header('Content-Type', RenderTextFormat::MIME_TYPE));
 
 Route::get('/', [FirstController::class, 'MainPage']);
 Route::get('/categories', [FirstController::class, 'Categories_page'])->name('cats');

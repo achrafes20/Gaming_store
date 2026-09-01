@@ -43,4 +43,6 @@ return [
     // service-to-service calls in both directions. See SECURITY.md.
     'internal_service_secret' => env('INTERNAL_SERVICE_SECRET'),
 
+    'jaeger_otlp_url' => env('JAEGER_OTLP_URL', 'http://jaeger:4318'),
+
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Support\Tracing;
 use Illuminate\Support\Facades\Log;
 use PhpAmqpLib\Connection\AMQPStreamConnection;
 use PhpAmqpLib\Message\AMQPMessage;
@@ -31,6 +32,11 @@ class EventPublisher
                 'event' => $eventName,
                 'payload' => $payload,
                 'emitted_at' => now()->toISOString(),
+                // Carries the distributed trace across the async boundary
+                // (Phase 6) — notifications-service starts a child span from
+                // this, so "checkout -> publish -> consume -> send email"
+                // shows up as one trace in Jaeger, not four disconnected ones.
+                'traceparent' => Tracing::outgoingHeader(),
             ]), ['content_type' => 'application/json', 'delivery_mode' => AMQPMessage::DELIVERY_MODE_PERSISTENT]);
 
             $channel->basic_publish($message, 'gaming_store_events', $eventName);
