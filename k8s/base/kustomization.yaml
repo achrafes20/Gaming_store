@@ -57,14 +57,14 @@ resources:
 # no more silent staleness, and nothing to remember to work around.
 images:
   - name: gaming-store-catalog-service
-    newTag: 539485f
+    newTag: 098206f
   - name: gaming-store-orders-service
-    newTag: 539485f
+    newTag: 098206f
   - name: gaming-store-users-service
-    newTag: 539485f
+    newTag: 098206f
   - name: gaming-store-web-bff
-    newTag: 539485f
+    newTag: 098206f
   - name: gaming-store-notifications-service
-    newTag: 539485f
+    newTag: 098206f
   - name: gaming-store-chatbot-service
-    newTag: 539485f
+    newTag: 098206f
