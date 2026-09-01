@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\FavoriteController;
 use App\Http\Controllers\FirstController;
@@ -49,6 +50,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/coupon/apply', [CouponController::class, 'apply'])->name('coupon.apply');
     Route::post('/coupon/remove', [CouponController::class, 'remove'])->name('coupon.remove');
     Route::post('/products/{product}/review', [ReviewController::class, 'store'])->name('review_products.store');
+
+    // Phase 8 — chat widget. Server-side proxy to chatbot-service, see
+    // App\Http\Controllers\ChatController.
+    Route::post('/chat', [ChatController::class, 'store'])->middleware('throttle:chat')->name('chat.store');
+    Route::post('/chat/clear', [ChatController::class, 'clear'])->name('chat.clear');
 });
 
 Route::middleware('admin')->group(function () {

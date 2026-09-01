@@ -1,4 +1,4 @@
-# Scrapes the 4 HTTP services' /metrics directly (container-to-container,
+# Scrapes the 5 HTTP services' /metrics directly (container-to-container,
 # same network — never through the gateway, see gateway/nginx.conf's 403 on
 # /metrics), the RabbitMQ Prometheus plugin (docker/rabbitmq/enabled_plugins),
 # and the Pushgateway (where notifications-service, a CLI worker with no
@@ -24,6 +24,10 @@ scrape_configs:
   - job_name: web-bff
     static_configs:
       - targets: ['web-bff:80']
+
+  - job_name: chatbot-service
+    static_configs:
+      - targets: ['chatbot-service:80']
 
   - job_name: rabbitmq
     metrics_path: /metrics

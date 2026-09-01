@@ -48,6 +48,16 @@ data:
             proxy_set_header X-Real-IP $remote_addr;
         }
 
+        # Phase 8 — chatbot-service. "chat" isn't a namespace prefix like
+        # catalog/orders/users — the whole API surface IS POST /api/chat —
+        # so an exact-match location forwards straight through, no rewrite.
+        location = /api/chat {
+            proxy_pass http://chatbot-service:80;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_read_timeout 120s;
+        }
+
         # Uploaded product/category images live on catalog-service.
         location /uploads/ {
             proxy_pass http://catalog-service:80$uri;
@@ -64,6 +74,16 @@ data:
         # public — same reasoning as the /internal/ blocks above.
         location = /metrics {
             return 403;
+        }
+
+        # web-bff's own /chat (the browser widget) needs the same generous
+        # timeout as chatbot-service's own /api/chat block above — see
+        # gateway/nginx.conf for why.
+        location = /chat {
+            proxy_pass http://web-bff:80;
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_read_timeout 120s;
         }
 
         location / {

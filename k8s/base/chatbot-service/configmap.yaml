@@ -1,0 +1,24 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: chatbot-service-config
+  namespace: gaming-store
+data:
+  APP_NAME: chatbot-service
+  APP_ENV: local
+  APP_DEBUG: "true"
+  APP_URL: http://localhost:8080
+  LOG_CHANNEL: single
+  LOG_LEVEL: debug
+  # No database of its own (stateless, see docs/architecture.md) — same
+  # "file", not "database" pattern already used for web-bff (Phase 5/6).
+  DB_CONNECTION: sqlite
+  SESSION_DRIVER: file
+  QUEUE_CONNECTION: database
+  CACHE_STORE: file
+  CATALOG_SERVICE_URL: http://catalog-service
+  ORDERS_SERVICE_URL: http://orders-service
+  USERS_SERVICE_URL: http://users-service
+  MAIL_MAILER: log
+  JAEGER_OTLP_URL: http://jaeger:4318
+  GEMINI_MODEL: gemini-3.6-flash

@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="TechSphere - Futuristic Electronics eCommerce Platform">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>NextLevelGaming | Next-Gen Electronics</title>
     <link rel="shortcut icon" type="image/png" href="{{ asset('assets/img/logo.png') }}">
     <link
@@ -14,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset('assets/css/cyber-main.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/chatbot.css') }}">
     @stack('styles')
 </head>
 
@@ -288,9 +290,15 @@
     <button class="cyber-back-to-top">
         <i class="fas fa-arrow-up"></i>
     </button>
+
+    @auth
+        @include('partials.chat-widget')
+    @endauth
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="{{ asset('assets/js/cyber-main.js') }}"></script>
+    <script src="{{ asset('assets/js/chatbot.js') }}"></script>
     @stack('scripts')
 </body>
 

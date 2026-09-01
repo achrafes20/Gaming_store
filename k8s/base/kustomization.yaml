@@ -36,6 +36,10 @@ resources:
   - web-bff/deployment.yaml
   - web-bff/service.yaml
 
+  - chatbot-service/configmap.yaml
+  - chatbot-service/deployment.yaml
+  - chatbot-service/service.yaml
+
   - api-gateway/configmap.yaml
   - api-gateway/deployment.yaml
   - api-gateway/service.yaml
@@ -61,4 +65,6 @@ images:
   - name: gaming-store-web-bff
     newTag: 539485f
   - name: gaming-store-notifications-service
+    newTag: 539485f
+  - name: gaming-store-chatbot-service
     newTag: 539485f

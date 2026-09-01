@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Builds the 5 service images and deploys the whole stack to whatever
+# Builds the 6 service images and deploys the whole stack to whatever
 # Kubernetes cluster your current kubectl context points at.
 #
 # Works with either:
@@ -14,7 +14,7 @@ cd "$(dirname "$0")/.."
 
 NAMESPACE=gaming-store
 OVERLAY=${1:-dev}
-SERVICES="catalog-service orders-service users-service web-bff notifications-service"
+SERVICES="catalog-service orders-service users-service web-bff notifications-service chatbot-service"
 
 # A unique tag per run, not "latest" — Docker Desktop Kubernetes has been
 # observed to keep serving a stale image after a same-tag rebuild (its
@@ -77,7 +77,7 @@ echo "==> Applying k8s/overlays/${OVERLAY}"
 kubectl apply -k "k8s/overlays/${OVERLAY}"
 
 echo "==> Waiting for rollouts"
-for deploy in catalog-service orders-service users-service web-bff notifications-service api-gateway; do
+for deploy in catalog-service orders-service users-service web-bff notifications-service chatbot-service api-gateway; do
     kubectl rollout status deployment "$deploy" -n "$NAMESPACE" --timeout=180s
 done
 for sts in catalog-db orders-db users-db rabbitmq; do

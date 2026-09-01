@@ -37,4 +37,11 @@ apply_secret notifications-service-secret \
     --from-literal=MAIL_USERNAME="$(env_value notifications-service MAIL_USERNAME)" \
     --from-literal=MAIL_PASSWORD="$(env_value notifications-service MAIL_PASSWORD)"
 
+# GEMINI_API_KEY can't be auto-generated (it's a real Google AI Studio key
+# you paste in yourself, see services/chatbot-service/.env.example) — this
+# just carries whatever's in services/chatbot-service/.env, blank or not.
+apply_secret chatbot-service-secret \
+    --from-literal=APP_KEY="$(env_value chatbot-service APP_KEY)" \
+    --from-literal=GEMINI_API_KEY="$(env_value chatbot-service GEMINI_API_KEY)"
+
 echo "Secrets applied in namespace $NAMESPACE."

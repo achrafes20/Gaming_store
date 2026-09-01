@@ -132,6 +132,7 @@ services:
       CATALOG_SERVICE_URL: http://catalog-service
       ORDERS_SERVICE_URL: http://orders-service
       USERS_SERVICE_URL: http://users-service
+      CHATBOT_SERVICE_URL: http://chatbot-service
     volumes:
       # SESSION_DRIVER=file writes here — without a persistent volume, every
       # rebuild/recreate of this container wipes storage/framework/sessions
@@ -141,6 +142,23 @@ services:
       - catalog-service
       - orders-service
       - users-service
+      - chatbot-service
+
+  # Phase 8 — Gemini-backed assistant. No database (stateless, see
+  # docs/architecture.md); calls catalog/orders-service directly, forwarding
+  # whichever JWT web-bff forwards to it — see docs/chatbot.md.
+  chatbot-service:
+    build:
+      context: .
+      dockerfile: services/chatbot-service/Dockerfile
+    env_file: services/chatbot-service/.env
+    environment:
+      CATALOG_SERVICE_URL: http://catalog-service
+      ORDERS_SERVICE_URL: http://orders-service
+      USERS_SERVICE_URL: http://users-service
+    depends_on:
+      - catalog-service
+      - orders-service
 
   # ---- Single public entry point --------------------------------------------
 
@@ -155,6 +173,7 @@ services:
       - orders-service
       - users-service
       - web-bff
+      - chatbot-service
 
   # ---- Observability (Phase 6) -----------------------------------------------
   # Metrics: each HTTP service exposes /metrics (Prometheus scrapes it

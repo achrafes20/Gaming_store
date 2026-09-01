@@ -23,5 +23,6 @@ class AppServiceProvider extends ServiceProvider
         // Same limiters as the API services they front for — see SECURITY.md.
         RateLimiter::for('auth', fn (Request $request) => Limit::perMinute(5)->by($request->ip()));
         RateLimiter::for('checkout', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
+        RateLimiter::for('chat', fn (Request $request) => Limit::perMinute(20)->by($request->ip()));
     }
 }

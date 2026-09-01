@@ -136,6 +136,22 @@ checkout flow was re-run end to end and still decrements stock correctly.
 New tests added (`test_internal_endpoint_rejects_requests_without_the_shared_secret`
 in both services) assert the 403 directly, not just exercised manually.
 
+## `chatbot-service` — no new trust boundary (Phase 8)
+
+The AI assistant (`docs/chatbot.md`) never gets its own elevated
+credential. Every tool it can call forwards the *caller's own JWT* to a
+real, already-authorized endpoint (`orders-service`'s owner-scoped
+`/api/cart`/`/api/orders`, its `jwt.auth:admin`-guarded
+`/api/admin/orders`) — so a prompt-injection attempt to "call the admin
+tool anyway" gets exactly as far as that same JWT would get calling that
+route directly: a `403` from `orders-service` itself, not a check that
+lives in (and could be talked out of) the prompt. `GEMINI_API_KEY` is
+generated manually (Google AI Studio, free tier) and injected the same way
+`INTERNAL_SERVICE_SECRET` was in Phase 5 — never committed. `/chat` is
+rate-limited (both on `chatbot-service` and on `web-bff`'s proxying route)
+to bound abuse and API cost. See `docs/architecture.md`'s `chatbot-service`
+section for the full reasoning.
+
 ## OWASP Top 10 (2021) mapping
 
 | # | Category | Status | Where |

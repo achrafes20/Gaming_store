@@ -14,7 +14,7 @@ if [ -n "$(git status --porcelain)" ]; then
     exit 1
 fi
 
-SERVICES="catalog-service orders-service users-service web-bff notifications-service"
+SERVICES="catalog-service orders-service users-service web-bff notifications-service chatbot-service"
 TAG=$(git rev-parse --short HEAD)
 
 echo "==> Building service images (tag: ${TAG})"
