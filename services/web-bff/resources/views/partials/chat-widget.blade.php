@@ -8,7 +8,7 @@
         <i class="fas fa-robot"></i>
     </button>
 
-    <div id="chat-panel" class="cyber-chat-panel" hidden>
+    <div id="chat-panel" class="cyber-chat-panel" style="display: none;" hidden>
         <div class="cyber-chat-header">
             <span><i class="fas fa-robot"></i> NextLevel Assistant</span>
             <button id="chat-close" aria-label="Close">&times;</button>

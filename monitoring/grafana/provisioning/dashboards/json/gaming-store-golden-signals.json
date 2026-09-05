@@ -2,7 +2,7 @@
   "title": "Gaming Store — Golden Signals",
   "uid": "gaming-store-golden-signals",
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "editable": true,
   "timezone": "browser",
   "time": { "from": "now-1h", "to": "now" },
@@ -13,7 +13,7 @@
         "name": "service",
         "type": "query",
         "datasource": { "type": "prometheus", "uid": "Prometheus" },
-        "query": "label_values(http_requests_total, job)",
+        "query": "label_values(app_http_requests_total, job)",
         "refresh": 2,
         "includeAll": false,
         "multi": false,
@@ -29,8 +29,8 @@
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
       "datasource": { "type": "prometheus", "uid": "Prometheus" },
       "targets": [
-        { "expr": "sum by (job) (rate(http_requests_total[1m]))", "legendFormat": "{{job}}" },
-        { "expr": "sum by (event) (rate(events_processed_total[1m]))", "legendFormat": "notifications-service: {{event}}" }
+        { "expr": "sum by (job) (rate(app_http_requests_total[1m]))", "legendFormat": "{{job}}" },
+        { "expr": "sum by (event) (rate(app_events_processed_total[1m]))", "legendFormat": "notifications-service: {{event}}" }
       ]
     },
     {
@@ -41,7 +41,7 @@
       "datasource": { "type": "prometheus", "uid": "Prometheus" },
       "fieldConfig": { "defaults": { "color": { "mode": "fixed", "fixedColor": "red" } }, "overrides": [] },
       "targets": [
-        { "expr": "sum by (job) (rate(http_errors_total[5m]))", "legendFormat": "{{job}}" }
+        { "expr": "sum by (job) (rate(app_http_errors_total[5m]))", "legendFormat": "{{job}}" }
       ]
     },
     {
@@ -51,7 +51,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
       "datasource": { "type": "prometheus", "uid": "Prometheus" },
       "targets": [
-        { "expr": "histogram_quantile(0.95, sum by (le, route) (rate(http_request_duration_seconds_bucket{job=\"$service\"}[5m])))", "legendFormat": "{{route}}" }
+        { "expr": "histogram_quantile(0.95, sum by (le, route) (rate(app_http_request_duration_seconds_bucket{job=\"$service\"}[5m])))", "legendFormat": "{{route}}" }
       ]
     },
     {
@@ -61,7 +61,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
       "datasource": { "type": "prometheus", "uid": "Prometheus" },
       "targets": [
-        { "expr": "db_connections_open{job=\"$service\"}", "legendFormat": "{{instance}}" }
+        { "expr": "app_db_connections_open{job=\"$service\"}", "legendFormat": "{{instance}}" }
       ]
     },
     {
@@ -81,7 +81,7 @@
       "gridPos": { "h": 8, "w": 12, "x": 12, "y": 16 },
       "datasource": { "type": "prometheus", "uid": "Prometheus" },
       "targets": [
-        { "expr": "histogram_quantile(0.95, sum by (le, event) (rate(event_processing_duration_seconds_bucket[5m])))", "legendFormat": "{{event}}" }
+        { "expr": "histogram_quantile(0.95, sum by (le, event) (rate(app_event_processing_duration_seconds_bucket[5m])))", "legendFormat": "{{event}}" }
       ]
     },
     {
@@ -91,7 +91,7 @@
       "gridPos": { "h": 8, "w": 24, "x": 0, "y": 24 },
       "datasource": { "type": "prometheus", "uid": "Prometheus" },
       "targets": [
-        { "expr": "sum by (status) (rate(http_requests_total{job=\"$service\"}[1m]))", "legendFormat": "{{status}}" }
+        { "expr": "sum by (status) (rate(app_http_requests_total{job=\"$service\"}[1m]))", "legendFormat": "{{status}}" }
       ]
     }
   ]

@@ -43,6 +43,10 @@
     backdrop-filter: blur(10px);
 }
 
+.cyber-chat-panel[hidden] {
+    display: none !important;
+}
+
 .cyber-chat-header {
     display: flex;
     align-items: center;

@@ -16,14 +16,16 @@
 
     function open() {
         panel.hidden = false;
+        panel.style.display = 'flex';
         input.focus();
     }
 
     function close() {
         panel.hidden = true;
+        panel.style.display = 'none';
     }
 
-    toggle.addEventListener('click', () => (panel.hidden ? open() : close()));
+    toggle.addEventListener('click', () => (panel.style.display === 'none' || panel.hidden ? open() : close()));
     closeBtn.addEventListener('click', close);
 
     function appendMessage(text, cssClass) {
